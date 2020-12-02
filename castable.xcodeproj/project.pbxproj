@@ -1,0 +1,779 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACD92577F2680019B1CC /* AppDelegate.swift */; };
+		B6CAACDD2577F2680019B1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6CAACDB2577F2680019B1CC /* Main.storyboard */; };
+		B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACDE2577F2680019B1CC /* ViewController.swift */; };
+		B6CAACE12577F2690019B1CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6CAACE02577F2690019B1CC /* Assets.xcassets */; };
+		B6CAACEC2577F2690019B1CC /* castableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACEB2577F2690019B1CC /* castableTests.swift */; };
+		B6CAACF72577F2690019B1CC /* castableUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACF62577F2690019B1CC /* castableUITests.swift */; };
+		B6CAACFE2577F2690019B1CC /* castable Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B6CAACFD2577F2690019B1CC /* castable Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B6CAAD032577F2690019B1CC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6CAAD022577F2690019B1CC /* Cocoa.framework */; };
+		B6CAAD062577F2690019B1CC /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAAD052577F2690019B1CC /* SafariExtensionHandler.swift */; };
+		B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */; };
+		B6CAAD0D2577F2690019B1CC /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */; };
+		B6CAAD102577F2690019B1CC /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */; };
+		B6F9DECF25797DB900DC86A9 /* Mdns.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9DECE25797DB900DC86A9 /* Mdns.swift */; };
+		B6F9DED52579964C00DC86A9 /* castable-script.js in Resources */ = {isa = PBXBuildFile; fileRef = B6F9DED42579964C00DC86A9 /* castable-script.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B6CAACE82577F2690019B1CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6CAACCD2577F2680019B1CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6CAACD42577F2680019B1CC;
+			remoteInfo = castable;
+		};
+		B6CAACF32577F2690019B1CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6CAACCD2577F2680019B1CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6CAACD42577F2680019B1CC;
+			remoteInfo = castable;
+		};
+		B6CAACFF2577F2690019B1CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6CAACCD2577F2680019B1CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6CAACFC2577F2690019B1CC;
+			remoteInfo = "castable Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B6CAAD182577F2690019B1CC /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B6CAACFE2577F2690019B1CC /* castable Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		B6CAACD52577F2680019B1CC /* castable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = castable.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6CAACD82577F2680019B1CC /* castable.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable.entitlements; sourceTree = "<group>"; };
+		B6CAACD92577F2680019B1CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B6CAACDC2577F2680019B1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B6CAACDE2577F2680019B1CC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B6CAACE02577F2690019B1CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B6CAACE22577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6CAACE72577F2690019B1CC /* castableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = castableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6CAACEB2577F2690019B1CC /* castableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = castableTests.swift; sourceTree = "<group>"; };
+		B6CAACED2577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6CAACF22577F2690019B1CC /* castableUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = castableUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6CAACF62577F2690019B1CC /* castableUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = castableUITests.swift; sourceTree = "<group>"; };
+		B6CAACF82577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6CAACFD2577F2690019B1CC /* castable Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "castable Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6CAAD022577F2690019B1CC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		B6CAAD052577F2690019B1CC /* SafariExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionHandler.swift; sourceTree = "<group>"; };
+		B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionViewController.swift; sourceTree = "<group>"; };
+		B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ToolbarItemIcon.pdf; sourceTree = "<group>"; };
+		B6CAAD0F2577F2690019B1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
+		B6CAAD112577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable_Extension.entitlements; sourceTree = "<group>"; };
+		B6F9DECE25797DB900DC86A9 /* Mdns.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mdns.swift; sourceTree = "<group>"; };
+		B6F9DED42579964C00DC86A9 /* castable-script.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "castable-script.js"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B6CAACD22577F2680019B1CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACE42577F2690019B1CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACEF2577F2690019B1CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACFA2577F2690019B1CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAAD032577F2690019B1CC /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B6CAACCC2577F2680019B1CC = {
+			isa = PBXGroup;
+			children = (
+				B6CAACD72577F2680019B1CC /* castable */,
+				B6CAACEA2577F2690019B1CC /* castableTests */,
+				B6CAACF52577F2690019B1CC /* castableUITests */,
+				B6CAAD042577F2690019B1CC /* castable Extension */,
+				B6CAAD012577F2690019B1CC /* Frameworks */,
+				B6CAACD62577F2680019B1CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B6CAACD62577F2680019B1CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6CAACD52577F2680019B1CC /* castable.app */,
+				B6CAACE72577F2690019B1CC /* castableTests.xctest */,
+				B6CAACF22577F2690019B1CC /* castableUITests.xctest */,
+				B6CAACFD2577F2690019B1CC /* castable Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B6CAACD72577F2680019B1CC /* castable */ = {
+			isa = PBXGroup;
+			children = (
+				B6CAACD82577F2680019B1CC /* castable.entitlements */,
+				B6CAACD92577F2680019B1CC /* AppDelegate.swift */,
+				B6CAACDB2577F2680019B1CC /* Main.storyboard */,
+				B6CAACDE2577F2680019B1CC /* ViewController.swift */,
+				B6CAACE02577F2690019B1CC /* Assets.xcassets */,
+				B6CAACE22577F2690019B1CC /* Info.plist */,
+			);
+			path = castable;
+			sourceTree = "<group>";
+		};
+		B6CAACEA2577F2690019B1CC /* castableTests */ = {
+			isa = PBXGroup;
+			children = (
+				B6CAACEB2577F2690019B1CC /* castableTests.swift */,
+				B6CAACED2577F2690019B1CC /* Info.plist */,
+			);
+			path = castableTests;
+			sourceTree = "<group>";
+		};
+		B6CAACF52577F2690019B1CC /* castableUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B6CAACF62577F2690019B1CC /* castableUITests.swift */,
+				B6CAACF82577F2690019B1CC /* Info.plist */,
+			);
+			path = castableUITests;
+			sourceTree = "<group>";
+		};
+		B6CAAD012577F2690019B1CC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B6CAAD022577F2690019B1CC /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B6CAAD042577F2690019B1CC /* castable Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B6F9DECE25797DB900DC86A9 /* Mdns.swift */,
+				B6CAAD052577F2690019B1CC /* SafariExtensionHandler.swift */,
+				B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */,
+				B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */,
+				B6CAAD112577F2690019B1CC /* Info.plist */,
+				B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */,
+				B6CAAD092577F2690019B1CC /* Resources */,
+			);
+			path = "castable Extension";
+			sourceTree = "<group>";
+		};
+		B6CAAD092577F2690019B1CC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B6F9DED42579964C00DC86A9 /* castable-script.js */,
+				B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B6CAACD42577F2680019B1CC /* castable */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6CAAD192577F2690019B1CC /* Build configuration list for PBXNativeTarget "castable" */;
+			buildPhases = (
+				B6CAACD12577F2680019B1CC /* Sources */,
+				B6CAACD22577F2680019B1CC /* Frameworks */,
+				B6CAACD32577F2680019B1CC /* Resources */,
+				B6CAAD182577F2690019B1CC /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B6CAAD002577F2690019B1CC /* PBXTargetDependency */,
+			);
+			name = castable;
+			productName = castable;
+			productReference = B6CAACD52577F2680019B1CC /* castable.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B6CAACE62577F2690019B1CC /* castableTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6CAAD1C2577F2690019B1CC /* Build configuration list for PBXNativeTarget "castableTests" */;
+			buildPhases = (
+				B6CAACE32577F2690019B1CC /* Sources */,
+				B6CAACE42577F2690019B1CC /* Frameworks */,
+				B6CAACE52577F2690019B1CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B6CAACE92577F2690019B1CC /* PBXTargetDependency */,
+			);
+			name = castableTests;
+			productName = castableTests;
+			productReference = B6CAACE72577F2690019B1CC /* castableTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B6CAACF12577F2690019B1CC /* castableUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6CAAD1F2577F2690019B1CC /* Build configuration list for PBXNativeTarget "castableUITests" */;
+			buildPhases = (
+				B6CAACEE2577F2690019B1CC /* Sources */,
+				B6CAACEF2577F2690019B1CC /* Frameworks */,
+				B6CAACF02577F2690019B1CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B6CAACF42577F2690019B1CC /* PBXTargetDependency */,
+			);
+			name = castableUITests;
+			productName = castableUITests;
+			productReference = B6CAACF22577F2690019B1CC /* castableUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		B6CAACFC2577F2690019B1CC /* castable Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6CAAD152577F2690019B1CC /* Build configuration list for PBXNativeTarget "castable Extension" */;
+			buildPhases = (
+				B6CAACF92577F2690019B1CC /* Sources */,
+				B6CAACFA2577F2690019B1CC /* Frameworks */,
+				B6CAACFB2577F2690019B1CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "castable Extension";
+			productName = "castable Extension";
+			productReference = B6CAACFD2577F2690019B1CC /* castable Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B6CAACCD2577F2680019B1CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1220;
+				LastUpgradeCheck = 1220;
+				TargetAttributes = {
+					B6CAACD42577F2680019B1CC = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					B6CAACE62577F2690019B1CC = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = B6CAACD42577F2680019B1CC;
+					};
+					B6CAACF12577F2690019B1CC = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = B6CAACD42577F2680019B1CC;
+					};
+					B6CAACFC2577F2690019B1CC = {
+						CreatedOnToolsVersion = 12.2;
+					};
+				};
+			};
+			buildConfigurationList = B6CAACD02577F2680019B1CC /* Build configuration list for PBXProject "castable" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B6CAACCC2577F2680019B1CC;
+			productRefGroup = B6CAACD62577F2680019B1CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6CAACD42577F2680019B1CC /* castable */,
+				B6CAACE62577F2690019B1CC /* castableTests */,
+				B6CAACF12577F2690019B1CC /* castableUITests */,
+				B6CAACFC2577F2690019B1CC /* castable Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B6CAACD32577F2680019B1CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAACE12577F2690019B1CC /* Assets.xcassets in Resources */,
+				B6CAACDD2577F2680019B1CC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACE52577F2690019B1CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACF02577F2690019B1CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACFB2577F2690019B1CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAAD102577F2690019B1CC /* SafariExtensionViewController.xib in Resources */,
+				B6CAAD0D2577F2690019B1CC /* ToolbarItemIcon.pdf in Resources */,
+				B6F9DED52579964C00DC86A9 /* castable-script.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B6CAACD12577F2680019B1CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */,
+				B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACE32577F2690019B1CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAACEC2577F2690019B1CC /* castableTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACEE2577F2690019B1CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAACF72577F2690019B1CC /* castableUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6CAACF92577F2690019B1CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */,
+				B6F9DECF25797DB900DC86A9 /* Mdns.swift in Sources */,
+				B6CAAD062577F2690019B1CC /* SafariExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B6CAACE92577F2690019B1CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6CAACD42577F2680019B1CC /* castable */;
+			targetProxy = B6CAACE82577F2690019B1CC /* PBXContainerItemProxy */;
+		};
+		B6CAACF42577F2690019B1CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6CAACD42577F2680019B1CC /* castable */;
+			targetProxy = B6CAACF32577F2690019B1CC /* PBXContainerItemProxy */;
+		};
+		B6CAAD002577F2690019B1CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6CAACFC2577F2690019B1CC /* castable Extension */;
+			targetProxy = B6CAACFF2577F2690019B1CC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B6CAACDB2577F2680019B1CC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B6CAACDC2577F2680019B1CC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B6CAAD0F2577F2690019B1CC /* Base */,
+			);
+			name = SafariExtensionViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B6CAAD132577F2690019B1CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B6CAAD142577F2690019B1CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		B6CAAD162577F2690019B1CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "castable Extension/castable_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "castable Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castable.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B6CAAD172577F2690019B1CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "castable Extension/castable_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "castable Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castable.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B6CAAD1A2577F2690019B1CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = castable/castable.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = castable/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castable;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B6CAAD1B2577F2690019B1CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = castable/castable.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = castable/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castable;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B6CAAD1D2577F2690019B1CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				INFOPLIST_FILE = castableTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castableTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/castable.app/Contents/MacOS/castable";
+			};
+			name = Debug;
+		};
+		B6CAAD1E2577F2690019B1CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				INFOPLIST_FILE = castableTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castableTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/castable.app/Contents/MacOS/castable";
+			};
+			name = Release;
+		};
+		B6CAAD202577F2690019B1CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				INFOPLIST_FILE = castableUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castableUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = castable;
+			};
+			name = Debug;
+		};
+		B6CAAD212577F2690019B1CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 79PVW3SEND;
+				INFOPLIST_FILE = castableUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.dhleong.castableUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = castable;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B6CAACD02577F2680019B1CC /* Build configuration list for PBXProject "castable" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6CAAD132577F2690019B1CC /* Debug */,
+				B6CAAD142577F2690019B1CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6CAAD152577F2690019B1CC /* Build configuration list for PBXNativeTarget "castable Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6CAAD162577F2690019B1CC /* Debug */,
+				B6CAAD172577F2690019B1CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6CAAD192577F2690019B1CC /* Build configuration list for PBXNativeTarget "castable" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6CAAD1A2577F2690019B1CC /* Debug */,
+				B6CAAD1B2577F2690019B1CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6CAAD1C2577F2690019B1CC /* Build configuration list for PBXNativeTarget "castableTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6CAAD1D2577F2690019B1CC /* Debug */,
+				B6CAAD1E2577F2690019B1CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6CAAD1F2577F2690019B1CC /* Build configuration list for PBXNativeTarget "castableUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6CAAD202577F2690019B1CC /* Debug */,
+				B6CAAD212577F2690019B1CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B6CAACCD2577F2680019B1CC /* Project object */;
+}
