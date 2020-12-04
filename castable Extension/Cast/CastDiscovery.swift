@@ -47,8 +47,8 @@ class CastDiscovery {
             service.remove(from: RunLoop.main, forMode: .common)
             service.stop()
 
-            resolving.removeAll { it in
-                it == service
+            if let index = resolving.firstIndex(of: service) {
+                resolving.remove(at: index)
             }
 
             // TODO provide this... somewhere
