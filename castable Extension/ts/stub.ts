@@ -1,3 +1,4 @@
+import { CastStub } from "./cast";
 import { ChromeController } from "./chrome";
 import { log } from "./log";
 
@@ -13,6 +14,10 @@ export function init() {
     Object.defineProperties(window, {
         chrome: {
             value: controller.chrome,
+        },
+
+        cast: {
+            value: new CastStub(),
         },
 
         __onGCastApiAvailable: {

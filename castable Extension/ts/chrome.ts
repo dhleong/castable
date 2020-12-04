@@ -1,26 +1,36 @@
+import { MediaStub } from "./chrome.cast/media";
 import { log } from "./log";
+import { AutoJoinPolicy } from "./chrome.cast/enums";
 
-class FrameworkStub {
-    // TODO ?
-}
-
-class CastStub {
-    // TODO ?
-
-    private frame = new FrameworkStub();
-
-    get framework() {
-        log("READ chrome.cast.framework");
-        return this.frame;
+class CastError extends Error {
+    constructor(
+        public readonly code: string,
+        public readonly opt_description?: string,
+        public readonly opt_details?: any,
+    ) {
+        super(`chrome.cast.Error: ${code}`);
     }
 }
 
-const castStub = new CastStub();
+class ChromeCastStub {
+    public readonly AutoJoinPolicy = AutoJoinPolicy;
+    public readonly media = new MediaStub();
+
+    public initialize(
+        apiConfig: any,
+        onSuccess: () => void,
+        onError: (e: CastError) => void,
+    ) {
+        log("INITIALIZE", apiConfig);
+    }
+}
 
 export class ChromeStub {
+    private readonly castStub = new ChromeCastStub();
+
     get cast() {
         log("READ chrome.cast");
-        return castStub;
+        return this.castStub;
     }
 }
 
