@@ -1,23 +1,40 @@
-import { log } from "./log";
 import { CastContext } from "./cast.framework/cast-context";
 import {
     CastState,
     SessionState,
     CastContextEventType,
 } from "./cast.framework/enums";
+import { ClientIO } from "./client-io";
+
+class StaticClassContext {
+    constructor(
+        private readonly myInstance: CastContext,
+    ) {}
+
+    public getInstance() {
+        return this.myInstance;
+    }
+}
 
 class FrameworkStub {
     public readonly CastState = CastState;
     public readonly SessionState = SessionState;
-    public readonly CastContext = CastContext;
     public readonly CastContextEventType = CastContextEventType;
+    public readonly CastContext: StaticClassContext;
+
+    constructor(
+        io: ClientIO,
+    ) {
+        this.CastContext = new StaticClassContext(new CastContext(io));
+    }
 }
 
 export class CastStub {
-    private frameworkStub = new FrameworkStub();
+    public readonly framework: FrameworkStub;
 
-    public get framework() {
-        log("READ cast.framework");
-        return this.frameworkStub;
+    constructor(
+        io: ClientIO,
+    ) {
+        this.framework = new FrameworkStub(io);
     }
 }

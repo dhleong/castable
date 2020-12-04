@@ -1,13 +1,13 @@
 import { log } from "../log";
 import { ErrorCode } from "../chrome.cast/enums";
+import { ClientIO } from "../client-io";
 
 import { CastState, SessionState } from "./enums";
 
 export class CastContext {
-    public static getInstance() {
-        // TODO
-        return new CastContext();
-    }
+    constructor(
+        private readonly io: ClientIO,
+    ) {}
 
     public addEventListener(event: string, handler: any) {
         log("CastContext.addEventListener", event, handler);
@@ -37,6 +37,7 @@ export class CastContext {
 
     public async requestSession() {
         log("CastContext.requestSession");
+        this.io.dispatchMessage("request-session");
         return ErrorCode[ErrorCode.CANCEL];
     }
 

@@ -7,26 +7,52 @@
 
 import SafariServices
 
+enum Message: String {
+    case contentLoaded = "content-loaded"
+    case requestSession = "request-session"
+    case ipc = "castable-extension->browser"
+}
+
 class SafariExtensionHandler: SFSafariExtensionHandler {
+    let cast = CastDiscovery()
 
-    let mdns = CastDiscovery()
+    // override init() {
+    //     cast.discover()
+    // }
 
-    override init() {
-        mdns.discover()
-    }
-
-    deinit {
-        mdns.stop()
-    }
+    // deinit {
+    //     cast.stop()
+    // }
 
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         // This method will be called when a content script provided by your extension calls safari.extension.dispatchMessage("message").
-        NSLog("Received (\(messageName)) with userInfo (\(userInfo ?? [:]))")
+        NSLog("castable: Received (\(messageName)) with userInfo (\(userInfo ?? [:]))")
 
         page.getPropertiesWithCompletionHandler { properties in
-            NSLog("The extension received a message (\(messageName)) from a script injected into (\(String(describing: properties?.url))) with userInfo (\(userInfo ?? [:]))")
+            NSLog("castable: The extension received a message (\(messageName)) from a script injected into (\(String(describing: properties?.url))) with userInfo (\(userInfo ?? [:]))")
         }
-        page.dispatchMessageToScript(withName: "register-cast")
+
+        let message = Message(rawValue: messageName)
+
+        // TODO: probably, register these as handlers
+        switch message {
+        case .contentLoaded:
+            page.dispatchMessageToScript(withName: "register-cast")
+
+        case .requestSession:
+            NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
+            page.dispatch(Message.ipc, withArgs: [
+                "received": userInfo ?? [:]
+            ])
+
+        case .ipc:
+            // TODO dispatch
+            NSLog("castable: responding to IPC: \(userInfo ?? [:])")
+            page.dispatch(Message.ipc)
+
+        case .none:
+            NSLog("castable: Unexpected message: \(messageName)")
+        }
     }
 
     override func toolbarItemClicked(in window: SFSafariWindow) {
@@ -43,4 +69,10 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         return SafariExtensionViewController.shared
     }
 
+}
+
+extension SFSafariPage {
+    func dispatch(_ message: Message, withArgs: [String : Any]? = nil) {
+        self.dispatchMessageToScript(withName: message.rawValue, userInfo: withArgs)
+    }
 }

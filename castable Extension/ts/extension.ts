@@ -29,7 +29,7 @@ export function dispatchMessage(
     content?: any,
 ) {
     const e = safari.extension as unknown as MessagingSafariExtension;
-    e.dispatchMessage("content-loaded");
+    e.dispatchMessage(messageName, content);
 }
 
 export function addEventListener(eventName: string, handler: MessageEventHandler) {
@@ -55,6 +55,13 @@ export class EventRegistrar {
 
     public on(message: string, handler: MessageEventHandler) {
         this.register(message, handler);
+    }
+
+    public once(message: string, handler: MessageEventHandler) {
+        this.register(message, (...args) => {
+            this.unregister(message);
+            handler(...args);
+        });
     }
 
     public unregister(message: string) {

@@ -1,8 +1,14 @@
-import { log } from "./log";
+import {
+    STUB_ELEMENT_ID,
+    IPC_OUTGOING_EVENT,
+    IPC_INCOMING_EVENT,
+} from "./consts";
 import { dispatchMessage, EventRegistrar } from "./extension";
+import { log } from "./log";
 import { init as initStub } from "./stub";
+import { ClientEvent } from "./client-io";
 
-function registerCast() {
+function registerCast(registrar: EventRegistrar) {
     log("registering cast stub");
 
     if (!document.head) {
@@ -18,8 +24,27 @@ function registerCast() {
     // our chromecast stubs
     const newElement = document.createElement("script");
     newElement.src = safari.extension.baseURI + "castable-script.js";
-    newElement.id = "castable.script";
+    newElement.id = STUB_ELEMENT_ID;
     newElement.charset = 'utf-8';
+    newElement.addEventListener(IPC_OUTGOING_EVENT, event => {
+        const data = (event as CustomEvent<ClientEvent>).detail;
+        log("forwarding message:", data);
+
+        dispatchMessage(data.name, data.args);
+    });
+
+    registrar.on(IPC_INCOMING_EVENT, event => {
+        log("ext received ipc message", event);
+        newElement.dispatchEvent(new CustomEvent(IPC_INCOMING_EVENT, {
+            detail: {
+                name: event.name,
+                args: (event as any).message,
+            },
+            bubbles: false,
+            cancelable: false,
+        }));
+    });
+
     document.head.appendChild(newElement);
 }
 
@@ -29,7 +54,7 @@ function initExt() {
         return;
     }
 
-    if (document.getElementById("castable.script")) {
+    if (document.getElementById(STUB_ELEMENT_ID)) {
         log("castable.script already enqueued");
         return;
     }
@@ -41,14 +66,15 @@ function initExt() {
     // Swift extension know, and wait for it to tell us it's safe
     // to register
 
-    log(document.currentScript, safari, (window as any).chrome);
-    log("init ext:", window);
+    log("initExt", document.currentScript, safari, (window as any).chrome);
 
     document.addEventListener("DOMContentLoaded", () => {
         log("content loaded...");
 
         const registrar = new EventRegistrar();
-        registrar.on("register-cast", registerCast);
+        registrar.once("register-cast", () => {
+            registerCast(registrar);
+        });
 
         dispatchMessage("content-loaded");
         log("dispatched content-loaded!");

@@ -1,15 +1,28 @@
 import { CastStub } from "./cast";
 import { ChromeController } from "./chrome";
+import { ClientIO } from "./client-io";
 import { log } from "./log";
 
 /**
  * Initializes chromecast stubbing
  */
 export function init() {
-    log("ext", (safari.extension as any));
-    log(document.currentScript, window.safari, (window as any).chrome);
+    log(
+        "stub.init",
+        safari.extension as any,
+        document.currentScript,
+        window.safari,
+        (window as any).chrome,
+    );
+
+    const script = document.currentScript;
+    if (!script || !(script instanceof HTMLScriptElement)) {
+        log("ERROR: Unable to init cast stubs; unexpected currentScript:", script);
+        return;
+    }
 
     const controller = new ChromeController();
+    const cast = new CastStub(new ClientIO(script));
 
     Object.defineProperties(window, {
         chrome: {
@@ -17,7 +30,7 @@ export function init() {
         },
 
         cast: {
-            value: new CastStub(),
+            value: cast,
         },
 
         __onGCastApiAvailable: {
