@@ -1,11 +1,6 @@
-import { ChromeStub } from "./chrome";
 import { log } from "./log";
-
-interface SafariExtension {
-    // NOTE: if we put this in a @types file it'll override
-    // the existing methods, instead of augmenting...
-    dispatchMessage(messageName: string, content?: any): void;
-}
+import { dispatchMessage, EventRegistrar } from "./extension";
+import { init as initStub } from "./stub";
 
 function registerCast() {
     log("registering cast stub");
@@ -15,58 +10,53 @@ function registerCast() {
         return;
     }
 
-    // Insert Assistant
+    if (!window.safari) {
+        throw new Error("registerCast MUST NOT be called from page context");
+    }
+
+    // insert script into the page's context so it has access to
+    // our chromecast stubs
     const newElement = document.createElement("script");
     newElement.src = safari.extension.baseURI + "castable-script.js";
     newElement.id = "castable.script";
     newElement.charset = 'utf-8';
-
-    if (document.head.children.length) {
-        document.head.insertBefore(newElement, document.head.childNodes[0]);
-    } else {
-        document.head.appendChild(newElement);
-    }
+    document.head.appendChild(newElement);
 }
 
 function initExt() {
-    if (document.getElementById("castable.script")) {
-        log("castable.script already enqueued");
-        return;
-    }
-
     if (window.top !== window) {
         log("ignoring non-top window:", window);
         return;
     }
 
+    if (document.getElementById("castable.script")) {
+        log("castable.script already enqueued");
+        return;
+    }
+
+    // NOTE: in order for our stub to be loaded into the actual
+    // page's context, we have to write a <script> into the DOM
+    // with *just* the right timing...
+    // Here, we wait until the DOM content has loaded, let the
+    // Swift extension know, and wait for it to tell us it's safe
+    // to register
+
     log(document.currentScript, safari, (window as any).chrome);
     log("init ext:", window);
 
-    document.addEventListener("DOMContentLoaded", event => {
+    document.addEventListener("DOMContentLoaded", () => {
         log("content loaded...");
 
-        (safari.self as any).addEventListener("message", (event: any) => {
-            log("received:", event);
+        const registrar = new EventRegistrar();
+        registrar.on("register-cast", registerCast);
 
-            switch (event.name) {
-            case "register-cast": registerCast(); break;
-            }
-        });
-
-        (safari.extension as unknown as SafariExtension).dispatchMessage("content-loaded");
+        dispatchMessage("content-loaded");
         log("dispatched content-loaded!");
     });
 }
 
-function initEmbed() {
-    log("ext", (safari.extension as any));
-    (window as any).chrome = ChromeStub;
-    log("Created chrome", window);
-};
-
 if (window.safari && window.safari.extension) {
     initExt();
 } else {
-    log(document.currentScript, window.safari, (window as any).chrome);
-    initEmbed();
+    initStub();
 }
