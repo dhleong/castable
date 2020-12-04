@@ -1,14 +1,15 @@
 {
   "name": "castable",
-  "version": "1.0.5",
-  "description": "a totally tubular chromecast client",
+  "version": "0.1.0",
+  "description": "making safari castable",
   "main": "castable Extension/Resources/script.js",
   "private": true,
   "scripts": {
     "build": "tsc -p .",
+    "build:script": "webpack --help",
     "check": "npm run lint && npm run build && npm run test",
     "clean": "rm -rf dist",
-    "dev": "tsc -p . --watch",
+    "dev": "webpack --watch",
     "lint": "eslint . --cache --ext .ts",
     "prepublishOnly": "npm run check",
     "test": "mocha -r ts-node/register test/**/*-test.ts"
@@ -18,14 +19,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhleong/stratocaster.git"
+    "url": "git+https://github.com/dhleong/castable.git"
   },
   "author": "Daniel Leong",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dhleong/stratocaster/issues"
+    "url": "https://github.com/dhleong/castable/issues"
   },
-  "homepage": "https://github.com/dhleong/stratocaster#readme",
+  "homepage": "https://github.com/dhleong/castable#readme",
   "devDependencies": {
     "@types/chai": "^4.2.14",
     "@types/debug": "^4.1.5",
@@ -42,8 +43,11 @@
     "mocha": "^8.2.1",
     "sinon": "^9.2.1",
     "sinon-chai": "^3.5.0",
+    "ts-loader": "^8.0.11",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.0.5",
+    "webpack": "^5.9.0",
+    "webpack-cli": "^4.2.0"
   },
   "dependencies": {
     "@types/safari-extension": "0.0.28",

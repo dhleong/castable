@@ -1,11 +1,10 @@
+import { ChromeStub } from "./chrome";
+import { log } from "./log";
+
 interface SafariExtension {
     // NOTE: if we put this in a @types file it'll override
     // the existing methods, instead of augmenting...
     dispatchMessage(messageName: string, content?: any): void;
-}
-
-function log(...args: any) {
-    console.log("CASTABLE:", ...args);
 }
 
 function registerCast() {
@@ -54,22 +53,20 @@ function initExt() {
             }
         });
 
-        (safari.extension as SafariExtension).dispatchMessage("content-loaded");
+        (safari.extension as unknown as SafariExtension).dispatchMessage("content-loaded");
         log("dispatched content-loaded!");
     });
 }
 
-namespace castable {
-    function initEmbed() {
-        log("ext", (safari.extension as any));
-        (window as any).chrome = ChromeStub;
-        log("Created chrome", window);
-    };
+function initEmbed() {
+    log("ext", (safari.extension as any));
+    (window as any).chrome = ChromeStub;
+    log("Created chrome", window);
+};
 
-    if (window.safari && window.safari.extension) {
-        initExt();
-    } else {
-        log(document.currentScript, window.safari, (window as any).chrome);
-        initEmbed();
-    }
+if (window.safari && window.safari.extension) {
+    initExt();
+} else {
+    log(document.currentScript, window.safari, (window as any).chrome);
+    initEmbed();
 }
