@@ -9,7 +9,7 @@ import SafariServices
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
 
-    let mdns = Mdns()
+    let mdns = CastDiscovery()
 
     override init() {
         mdns.discover()

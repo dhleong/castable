@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B645920A257A8BEA0034F034 /* Mdns.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9DECE25797DB900DC86A9 /* Mdns.swift */; };
+		B645920A257A8BEA0034F034 /* CastDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */; };
+		B645921C257A9D5F0034F034 /* CastDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645921B257A9D5F0034F034 /* CastDevice.swift */; };
+		B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */; };
 		B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACD92577F2680019B1CC /* AppDelegate.swift */; };
 		B6CAACDD2577F2680019B1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6CAACDB2577F2680019B1CC /* Main.storyboard */; };
 		B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACDE2577F2680019B1CC /* ViewController.swift */; };
@@ -72,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B645921B257A9D5F0034F034 /* CastDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastDevice.swift; sourceTree = "<group>"; };
+		B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastServiceDescriptor.swift; sourceTree = "<group>"; };
 		B6CAACD52577F2680019B1CC /* castable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = castable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CAACD82577F2680019B1CC /* castable.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable.entitlements; sourceTree = "<group>"; };
 		B6CAACD92577F2680019B1CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,7 +97,7 @@
 		B6CAAD0F2577F2690019B1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
 		B6CAAD112577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable_Extension.entitlements; sourceTree = "<group>"; };
-		B6F9DECE25797DB900DC86A9 /* Mdns.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mdns.swift; sourceTree = "<group>"; };
+		B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastDiscovery.swift; sourceTree = "<group>"; };
 		B6F9DED42579964C00DC86A9 /* castable-script.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "castable-script.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +134,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B6459211257A9D080034F034 /* Cast */ = {
+			isa = PBXGroup;
+			children = (
+				B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */,
+				B645921B257A9D5F0034F034 /* CastDevice.swift */,
+				B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */,
+			);
+			path = Cast;
+			sourceTree = "<group>";
+		};
 		B6CAACCC2577F2680019B1CC = {
 			isa = PBXGroup;
 			children = (
@@ -195,7 +209,7 @@
 		B6CAAD042577F2690019B1CC /* castable Extension */ = {
 			isa = PBXGroup;
 			children = (
-				B6F9DECE25797DB900DC86A9 /* Mdns.swift */,
+				B6459211257A9D080034F034 /* Cast */,
 				B6CAAD052577F2690019B1CC /* SafariExtensionHandler.swift */,
 				B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */,
 				B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */,
@@ -404,8 +418,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */,
-				B645920A257A8BEA0034F034 /* Mdns.swift in Sources */,
+				B645920A257A8BEA0034F034 /* CastDiscovery.swift in Sources */,
+				B645921C257A9D5F0034F034 /* CastDevice.swift in Sources */,
 				B6CAAD062577F2690019B1CC /* SafariExtensionHandler.swift in Sources */,
+				B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
