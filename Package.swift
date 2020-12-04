@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 /*
@@ -13,12 +13,18 @@ import PackageDescription
 
 let package = Package(
     name: "castable Extension",
+    defaultLocalization: LanguageTag("en-US"),
     products: [
         .library(name: "castable Extension", targets: ["castable Extension"]),
     ],
     targets: [
         .target(
             name: "castable Extension",
-            path: "castable Extension/"),
+            path: "castable Extension/",
+            exclude: [
+                "*.ts",
+                "*.pdf",
+                "*.entitlements",
+            ]),
     ]
 )
