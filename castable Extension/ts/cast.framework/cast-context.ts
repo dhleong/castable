@@ -5,6 +5,8 @@ import { ClientIO } from "../client-io";
 import { CastState, SessionState } from "./enums";
 
 export class CastContext {
+    private options: any | undefined;
+
     constructor(
         private readonly io: ClientIO,
     ) {}
@@ -37,8 +39,18 @@ export class CastContext {
 
     public async requestSession() {
         log("CastContext.requestSession");
-        this.io.dispatchMessage("request-session");
-        return ErrorCode[ErrorCode.CANCEL];
+        try {
+            const result = await this.io.requestSession(this.options);
+            log("requestSession -> ", result);
+
+            if (result.cancelled) {
+                return ErrorCode[ErrorCode.CANCEL];
+            }
+
+            return null;
+        } catch (e) {
+            return ErrorCode[ErrorCode.SESSION_ERROR];
+        }
     }
 
     public setLaunchCredentialsData(data: any) {
@@ -47,5 +59,6 @@ export class CastContext {
 
     public setOptions(opts: any) {
         log("CastContext.setOptions", opts);
+        this.options = opts;
     }
 }

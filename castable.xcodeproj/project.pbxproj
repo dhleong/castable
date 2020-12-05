@@ -10,6 +10,10 @@
 		B645920A257A8BEA0034F034 /* CastDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */; };
 		B645921C257A9D5F0034F034 /* CastDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645921B257A9D5F0034F034 /* CastDevice.swift */; };
 		B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */; };
+		B6459226257AF44C0034F034 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6459225257AF44C0034F034 /* RequestHandler.swift */; };
+		B645922C257AF5070034F034 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645922B257AF5070034F034 /* Message.swift */; };
+		B6459232257AF53A0034F034 /* RequestHandlerRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6459231257AF53A0034F034 /* RequestHandlerRegistry.swift */; };
+		B645923B257AFCDD0034F034 /* RequestSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645923A257AFCDD0034F034 /* RequestSessionHandler.swift */; };
 		B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACD92577F2680019B1CC /* AppDelegate.swift */; };
 		B6CAACDD2577F2680019B1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6CAACDB2577F2680019B1CC /* Main.storyboard */; };
 		B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACDE2577F2680019B1CC /* ViewController.swift */; };
@@ -76,6 +80,10 @@
 /* Begin PBXFileReference section */
 		B645921B257A9D5F0034F034 /* CastDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastDevice.swift; sourceTree = "<group>"; };
 		B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastServiceDescriptor.swift; sourceTree = "<group>"; };
+		B6459225257AF44C0034F034 /* RequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
+		B645922B257AF5070034F034 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B6459231257AF53A0034F034 /* RequestHandlerRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestHandlerRegistry.swift; sourceTree = "<group>"; };
+		B645923A257AFCDD0034F034 /* RequestSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSessionHandler.swift; sourceTree = "<group>"; };
 		B6CAACD52577F2680019B1CC /* castable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = castable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CAACD82577F2680019B1CC /* castable.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable.entitlements; sourceTree = "<group>"; };
 		B6CAACD92577F2680019B1CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +152,24 @@
 			path = Cast;
 			sourceTree = "<group>";
 		};
+		B645922A257AF4F50034F034 /* Ipc */ = {
+			isa = PBXGroup;
+			children = (
+				B6459225257AF44C0034F034 /* RequestHandler.swift */,
+				B645922B257AF5070034F034 /* Message.swift */,
+				B6459231257AF53A0034F034 /* RequestHandlerRegistry.swift */,
+			);
+			path = Ipc;
+			sourceTree = "<group>";
+		};
+		B6459239257AFCC50034F034 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				B645923A257AFCDD0034F034 /* RequestSessionHandler.swift */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
 		B6CAACCC2577F2680019B1CC = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +235,8 @@
 		B6CAAD042577F2690019B1CC /* castable Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B6459239257AFCC50034F034 /* Handlers */,
+				B645922A257AF4F50034F034 /* Ipc */,
 				B6459211257A9D080034F034 /* Cast */,
 				B6CAAD052577F2690019B1CC /* SafariExtensionHandler.swift */,
 				B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */,
@@ -419,9 +447,13 @@
 			files = (
 				B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */,
 				B645920A257A8BEA0034F034 /* CastDiscovery.swift in Sources */,
+				B6459226257AF44C0034F034 /* RequestHandler.swift in Sources */,
 				B645921C257A9D5F0034F034 /* CastDevice.swift in Sources */,
 				B6CAAD062577F2690019B1CC /* SafariExtensionHandler.swift in Sources */,
 				B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */,
+				B645922C257AF5070034F034 /* Message.swift in Sources */,
+				B645923B257AFCDD0034F034 /* RequestSessionHandler.swift in Sources */,
+				B6459232257AF53A0034F034 /* RequestHandlerRegistry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,14 +7,15 @@
 
 import SafariServices
 
-enum Message: String {
-    case contentLoaded = "content-loaded"
-    case requestSession = "request-session"
-    case ipc = "castable-extension->browser"
-}
-
 class SafariExtensionHandler: SFSafariExtensionHandler {
     let cast = CastDiscovery()
+    let handlers: RequestHandlerRegistry = {
+        let r = RequestHandlerRegistry()
+
+        r.on(.requestSession, perform: RequestSessionHandler())
+
+        return r
+    }()
 
     // override init() {
     //     cast.discover()
@@ -33,24 +34,24 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         }
 
         let message = Message(rawValue: messageName)
-
-        // TODO: probably, register these as handlers
         switch message {
         case .contentLoaded:
             page.dispatchMessageToScript(withName: "register-cast")
 
-        case .requestSession:
+        case .some(let message):
+            let response = handlers.dispatch(message: message, withData: userInfo)
             NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
-            page.dispatch(Message.ipc, withArgs: [
-                "received": userInfo ?? [:]
-            ])
 
-        case .ipc:
-            // TODO dispatch
-            NSLog("castable: responding to IPC: \(userInfo ?? [:])")
-            page.dispatch(Message.ipc)
+            var fullResponse = response ?? [:]
+            if let userInfo = userInfo, let requestId = userInfo["requestId"] {
+                fullResponse["requestId"] = requestId
+            }
 
-        case .none:
+            if response != nil || fullResponse["requestId"] != nil {
+                page.dispatch(.ipcOutgoing, withArgs: fullResponse)
+            }
+
+        default:
             NSLog("castable: Unexpected message: \(messageName)")
         }
     }
@@ -59,7 +60,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         // This method will be called when your toolbar item is clicked.
         NSLog("The extension's toolbar item was clicked")
     }
-    
+
     override func validateToolbarItem(in window: SFSafariWindow, validationHandler: @escaping ((Bool, String) -> Void)) {
         // This is called when Safari's state changed in some way that would require the extension's toolbar item to be validated again.
         validationHandler(true, "")
