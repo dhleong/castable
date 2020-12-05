@@ -53,11 +53,22 @@ class CastDiscovery {
 
             // TODO provide this... somewhere
             let desc = CastServiceDescriptor(
+                id: service.name,
                 name: String(decoding: nameData, as: UTF8.self),
                 address: addresses[0],
                 model: String(decoding: modelData, as: UTF8.self)
             )
             NSLog("castable: RESOLVED \(desc)")
+
+            // FIXME this is gross; some sort of observer should
+            // be responsible for this, perhaps over a coroutine channel?
+            if #available(OSX 10.15, *) {
+                let state = AppState.instance
+                state.devices.removeAll {
+                    $0.id == desc.id
+                }
+                state.devices.append(CastDevice(withDescriptor: desc))
+            }
         }
 
     }

@@ -7,7 +7,10 @@
 
 import Foundation
 
-struct CastServiceDescriptor {
+struct CastServiceDescriptor : Identifiable {
+    typealias ID = String
+
+    let id: String
     let name: String
     let address: Data
     let model: String

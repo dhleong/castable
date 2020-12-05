@@ -18,13 +18,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         return r
     }()
 
-    // override init() {
-    //     cast.discover()
-    // }
+    override init() {
+        cast.discover()
+    }
 
-    // deinit {
-    //     cast.stop()
-    // }
+    deinit {
+        cast.stop()
+    }
 
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
         // This method will be called when a content script provided by your extension calls safari.extension.dispatchMessage("message").
