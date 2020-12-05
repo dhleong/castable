@@ -30,10 +30,13 @@ class CastDiscovery {
             state.devices = descriptors.map { CastDevice(withDescriptor: $0) }
 
             // FIXME STOPSHIP testing only:
-            if let desc = descriptors.first {
+            let target = descriptors.first { $0.model == "Chromecast" }
+            if let desc = target {
                 NSLog("castable: open socket")
                 let socket = CastSocket(withAddress: desc.address)
                 socket.open()
+            } else {
+                NSLog("castable: No testable found")
             }
         }
 
