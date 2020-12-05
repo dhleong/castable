@@ -6,6 +6,7 @@
 //
 
 import SafariServices
+import SwiftCoroutine
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
     let cast = CastDiscovery()
@@ -61,28 +62,30 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
 
     private func dispatchMessage(_ message: (Message), with userInfo: [String : Any]?, forPage page: SFSafariPage) {
-        var response: [String : Any]?
-        if let userInfo = userInfo, let requestId = userInfo["requestId"] {
-            response = ["requestId": requestId]
-        } else {
-            response = nil
-        }
-
-        do {
-            let fromHandler = try handlers.dispatch(message: message, withData: userInfo)
-            NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
-
-            if let fromHandler = fromHandler, response != nil {
-                response!.merge(fromHandler) { (original, _) in original }
+        DispatchQueue.main.startCoroutine { [self] in
+            var response: [String : Any]?
+            if let userInfo = userInfo, let requestId = userInfo["requestId"] {
+                response = ["requestId": requestId]
+            } else {
+                response = nil
             }
 
-        } catch {
-            NSLog("castable: Error handling \(message): \(error)")
-            response?["error"] = error
-        }
+            do {
+                let fromHandler = try handlers.dispatch(message: message, withData: userInfo).await()
+                NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
 
-        if let response = response {
-            page.dispatch(.ipcOutgoing, withArgs: response)
+                if let fromHandler = fromHandler, response != nil {
+                    response!.merge(fromHandler) { (original, _) in original }
+                }
+
+            } catch {
+                NSLog("castable: Error handling \(message): \(error)")
+                response?["error"] = error
+            }
+
+            if let response = response {
+                page.dispatch(.ipcOutgoing, withArgs: response)
+            }
         }
     }
 

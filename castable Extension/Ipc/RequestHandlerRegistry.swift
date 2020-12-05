@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftCoroutine
 
 class RequestHandlerRegistry {
     private var handlers: [Message: RequestHandler] = [:]
@@ -16,10 +17,10 @@ class RequestHandlerRegistry {
         handlers[message] = handler
     }
 
-    func dispatch(message: Message, withData data: [String : Any]? = nil) throws -> [String : Any]? {
+    func dispatch(message: Message, withData data: [String : Any]? = nil) throws -> CoFuture<[String : Any]?> {
         guard let handler = handlers[message] else {
             NSLog("castable: No handler registered for \(message)")
-            return nil
+            return CoFuture(result: .success(nil))
         }
 
         // it would be nice to have type safe handlers, but

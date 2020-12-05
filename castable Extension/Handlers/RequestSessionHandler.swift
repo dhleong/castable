@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftCoroutine
 
 struct RequestSessionHandler : RequestHandler {
     struct Request : Codable {
@@ -13,13 +14,18 @@ struct RequestSessionHandler : RequestHandler {
         let autoJoinPolicy: Int
     }
 
-    func handle(request: [String : Any]?) throws -> [String : Any]? {
+    func handle(request: [String : Any]?) throws -> CoFuture<[String : Any]?> {
         guard let req: Request = try request.parse() else {
             NSLog("codable: No request provided")
-            return nil
+            return CoFuture(result: .success(nil))
         }
 
-        NSLog("TODO: requestSession \(req)")
-        return ["created": true, "appId": req.receiverApplicationId]
+        return DispatchQueue.main.coroutineFuture {
+            NSLog("TODO: requestSession \(req)")
+
+            try Coroutine.delay(.seconds(1))
+
+            return ["created": true, "appId": req.receiverApplicationId]
+        }
     }
 }

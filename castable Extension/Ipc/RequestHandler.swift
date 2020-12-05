@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import SwiftCoroutine
 
 enum RequestError : Error {
     case decoding(raw: [String : Any]?)
 }
 
 protocol RequestHandler {
-    func handle(request: [String : Any]?) throws -> [String : Any]?
+    func handle(request: [String : Any]?) throws -> CoFuture<[String : Any]?>
 }
 
 let dictionaryDecoder = JSONDecoder()
