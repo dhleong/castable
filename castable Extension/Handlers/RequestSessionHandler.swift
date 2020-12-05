@@ -24,15 +24,14 @@ struct RequestSessionHandler : RequestHandler {
         return DispatchQueue.main.coroutineFuture {
             NSLog("TODO: requestSession \(req)")
 
-            SFSafariApplication.getActiveWindow { win in
-                win?.getToolbarItem { toolbar in
-                    toolbar?.showPopover()
-                }
-            }
+            let toolbar = try SFSafariApplication.toolbarItem().await()
+            toolbar?.showPopover()
 
-            try Coroutine.delay(.seconds(1))
+            let device = try AppState.instance.deviceSelected().await()
 
-            return ["created": true, "appId": req.receiverApplicationId]
+            SafariExtensionViewController.shared.dismissPopover()
+
+            return ["created": true, "appId": req.receiverApplicationId, "device": device.name]
         }
     }
 }

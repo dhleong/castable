@@ -15,10 +15,9 @@ struct PopoverView: View {
     var body: some View {
         VStack(alignment: .leading) {
             List(appState.devices) { device in
-                Button(action: {
+                Button(device.name) {
                    NSLog("castable: select \(device.id)")
-                }) {
-                    Text(device.name)
+                   appState.notifyDeviceSelected(device: device)
                 }
             }
         }

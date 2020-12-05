@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftCoroutine
 
 @available(OSX 10.15, *)
 class AppState: ObservableObject {
@@ -13,7 +14,22 @@ class AppState: ObservableObject {
 
     @Published var devices: [CastDevice]
 
+    private var selectionPromises: [CoPromise<CastDevice>] = []
+
     init(withDevices devices: [CastDevice] = []) {
         self.devices = devices
+    }
+
+    func notifyDeviceSelected(device: CastDevice) {
+        for promise in selectionPromises {
+            promise.success(device)
+        }
+        selectionPromises = []
+    }
+
+    func deviceSelected() -> CoFuture<CastDevice> {
+        let promise = CoPromise<CastDevice>()
+        selectionPromises.append(promise)
+        return promise
     }
 }
