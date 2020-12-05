@@ -9,29 +9,28 @@ import Foundation
 import SafariServices
 import SwiftCoroutine
 
-struct RequestSessionHandler : RequestHandler {
+struct RequestSessionHandler: RequestHandler {
     struct Request : Codable {
         let receiverApplicationId: String
         let autoJoinPolicy: Int
     }
 
-    func handle(request: [String : Any]?) throws -> CoFuture<[String : Any]?> {
+    func handle(request: [String : Any]?) throws -> [String : Any]? {
         guard let req: Request = try request.parse() else {
             NSLog("codable: No request provided")
-            return CoFuture(result: .success(nil))
+            return nil
         }
 
-        return DispatchQueue.main.coroutineFuture {
-            NSLog("TODO: requestSession \(req)")
+        NSLog("TODO: requestSession \(req)")
 
-            let toolbar = try SFSafariApplication.toolbarItem().await()
-            toolbar?.showPopover()
+        let toolbar = try SFSafariApplication.toolbarItem().await()
+        toolbar?.showPopover()
 
-            let device = try AppState.instance.deviceSelected().await()
+        let device = try AppState.instance.deviceSelected().await()
 
-            SafariExtensionViewController.shared.dismissPopover()
+        SafariExtensionViewController.shared.dismissPopover()
 
-            return ["created": true, "appId": req.receiverApplicationId, "device": device.name]
-        }
+        return ["created": true, "appId": req.receiverApplicationId, "device": device.name]
     }
+
 }

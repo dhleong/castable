@@ -13,7 +13,9 @@ enum RequestError : Error {
 }
 
 protocol RequestHandler {
-    func handle(request: [String : Any]?) throws -> CoFuture<[String : Any]?>
+    /// Handle the provided request; this will be called in a Coroutine, so
+    /// `await()` etc may be used
+    func handle(request: [String : Any]?) throws -> [String : Any]?
 }
 
 let dictionaryDecoder = JSONDecoder()

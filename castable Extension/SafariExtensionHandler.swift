@@ -71,7 +71,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             }
 
             do {
-                let fromHandler = try handlers.dispatch(message: message, withData: userInfo).await()
+                let fromHandler = try handlers.dispatch(message: message, withData: userInfo)
                 NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
 
                 if let fromHandler = fromHandler, response != nil {
