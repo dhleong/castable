@@ -16,6 +16,6 @@ struct CastMessage {
 
     let ns: String;
     let data: Payload;
-    let source: String? = nil;
-    let destination: String? = nil;
+    var source: String? = nil;
+    var destination: String? = nil;
 }

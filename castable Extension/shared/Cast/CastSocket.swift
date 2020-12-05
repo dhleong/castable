@@ -7,6 +7,7 @@
 
 import Foundation
 import Network
+import SwiftCoroutine
 import SwiftProtobuf
 
 fileprivate let DEFAULT_SOURCE = "source-0";
@@ -19,6 +20,7 @@ class CastSocket {
     private let senderId: String?
 
     private var connection: NWConnection? = nil
+    private var receivers: [CoChannel<CastMessage>] = []
 
     init(withAddress address: NWEndpoint, withSenderID senderId: String? = nil) {
         self.address = address
@@ -59,6 +61,12 @@ class CastSocket {
         }
 
         NSLog("castable: connected")
+    }
+
+    func receive() -> CoChannel<CastMessage> {
+        let ch = CoChannel<CastMessage>(capacity: 1)
+        receivers.append(ch)
+        return ch
     }
 
     func write(message: CastMessage) {
@@ -114,6 +122,11 @@ class CastSocket {
     func close() {
         connection?.cancel()
         connection = nil
+
+        for receiver in receivers {
+            receiver.cancel()
+        }
+        receivers = []
     }
 
     private func startReading(from conn: NWConnection) {
@@ -128,15 +141,19 @@ class CastSocket {
     }
 
     private func readMessage(from conn: NWConnection, withLength length: Int) {
-        NSLog("castable: awaiting \(length) byte message")
         conn.receiveCompletely(length: length) { data in
             guard let parsed = try? CastChannel_CastMessage(serializedData: data) else {
                 NSLog("castable: ERROR: failed to parse: \(data.hexEncodedString()) (\(data.count) bytes)")
                 return
             }
 
-            NSLog("castable: received \(parsed)")
-            // TODO do something with the message
+            let message = CastMessage(from: parsed)
+
+            NSLog("castable: received \(parsed) -> \(message)")
+            for receiver in self.receivers {
+                // TODO we should probably send instead of offer
+                receiver.offer(message)
+            }
         }
     }
 
@@ -196,5 +213,28 @@ fileprivate extension Data {
     func hexEncodedString(options: HexEncodingOptions = []) -> String {
         let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
         return map { String(format: format, $0) }.joined()
+    }
+}
+
+fileprivate extension CastMessage {
+    init(from: CastChannel_CastMessage) {
+        self.ns = from.namespace
+        self.source = from.sourceID
+        self.destination = from.destinationID
+
+        if from.hasPayloadBinary {
+            self.data = .binary(value: from.payloadBinary)
+        } else if from.hasPayloadUtf8 {
+            if let data = from.payloadUtf8.data(using: .utf8),
+                let json = try? JSONSerialization.jsonObject(with: data),
+                let dict = json as? [String : Any]
+            {
+                self.data = .json(value: dict)
+            } else {
+                self.data = .string(value: from.payloadUtf8)
+            }
+        } else {
+            self.data = .string(value: "")
+        }
     }
 }
