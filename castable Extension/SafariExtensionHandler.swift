@@ -39,39 +39,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             page.dispatchMessageToScript(withName: "register-cast")
 
         case .some(let message):
-            let base: [String : Any]?
-            if let userInfo = userInfo, let requestId = userInfo["requestId"] {
-                base = ["requestId": requestId]
-            } else {
-                base = nil
-            }
-
-            do {
-                var response = try handlers.dispatch(message: message, withData: userInfo)
-                NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
-
-                var fullResponse = response ?? [:]
-                if let userInfo = userInfo, let requestId = userInfo["requestId"] {
-                    fullResponse["requestId"] = requestId
-                }
-
-                if let base = base, response != nil {
-                    response!.merge(base) { (_, fromBase) in fromBase }
-                } else if let base = base {
-                    response = base
-                }
-
-                if response != nil {
-                    page.dispatch(.ipcOutgoing, withArgs: fullResponse)
-                }
-            } catch {
-                NSLog("castable: Error handling \(message): \(error)")
-
-                if let base = base {
-                    let response = base.merging(["error": error]) { (_, new) in new }
-                    page.dispatch(.ipcOutgoing, withArgs: response)
-                }
-            }
+            dispatchMessage(message, with: userInfo, forPage: page)
 
         default:
             NSLog("castable: Unexpected message: \(messageName)")
@@ -87,9 +55,35 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         // This is called when Safari's state changed in some way that would require the extension's toolbar item to be validated again.
         validationHandler(true, "")
     }
-    
+
     override func popoverViewController() -> SFSafariExtensionViewController {
         return SafariExtensionViewController.shared
+    }
+
+    private func dispatchMessage(_ message: (Message), with userInfo: [String : Any]?, forPage page: SFSafariPage) {
+        var response: [String : Any]?
+        if let userInfo = userInfo, let requestId = userInfo["requestId"] {
+            response = ["requestId": requestId]
+        } else {
+            response = nil
+        }
+
+        do {
+            let fromHandler = try handlers.dispatch(message: message, withData: userInfo)
+            NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
+
+            if let fromHandler = fromHandler, response != nil {
+                response!.merge(fromHandler) { (original, _) in original }
+            }
+
+        } catch {
+            NSLog("castable: Error handling \(message): \(error)")
+            response?["error"] = error
+        }
+
+        if let response = response {
+            page.dispatch(.ipcOutgoing, withArgs: response)
+        }
     }
 
 }
