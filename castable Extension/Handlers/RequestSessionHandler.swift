@@ -8,13 +8,18 @@
 import Foundation
 
 struct RequestSessionHandler : RequestHandler {
-    func handle(request: [String : Any]?) -> [String : Any]? {
-        guard let request = request else {
+    struct Request : Codable {
+        let receiverApplicationId: String
+        let autoJoinPolicy: Int
+    }
+
+    func handle(request: [String : Any]?) throws -> [String : Any]? {
+        guard let req: Request = try request.parse() else {
             NSLog("codable: No request provided")
             return nil
         }
 
-        NSLog("TODO: requestSession \(request)")
-        return ["created": true]
+        NSLog("TODO: requestSession \(req)")
+        return ["created": true, "appId": req.receiverApplicationId]
     }
 }

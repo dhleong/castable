@@ -39,16 +39,38 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             page.dispatchMessageToScript(withName: "register-cast")
 
         case .some(let message):
-            let response = handlers.dispatch(message: message, withData: userInfo)
-            NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
-
-            var fullResponse = response ?? [:]
+            let base: [String : Any]?
             if let userInfo = userInfo, let requestId = userInfo["requestId"] {
-                fullResponse["requestId"] = requestId
+                base = ["requestId": requestId]
+            } else {
+                base = nil
             }
 
-            if response != nil || fullResponse["requestId"] != nil {
-                page.dispatch(.ipcOutgoing, withArgs: fullResponse)
+            do {
+                var response = try handlers.dispatch(message: message, withData: userInfo)
+                NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
+
+                var fullResponse = response ?? [:]
+                if let userInfo = userInfo, let requestId = userInfo["requestId"] {
+                    fullResponse["requestId"] = requestId
+                }
+
+                if let base = base, response != nil {
+                    response!.merge(base) { (_, fromBase) in fromBase }
+                } else if let base = base {
+                    response = base
+                }
+
+                if response != nil {
+                    page.dispatch(.ipcOutgoing, withArgs: fullResponse)
+                }
+            } catch {
+                NSLog("castable: Error handling \(message): \(error)")
+
+                if let base = base {
+                    let response = base.merging(["error": error]) { (_, new) in new }
+                    page.dispatch(.ipcOutgoing, withArgs: response)
+                }
             }
 
         default:

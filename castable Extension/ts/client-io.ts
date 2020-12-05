@@ -44,7 +44,7 @@ export class ClientIO {
         {
             cancelled?: boolean,
         }
-    >("request-session");
+    >("requestSession");
 
     /**
      * Dispatch a one-off IPC message to the extension.

@@ -9,6 +9,7 @@ import Foundation
 
 enum Message: String {
     case contentLoaded = "content-loaded"
-    case requestSession = "request-session"
     case ipcOutgoing = "castable-extension->browser"
+
+    case requestSession
 }

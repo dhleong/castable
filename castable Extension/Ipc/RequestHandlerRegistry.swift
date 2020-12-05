@@ -16,7 +16,7 @@ class RequestHandlerRegistry {
         handlers[message] = handler
     }
 
-    func dispatch(message: Message, withData data: [String : Any]? = nil) -> [String : Any]? {
+    func dispatch(message: Message, withData data: [String : Any]? = nil) throws -> [String : Any]? {
         guard let handler = handlers[message] else {
             NSLog("castable: No handler registered for \(message)")
             return nil
@@ -33,6 +33,6 @@ class RequestHandlerRegistry {
         //
         // let decoded = try? decoder.decode(handler.dataType, from: jsonData)
 
-        return handler.handle(request: data)
+        return try handler.handle(request: data)
     }
 }
