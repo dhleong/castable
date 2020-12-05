@@ -27,6 +27,8 @@
 		B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */; };
 		B6CAAD0D2577F2690019B1CC /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */; };
 		B6CAAD102577F2690019B1CC /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */; };
+		B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
+		B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6F9DED52579964C00DC86A9 /* castable-script.js in Resources */ = {isa = PBXBuildFile; fileRef = B6F9DED42579964C00DC86A9 /* castable-script.js */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +108,7 @@
 		B6CAAD0F2577F2690019B1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
 		B6CAAD112577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable_Extension.entitlements; sourceTree = "<group>"; };
+		B6EEE5CF257BC6990051E721 /* PopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastDiscovery.swift; sourceTree = "<group>"; };
 		B6F9DED42579964C00DC86A9 /* castable-script.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "castable-script.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,6 +175,14 @@
 			path = Handlers;
 			sourceTree = "<group>";
 		};
+		B666888E257B471600722037 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B6EEE5CF257BC6990051E721 /* PopoverView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		B6CAACCC2577F2680019B1CC = {
 			isa = PBXGroup;
 			children = (
@@ -202,7 +213,6 @@
 				B6CAACD92577F2680019B1CC /* AppDelegate.swift */,
 				B6CAACDB2577F2680019B1CC /* Main.storyboard */,
 				B6CAACDE2577F2680019B1CC /* ViewController.swift */,
-				B6CAACE02577F2690019B1CC /* Assets.xcassets */,
 				B6CAACE22577F2690019B1CC /* Info.plist */,
 			);
 			path = castable;
@@ -237,6 +247,7 @@
 		B6CAAD042577F2690019B1CC /* castable Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B6EEE5CB257BC4C60051E721 /* shared */,
 				B6459239257AFCC50034F034 /* Handlers */,
 				B645922A257AF4F50034F034 /* Ipc */,
 				B6459211257A9D080034F034 /* Cast */,
@@ -257,6 +268,15 @@
 				B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B6EEE5CB257BC4C60051E721 /* shared */ = {
+			isa = PBXGroup;
+			children = (
+				B666888E257B471600722037 /* UI */,
+				B6CAACE02577F2690019B1CC /* Assets.xcassets */,
+			);
+			path = shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -428,6 +448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */,
 				B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */,
 				B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */,
 			);
@@ -461,6 +482,7 @@
 				B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */,
 				B645922C257AF5070034F034 /* Message.swift in Sources */,
 				B645923B257AFCDD0034F034 /* RequestSessionHandler.swift in Sources */,
+				B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */,
 				B6459232257AF53A0034F034 /* RequestHandlerRegistry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

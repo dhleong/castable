@@ -14,12 +14,17 @@ import PackageDescription
 let package = Package(
     name: "castable Extension",
     defaultLocalization: LanguageTag("en-US"),
+    platforms: [
+        .macOS(.v10_15),
+    ],
     products: [
         .library(name: "castable Extension", targets: ["castable Extension"]),
     ],
+
     dependencies: [
         .package(url: "https://github.com/belozierov/SwiftCoroutine", from: "2.1.9"),
     ],
+
     targets: [
         .target(
             name: "castable Extension",
@@ -28,9 +33,7 @@ let package = Package(
             ],
             path: "castable Extension/",
             exclude: [
-                "*.ts",
-                "*.pdf",
-                "*.entitlements",
+                "ts/"
             ]),
     ]
 )

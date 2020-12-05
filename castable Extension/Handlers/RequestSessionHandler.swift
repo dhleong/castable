@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SafariServices
 import SwiftCoroutine
 
 struct RequestSessionHandler : RequestHandler {
@@ -22,6 +23,12 @@ struct RequestSessionHandler : RequestHandler {
 
         return DispatchQueue.main.coroutineFuture {
             NSLog("TODO: requestSession \(req)")
+
+            SFSafariApplication.getActiveWindow { win in
+                win?.getToolbarItem { toolbar in
+                    toolbar?.showPopover()
+                }
+            }
 
             try Coroutine.delay(.seconds(1))
 

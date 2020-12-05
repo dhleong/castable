@@ -6,12 +6,14 @@
 //
 
 import SafariServices
+import SwiftUI
 
 class SafariExtensionViewController: SFSafariExtensionViewController {
-    
+
     static let shared: SafariExtensionViewController = {
         let shared = SafariExtensionViewController()
-        shared.preferredContentSize = NSSize(width:320, height:240)
+        shared.view = NSHostingView(rootView: PopoverView())
+        shared.preferredContentSize = NSSize(width: 320, height: 240)
         return shared
     }()
 
