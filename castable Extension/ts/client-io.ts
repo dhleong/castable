@@ -40,7 +40,7 @@ export class ClientIO {
     }
 
     public readonly requestSession = this.createRpc<
-        void,
+        any,
         {
             cancelled?: boolean,
         }
