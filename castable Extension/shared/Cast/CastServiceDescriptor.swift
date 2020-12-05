@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Network
 
 struct CastServiceDescriptor : Identifiable {
     typealias ID = String
 
     let id: String
     let name: String
-    let address: Data
+    let address: NWEndpoint
     let model: String
 }

@@ -1,81 +1,11 @@
 import Foundation
+import Network
 import SafariServices
 
+@available(OSX 10.15, *)
 class CastDiscovery {
-    private class BrowserDelegate : NSObject, NetServiceBrowserDelegate, NetServiceDelegate {
 
-        private var resolving: [NetService] = []
-
-        func netServiceBrowser(
-            _ browser: NetServiceBrowser,
-            didFind service: NetService,
-            moreComing: Bool
-        ) {
-            // start trying to resolve, because somehow we don't
-            // have the remote address yet (?!)
-            resolving.append(service)
-            NSLog("castable: BONJOUR didFind (more=\(moreComing)) \(service) -> \(resolving.count)")
-
-            service.delegate = self
-            service.resolve(withTimeout: 5)
-        }
-
-        func netServiceDidResolveAddress(_ sender: NetService) {
-            let service = sender
-
-            guard let addresses = service.addresses, !addresses.isEmpty else {
-                NSLog("castable: no addresses")
-                return
-            }
-
-            guard let data = service.txtRecordData() else {
-                NSLog("castable: no text")
-                return
-            }
-            let txt = NetService.dictionary(fromTXTRecord: data)
-
-            guard let nameData = txt["fn"] else {
-                NSLog("castable: no name")
-                return
-            }
-
-            guard let modelData = txt["md"] else {
-                NSLog("castable: no model")
-                return
-            }
-
-            service.remove(from: RunLoop.main, forMode: .common)
-            service.stop()
-
-            if let index = resolving.firstIndex(of: service) {
-                resolving.remove(at: index)
-            }
-
-            // TODO provide this... somewhere
-            let desc = CastServiceDescriptor(
-                id: service.name,
-                name: String(decoding: nameData, as: UTF8.self),
-                address: addresses[0],
-                model: String(decoding: modelData, as: UTF8.self)
-            )
-            NSLog("castable: RESOLVED \(desc)")
-
-            // FIXME this is gross; some sort of observer should
-            // be responsible for this, perhaps over a coroutine channel?
-            if #available(OSX 10.15, *) {
-                let state = AppState.instance
-                state.devices.removeAll {
-                    $0.id == desc.id
-                }
-                state.devices.append(CastDevice(withDescriptor: desc))
-            }
-        }
-
-    }
-
-    private let browserDelegate = BrowserDelegate()
-
-    private var browser: NetServiceBrowser? = nil
+    private var browser: NWBrowser? = nil
 
     func discover() {
         if browser != nil {
@@ -83,11 +13,31 @@ class CastDiscovery {
             return
         }
 
-        let b = NetServiceBrowser()
+        let b = NWBrowser(for: .bonjourWithTXTRecord(type: "_googlecast._tcp.", domain: nil), using: NWParameters.tcp)
         browser = b
 
-        b.delegate = browserDelegate
-        b.searchForServices(ofType: "_googlecast._tcp.", inDomain: "")
+        b.browseResultsChangedHandler = { results, _ in
+            let descriptors = results.compactMap { result in
+                CastServiceDescriptor(from: result)
+            }
+            NSLog("castable: results = \(descriptors)")
+
+            // TODO emit on channel or something
+
+            // FIXME this is gross; some sort of observer should
+            // be responsible for this, perhaps over a coroutine channel?
+            let state = AppState.instance
+            state.devices = descriptors.map { CastDevice(withDescriptor: $0) }
+
+            // FIXME STOPSHIP testing only:
+            if let desc = descriptors.first {
+                NSLog("castable: open socket")
+                let socket = CastSocket(withAddress: desc.address)
+                socket.open()
+            }
+        }
+
+        b.start(queue: DispatchQueue.main)
 
         NSLog("castable: Scheduled service browser")
     }
@@ -97,9 +47,43 @@ class CastDiscovery {
 
         if let browser = browser {
             NSLog("castable: close browser")
-            browser.stop()
+            browser.cancel()
         }
 
         browser = nil
+    }
+}
+
+@available(OSX 10.15, *)
+extension CastServiceDescriptor {
+    init?(from: NWBrowser.Result) {
+        if case let .bonjour(text) = from.metadata {
+            if let id = text["id"] {
+                self.id = id
+            } else {
+                NSLog("castable: No ID in \(text)")
+                return nil
+            }
+
+            if let name = text["fn"] {
+                self.name = name
+            } else {
+                NSLog("castable: No name in \(text)")
+                return nil
+            }
+
+            if let model = text["md"] {
+                self.model = model
+            } else {
+                NSLog("castable: No model in \(text)")
+                return nil
+            }
+
+        } else {
+            NSLog("castable: Unexpected result type: \(from.metadata) of \(from)")
+            return nil
+        }
+
+        self.address = from.endpoint
     }
 }

@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "SwiftProtobuf",
+        "repositoryURL": "https://github.com/apple/swift-protobuf.git",
+        "state": {
+          "branch": null,
+          "revision": "da9a52be9cd36c63993291ce3f1b65dafcd1e826",
+          "version": "1.14.0"
+        }
+      },
+      {
         "package": "SwiftCoroutine",
         "repositoryURL": "https://github.com/belozierov/SwiftCoroutine",
         "state": {

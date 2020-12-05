@@ -23,6 +23,11 @@ let package = Package(
 
     dependencies: [
         .package(url: "https://github.com/belozierov/SwiftCoroutine", from: "2.1.9"),
+        .package(
+            name: "SwiftProtobuf",
+            url: "https://github.com/apple/swift-protobuf.git",
+            from: "1.14.0"
+        ),
     ],
 
     targets: [
@@ -30,6 +35,7 @@ let package = Package(
             name: "castable Extension",
             dependencies: [
                 "SwiftCoroutine",
+                "SwiftProtobuf",
             ],
             path: "castable Extension/",
             exclude: [
