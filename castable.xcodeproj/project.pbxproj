@@ -32,6 +32,8 @@
 		B6D9D0DE257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
 		B6D9D0E3257C5B1400FBC92E /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E2257C5B1400FBC92E /* CastError.swift */; };
 		B6D9D0E4257C5B1400FBC92E /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E2257C5B1400FBC92E /* CastError.swift */; };
+		B6D9D0E9257C6CCE00FBC92E /* CastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */; };
+		B6D9D0EA257C6CCE00FBC92E /* CastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */; };
 		B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5DB257BCD7C0051E721 /* AppState.swift */; };
@@ -130,6 +132,7 @@
 		B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable_Extension.entitlements; sourceTree = "<group>"; };
 		B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastChannel.swift; sourceTree = "<group>"; };
 		B6D9D0E2257C5B1400FBC92E /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
+		B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastApp.swift; sourceTree = "<group>"; };
 		B6EEE5CF257BC6990051E721 /* PopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		B6EEE5DB257BCD7C0051E721 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		B6EEE5F0257BD7C10051E721 /* SafariExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafariExtensions.swift; sourceTree = "<group>"; };
@@ -189,6 +192,7 @@
 				B6EEE610257C21FC0051E721 /* CastMessage.swift */,
 				B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */,
 				B6D9D0E2257C5B1400FBC92E /* CastError.swift */,
+				B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */,
 			);
 			path = Cast;
 			sourceTree = "<group>";
@@ -504,6 +508,7 @@
 				B6EEE5E1257BCE1B0051E721 /* CastDiscovery.swift in Sources */,
 				B6EEE611257C21FC0051E721 /* CastMessage.swift in Sources */,
 				B6EEE5E2257BCE1B0051E721 /* CastDevice.swift in Sources */,
+				B6D9D0E9257C6CCE00FBC92E /* CastApp.swift in Sources */,
 				B6D9D0E3257C5B1400FBC92E /* CastError.swift in Sources */,
 				B6EEE5E3257BCE1B0051E721 /* CastServiceDescriptor.swift in Sources */,
 				B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */,
@@ -552,6 +557,7 @@
 				B6EEE612257C21FC0051E721 /* CastMessage.swift in Sources */,
 				B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */,
 				B6459232257AF53A0034F034 /* RequestHandlerRegistry.swift in Sources */,
+				B6D9D0EA257C6CCE00FBC92E /* CastApp.swift in Sources */,
 				B6EEE5F2257BD7C10051E721 /* SafariExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

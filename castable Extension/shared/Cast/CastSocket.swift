@@ -21,11 +21,15 @@ class CastSocket {
 
     private var connection: NWConnection? = nil
     private var receivers: [CoChannel<CastMessage>] = []
-    private var myNextId = 0
+    private var myNextId = 1
 
     init(withAddress address: NWEndpoint, withSenderID senderId: String? = nil) {
         self.address = address
         self.senderId = senderId
+    }
+
+    var isConnected: Bool {
+        connection != nil
     }
 
     func nextId() -> Int {
@@ -171,6 +175,10 @@ class CastSocket {
             for receiver in self.receivers {
                 // TODO we should probably send instead of offer
                 receiver.offer(message)
+            }
+
+            if self.connection === conn {
+                self.startReading(from: conn)
             }
         }
     }

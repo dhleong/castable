@@ -8,8 +8,6 @@
 import Foundation
 import SwiftCoroutine
 
-fileprivate let CONNECTION_NS = "urn:x-cast:com.google.cast.tp.connection"
-
 class CastChannel {
     struct Options {
         let destination: String? = nil
@@ -31,11 +29,6 @@ class CastChannel {
     /// any. Guaranteed not-nil when created via [CastApp.channel]
     var destination: String? {
         options.destination
-    }
-
-    func receiveOne() -> CoFuture<CastMessage.Payload> {
-        let ch = self.receive()
-        return ch.receiveFuture()
     }
 
     /// Listen to all messages received on this channel
@@ -60,6 +53,8 @@ class CastChannel {
                 if let dest = self.destination, message.destination != dest {
                     continue
                 }
+
+                try ch.awaitSend(message.data)
             }
         }
 

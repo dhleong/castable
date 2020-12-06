@@ -33,8 +33,12 @@ class CastDiscovery {
             let target = descriptors.first { $0.model == "Chromecast" }
             if let desc = target {
                 NSLog("castable: open socket")
-                let socket = CastSocket(withAddress: desc.address)
-                socket.open()
+                let device = CastDevice(withDescriptor: desc)
+                let future = device.appAvailability(appIds: ["C3DE6BC2", "", "123"])
+                future.whenComplete { result in
+                    NSLog("castable: availability <- \(result)")
+                    device.close()
+                }
             } else {
                 NSLog("castable: No testable found")
             }

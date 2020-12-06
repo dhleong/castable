@@ -6,12 +6,18 @@
 //
 
 import Foundation
+import SwiftCoroutine
+
+let CONNECTION_NS = "urn:x-cast:com.google.cast.tp.connection"
+let RECEIVER_NS = "urn:x-cast:com.google.cast.receiver"
 
 class CastDevice: Identifiable {
     typealias ID = String
 
     let name: String
     var descriptor: CastServiceDescriptor? = nil
+
+    private var socket: CastSocket? = nil
 
     var id: String {
         descriptor?.id ?? name
@@ -24,5 +30,65 @@ class CastDevice: Identifiable {
     init(withDescriptor desc: CastServiceDescriptor) {
         self.name = desc.name
         self.descriptor = desc
+    }
+
+    func appAvailability(appIds: [String]) -> CoFuture<[String : CastApp.Availability]> {
+        return DispatchQueue.main.coroutineFuture {
+            let receiver = try self.channel(withNamespace: RECEIVER_NS).await()
+
+            NSLog("castable: request app availability...")
+            let response = try receiver.send(data: [
+                "type": "GET_APP_AVAILABILITY",
+                "appId": appIds,
+            ]).await()
+
+            NSLog("castable: app availability response: \(response)")
+            if let map = response["availability"] as? [String : String] {
+                return map.reduce(into: [:]) { result, kv in
+                    result[kv.key] = CastApp.Availability(rawValue: kv.value)
+                }
+            } else {
+                return [:]
+            }
+        }
+    }
+
+    func channel(withNamespace namespace: String, withOptions opts: CastChannel.Options = CastChannel.Options()) -> CoFuture<CastChannel> {
+        return DispatchQueue.main.coroutineFuture {
+            let socket = self.ensureConnected()
+            return CastChannel(on: socket, withNamespace: namespace, withOptions: opts)
+        }
+    }
+
+    func close() {
+        socket?.close()
+        socket = nil
+    }
+
+    private func ensureConnected() -> CastSocket {
+        if let socket = socket, socket.isConnected {
+            return socket
+        }
+
+        guard let descriptor = descriptor else {
+            // TODO
+            fatalError("No descriptor")
+        }
+
+        let newSocket = CastSocket(withAddress: descriptor.address)
+        newSocket.open()
+        self.socket = newSocket
+
+        prepare(connection: newSocket)
+
+        return newSocket
+    }
+
+    private func prepare(connection: CastSocket) {
+        // CONNECT to the device
+        let receiver = CastChannel(on: connection, withNamespace: CONNECTION_NS);
+        receiver.write(payload: .json(value: ["type": "CONNECT"]))
+
+        // TODO heartbeat
     }
 }
