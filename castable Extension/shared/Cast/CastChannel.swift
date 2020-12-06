@@ -50,7 +50,7 @@ class CastChannel {
                 if message.ns != self.namespace {
                     continue
                 }
-                if let dest = self.destination, message.destination != dest {
+                if let dest = self.destination, message.source != dest {
                     continue
                 }
 

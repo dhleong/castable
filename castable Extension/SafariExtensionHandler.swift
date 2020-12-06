@@ -46,9 +46,9 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         default:
             NSLog("castable: Unexpected message: \(messageName)")
 
-            if let requestId = userInfo?["requestId"] {
+            if let requestId = userInfo?["castableRequestId"] {
                 page.dispatch(.ipcOutgoing, withArgs: [
-                    "requestId": requestId,
+                    "castableRequestId": requestId,
                     "error": "Unknown message: \(messageName)",
                 ])
             }
@@ -75,8 +75,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     private func dispatchMessage(_ message: (Message), with userInfo: [String : Any]?, forPage page: SFSafariPage) {
         DispatchQueue.main.startCoroutine { [self] in
             var response: [String : Any]?
-            if let userInfo = userInfo, let requestId = userInfo["requestId"] {
-                response = ["requestId": requestId]
+            if let userInfo = userInfo, let requestId = userInfo["castableRequestId"] {
+                response = ["castableRequestId": requestId]
             } else {
                 response = nil
             }
@@ -94,11 +94,14 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 response?["cancelled"] = true
             } catch {
                 NSLog("castable: Error handling \(message): \(error)")
-                response?["error"] = error
+                response?["error"] = String(describing: error)
             }
 
             if let response = response {
+                NSLog("castable: sending response: \(response)")
                 page.dispatch(.ipcOutgoing, withArgs: response)
+            } else {
+                NSLog("castable: no response generated")
             }
         }
     }

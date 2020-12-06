@@ -29,8 +29,8 @@ export class ClientIO {
             const data = (event as CustomEvent<ClientEvent>).detail;
             log("stub received ipc message", data);
 
-            if (data.args && data.args.requestId !== undefined) {
-                const future = this.pendingResolves[data.args.requestId];
+            if (data.args && data.args.castableRequestId !== undefined) {
+                const future = this.pendingResolves[data.args.castableRequestId];
                 if (data.args.error) {
                     future.reject(data.args.error);
                 } else {
@@ -82,7 +82,7 @@ export class ClientIO {
             this.dispatchMessage(name, {
                 ...args,
 
-                requestId: id,
+                castableRequestId: id,
             });
         });
     }

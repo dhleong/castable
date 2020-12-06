@@ -10,6 +10,7 @@ import Foundation
 struct LoadMediaHandler: RequestHandler {
     enum Errors: Error {
         case appNotStarted
+        case requestError(reason: String)
     }
 
     struct Request: Codable {
@@ -32,17 +33,21 @@ struct LoadMediaHandler: RequestHandler {
             throw Errors.appNotStarted
         }
 
-        NSLog("castable: forwarding \(request!) to \(app.id)")
+        NSLog("castable: opened channel: \(Namespaces.media) on app \(app.id)")
         let ch = try app.channel(withNamespace: Namespaces.media).await()
+        NSLog("castable: opened channel: \(ch)")
 
         // TODO: I *think* it's possible that not all players actually
         // respond correctly to this, so we should *probably* not
         // use send, but for now...
+        NSLog("castable: forwarding \(request!) to \(app.id)")
         let response = try ch.send(data: request!).await()
+        if let reason = response["reason"] as? String {
+            NSLog("castable: loadMedia ERROR response: \(response)")
+            throw Errors.requestError(reason: reason)
+        }
 
-        // TODO check for error?
         NSLog("castable: loadMedia response: \(response)")
-
         return response
     }
 
