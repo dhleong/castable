@@ -8,8 +8,10 @@ export class MediaInfo {
 }
 
 export class LoadRequest {
+    public readonly type = "LOAD";
+
     constructor(
-        public readonly mediaInfo: MediaInfo,
+        public readonly media: MediaInfo,
     ) {}
 }
 

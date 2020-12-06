@@ -35,7 +35,7 @@ struct RequestSessionHandler: RequestHandler {
 
     func handle(request: [String : Any]?) throws -> [String : Any]? {
         let req: Request = try request.parseRequest()
-        NSLog("requestSession \(req)")
+        NSLog("castable: requestSession \(req)")
 
         let toolbar = try SFSafariApplication.toolbarItem().await()
         toolbar?.showPopover()
@@ -53,7 +53,7 @@ struct RequestSessionHandler: RequestHandler {
 
         AppState.instance.activeApp = app
         let sessionId = ch.destination ?? receiver.sessionId
-        NSLog("launched app: \(app): dest=\(String(describing: ch.destination)); sess=\(sessionId)")
+        NSLog("castable: launched app: \(app): dest=\(String(describing: ch.destination)); sess=\(sessionId)")
 
         // TODO cleanup popover:
         SafariExtensionViewController.shared.dismissPopover()
