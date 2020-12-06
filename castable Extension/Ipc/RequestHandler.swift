@@ -21,4 +21,11 @@ extension Optional where Wrapped == [String : Any] {
         }
         return nil
     }
+
+    func parseRequest<T : Decodable>() throws -> T {
+        if let self = self {
+            return try self.parse()
+        }
+        throw GenericError.invalidRequest
+    }
 }

@@ -7,6 +7,7 @@
 
 struct Namespaces {
     static let connection = "urn:x-cast:com.google.cast.tp.connection"
+    static let media = "urn:x-cast:com.google.cast.media"
     static let receiver = "urn:x-cast:com.google.cast.receiver"
 }
 

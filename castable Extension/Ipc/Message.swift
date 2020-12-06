@@ -11,6 +11,7 @@ enum Message: String {
     case contentLoaded = "content-loaded"
     case ipcOutgoing = "castable-extension->browser"
 
-    case requestSession
     case endCurrentSession
+    case loadMedia
+    case requestSession
 }

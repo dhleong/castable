@@ -13,8 +13,9 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     let handlers: RequestHandlerRegistry = {
         let r = RequestHandlerRegistry()
 
-        r.on(.requestSession, perform: RequestSessionHandler())
         r.on(.endCurrentSession, perform: EndCurrentSessionHandler())
+        r.on(.loadMedia, perform: LoadMediaHandler())
+        r.on(.requestSession, perform: RequestSessionHandler())
 
         return r
     }()

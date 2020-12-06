@@ -41,6 +41,7 @@
 		B6D9D0FE257D121200FBC92E /* errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0FD257D121200FBC92E /* errors.swift */; };
 		B6D9D0FF257D121200FBC92E /* errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0FD257D121200FBC92E /* errors.swift */; };
 		B6D9D104257D1A5D00FBC92E /* EndCurrentSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D103257D1A5D00FBC92E /* EndCurrentSessionHandler.swift */; };
+		B6D9D10C257D307200FBC92E /* LoadMediaHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D10B257D307200FBC92E /* LoadMediaHandler.swift */; };
 		B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5DB257BCD7C0051E721 /* AppState.swift */; };
@@ -144,6 +145,7 @@
 		B6D9D0F7257C7AE600FBC92E /* Dictionary+Parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Parse.swift"; sourceTree = "<group>"; };
 		B6D9D0FD257D121200FBC92E /* errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = errors.swift; sourceTree = "<group>"; };
 		B6D9D103257D1A5D00FBC92E /* EndCurrentSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndCurrentSessionHandler.swift; sourceTree = "<group>"; };
+		B6D9D10B257D307200FBC92E /* LoadMediaHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMediaHandler.swift; sourceTree = "<group>"; };
 		B6EEE5CF257BC6990051E721 /* PopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		B6EEE5DB257BCD7C0051E721 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		B6EEE5F0257BD7C10051E721 /* SafariExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafariExtensions.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 			children = (
 				B645923A257AFCDD0034F034 /* RequestSessionHandler.swift */,
 				B6D9D103257D1A5D00FBC92E /* EndCurrentSessionHandler.swift */,
+				B6D9D10B257D307200FBC92E /* LoadMediaHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				B645923B257AFCDD0034F034 /* RequestSessionHandler.swift in Sources */,
 				B6EEE612257C21FC0051E721 /* CastMessage.swift in Sources */,
 				B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */,
+				B6D9D10C257D307200FBC92E /* LoadMediaHandler.swift in Sources */,
 				B6459232257AF53A0034F034 /* RequestHandlerRegistry.swift in Sources */,
 				B6D9D104257D1A5D00FBC92E /* EndCurrentSessionHandler.swift in Sources */,
 				B6D9D0EA257C6CCE00FBC92E /* CastApp.swift in Sources */,

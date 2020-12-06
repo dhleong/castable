@@ -3,6 +3,7 @@ import {
     IPC_OUTGOING_EVENT,
 } from "./consts";
 import { log } from "./log";
+import { LoadRequest } from "./chrome.cast/media";
 
 export interface ClientEvent {
     name: string,
@@ -39,6 +40,18 @@ export class ClientIO {
         });
     }
 
+    public readonly endCurrentSession = this.createRpc<
+        {
+            stopCasting: boolean,
+        },
+        void
+    >("endCurrentSession");
+
+    public readonly loadMedia = this.createRpc<
+        LoadRequest,
+        void
+    >("loadMedia");
+
     public readonly requestSession = this.createRpc<
         any,
         {
@@ -46,13 +59,6 @@ export class ClientIO {
             sessionId: string,
         }
     >("requestSession");
-
-    public readonly endCurrentSession = this.createRpc<
-        {
-            stopCasting: boolean,
-        },
-        void
-    >("endCurrentSession");
 
     /**
      * Dispatch a one-off IPC message to the extension.

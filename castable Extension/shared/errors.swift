@@ -9,4 +9,5 @@ import Foundation
 
 enum GenericError: Error {
     case cancelled
+    case invalidRequest
 }

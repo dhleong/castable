@@ -13,11 +13,7 @@ struct EndCurrentSessionHandler: RequestHandler {
     }
 
     func handle(request: [String : Any]?) throws -> [String : Any]? {
-        guard let req: Request = try request.parse() else {
-            NSLog("castable: No request provided")
-            return nil
-        }
-
+        let req: Request = try request.parseRequest()
         NSLog("castable: endCurrentSession: \(req)")
 
         let state = AppState.instance

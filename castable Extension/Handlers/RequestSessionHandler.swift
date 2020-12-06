@@ -16,11 +16,7 @@ struct RequestSessionHandler: RequestHandler {
     }
 
     func handle(request: [String : Any]?) throws -> [String : Any]? {
-        guard let req: Request = try request.parse() else {
-            NSLog("castable: No request provided")
-            return nil
-        }
-
+        let req: Request = try request.parseRequest()
         NSLog("requestSession \(req)")
 
         let toolbar = try SFSafariApplication.toolbarItem().await()

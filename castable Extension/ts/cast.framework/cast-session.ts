@@ -6,6 +6,7 @@ import { log } from "../log";
 import { ClientIO } from "../client-io";
 
 import { LoadRequest } from "../chrome.cast/media";
+import { ErrorCode } from "../chrome.cast/enums";
 
 export class CastSession {
     private readonly events = new EventEmitter();
@@ -100,8 +101,14 @@ export class CastSession {
 
     public async loadMedia(loadRequest: LoadRequest) {
         log("CastSession.loadMedia", loadRequest);
-        // TODO
-        return null;
+        try {
+            await this.io.loadMedia(loadRequest);
+            log("CastSession.loadMedia: success!");
+            return null;
+        } catch (e) {
+            log("CastSession.loadMedia: ERROR:", e);
+            return ErrorCode.LOAD_MEDIA_FAILED;
+        }
     }
 
     public removeEventListener(event: string, handler: any) {
