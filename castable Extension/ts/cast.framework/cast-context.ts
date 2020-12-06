@@ -1,11 +1,12 @@
 import { EventEmitter } from "events";
 
+import { ClientIO } from "../client-io";
 import { log } from "../log";
 import { ErrorCode } from "../chrome.cast/enums";
-import { ClientIO } from "../client-io";
+import { Receiver } from "../chrome.cast/receiver";
 
-import { CastSession } from "./cast-session";
 import { CastState, SessionState, CastContextEventType } from "./enums";
+import { CastSession } from "./cast-session";
 
 export class CastContext {
     private readonly events = new EventEmitter();
@@ -73,6 +74,10 @@ export class CastContext {
             this.currentSession = new CastSession(
                 this.io,
                 this.options,
+                new Receiver(
+                    result.device.id,
+                    result.device.name,
+                ),
                 result.sessionId,
             );
 

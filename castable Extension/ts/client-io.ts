@@ -56,6 +56,15 @@ export class ClientIO {
         any,
         {
             cancelled?: boolean,
+            app: {
+                appId: string,
+                displayName: string,
+            },
+            device: {
+                id: string,
+                name: string,
+                model: string,
+            },
             sessionId: string,
         }
     >("requestSession");

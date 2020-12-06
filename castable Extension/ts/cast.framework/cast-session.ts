@@ -5,8 +5,9 @@ import { ActiveInputState, SessionState } from "./enums";
 import { log } from "../log";
 import { ClientIO } from "../client-io";
 
-import { LoadRequest } from "../chrome.cast/media";
 import { ErrorCode } from "../chrome.cast/enums";
+import { LoadRequest } from "../chrome.cast/media";
+import { Receiver } from "../chrome.cast/receiver";
 
 export class CastSession {
     private readonly events = new EventEmitter();
@@ -15,6 +16,7 @@ export class CastSession {
     constructor(
         readonly io: ClientIO,
         readonly options: any,
+        readonly device: Receiver,
         private readonly sessionId: String,
     ) {}
 
@@ -61,9 +63,7 @@ export class CastSession {
 
     public getCastDevice() {
         log("CastSession.getCastDevice");
-        return {
-            // TODO chrome.cast.Receiver instance, from sessionRequest
-        };
+        return this.device;
     }
 
     public getMediaSession() {

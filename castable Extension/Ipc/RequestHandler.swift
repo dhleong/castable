@@ -29,3 +29,13 @@ extension Optional where Wrapped == [String : Any] {
         throw GenericError.invalidRequest
     }
 }
+
+extension Encodable {
+    func toDictionary() throws -> [String : Any] {
+        let data = try JSONEncoder().encode(self)
+        guard let dict = try JSONSerialization.jsonObject(with: data) as? [String : Any] else {
+            throw GenericError.invalidRequest
+        }
+        return dict
+    }
+}

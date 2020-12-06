@@ -15,6 +15,8 @@ class CastApp {
     }
 
     public let id: String
+    public var receiverApp: ReceiverApp? = nil
+
     private let status: () -> CoFuture<ReceiverStatus>
     private let openChannel: (String, CastChannel.Options) -> CoFuture<CastChannel>
 
@@ -70,6 +72,7 @@ class CastApp {
 
     private func channelFromApp(_ app: ReceiverApp, withNamespace namespace: String) -> CoFuture<CastChannel> {
         let opts = CastChannel.Options(destination: app.transportId)
+        receiverApp = app
         return openChannel(namespace, opts)
     }
 

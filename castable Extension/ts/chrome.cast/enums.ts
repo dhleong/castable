@@ -4,6 +4,14 @@ export enum AutoJoinPolicy {
     PAGE_SCOPED,
 }
 
+export enum Capability {
+    VIDEO_OUT = "VIDEO_OUT",
+    AUDIO_OUT = "AUDIO_OUT",
+    VIDEO_IN = "VIDEO_IN",
+    AUDIO_IN = "AUDIO_IN",
+    MULTIZONE_GROUP = "MULTIZONE_GROUP",
+}
+
 export enum ErrorCode {
     CANCEL,
     TIMEOUT,
