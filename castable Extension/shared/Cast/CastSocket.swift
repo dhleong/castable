@@ -21,10 +21,17 @@ class CastSocket {
 
     private var connection: NWConnection? = nil
     private var receivers: [CoChannel<CastMessage>] = []
+    private var myNextId = 0
 
     init(withAddress address: NWEndpoint, withSenderID senderId: String? = nil) {
         self.address = address
         self.senderId = senderId
+    }
+
+    func nextId() -> Int {
+        let id = myNextId
+        myNextId += 1
+        return id
     }
 
     func open() {
@@ -63,8 +70,19 @@ class CastSocket {
         NSLog("castable: connected")
     }
 
-    func receive() -> CoChannel<CastMessage> {
+    func receive(in scope: CoScope? = nil) -> CoChannel<CastMessage> {
         let ch = CoChannel<CastMessage>(capacity: 1)
+
+        if let scope = scope {
+            ch.added(to: scope)
+        }
+
+        ch.whenCanceled {
+            if let index = self.receivers.firstIndex(where: { $0 === ch }) {
+                self.receivers.remove(at: index)
+            }
+        }
+
         receivers.append(ch)
         return ch
     }

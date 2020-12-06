@@ -28,6 +28,10 @@
 		B6CAAD0D2577F2690019B1CC /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */; };
 		B6CAAD102577F2690019B1CC /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */; };
 		B6D9D0D8257C2CB900FBC92E /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = B6D9D0D7257C2CB900FBC92E /* SwiftProtobuf */; };
+		B6D9D0DD257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
+		B6D9D0DE257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
+		B6D9D0E3257C5B1400FBC92E /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E2257C5B1400FBC92E /* CastError.swift */; };
+		B6D9D0E4257C5B1400FBC92E /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E2257C5B1400FBC92E /* CastError.swift */; };
 		B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5DB257BCD7C0051E721 /* AppState.swift */; };
@@ -124,6 +128,8 @@
 		B6CAAD0F2577F2690019B1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
 		B6CAAD112577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable_Extension.entitlements; sourceTree = "<group>"; };
+		B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastChannel.swift; sourceTree = "<group>"; };
+		B6D9D0E2257C5B1400FBC92E /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
 		B6EEE5CF257BC6990051E721 /* PopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		B6EEE5DB257BCD7C0051E721 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		B6EEE5F0257BD7C10051E721 /* SafariExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafariExtensions.swift; sourceTree = "<group>"; };
@@ -181,6 +187,8 @@
 				B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */,
 				B6EEE60A257BEBE90051E721 /* CastSocket.swift */,
 				B6EEE610257C21FC0051E721 /* CastMessage.swift */,
+				B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */,
+				B6D9D0E2257C5B1400FBC92E /* CastError.swift */,
 			);
 			path = Cast;
 			sourceTree = "<group>";
@@ -496,10 +504,12 @@
 				B6EEE5E1257BCE1B0051E721 /* CastDiscovery.swift in Sources */,
 				B6EEE611257C21FC0051E721 /* CastMessage.swift in Sources */,
 				B6EEE5E2257BCE1B0051E721 /* CastDevice.swift in Sources */,
+				B6D9D0E3257C5B1400FBC92E /* CastError.swift in Sources */,
 				B6EEE5E3257BCE1B0051E721 /* CastServiceDescriptor.swift in Sources */,
 				B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */,
 				B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */,
 				B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */,
+				B6D9D0DD257C4C9000FBC92E /* CastChannel.swift in Sources */,
 				B6EEE638257C28680051E721 /* cast_channel.pb.swift in Sources */,
 				B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */,
 				B6EEE60B257BEBE90051E721 /* CastSocket.swift in Sources */,
@@ -526,7 +536,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6D9D0DE257C4C9000FBC92E /* CastChannel.swift in Sources */,
 				B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */,
+				B6D9D0E4257C5B1400FBC92E /* CastError.swift in Sources */,
 				B645920A257A8BEA0034F034 /* CastDiscovery.swift in Sources */,
 				B6459226257AF44C0034F034 /* RequestHandler.swift in Sources */,
 				B6EEE639257C28680051E721 /* cast_channel.pb.swift in Sources */,
