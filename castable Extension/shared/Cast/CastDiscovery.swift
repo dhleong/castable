@@ -27,7 +27,7 @@ class CastDiscovery {
             // FIXME this is gross; some sort of observer should
             // be responsible for this, perhaps over a coroutine channel?
             let state = AppState.instance
-            state.devices = descriptors.map { CastDevice(withDescriptor: $0) }
+            state.devices = descriptors.map { CastDevice(withDescriptor: $0) }.sorted { $0.name < $1.name }
         }
 
         b.start(queue: DispatchQueue.main)
