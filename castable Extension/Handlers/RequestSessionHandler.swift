@@ -39,7 +39,13 @@ struct RequestSessionHandler: RequestHandler {
         // TODO cleanup popover:
         SafariExtensionViewController.shared.dismissPopover()
 
-        return ["created": true, "appId": req.receiverApplicationId, "device": device.name]
+        // TODO we could probably return a Codable...
+        return [
+            "created": true,
+            "appId": req.receiverApplicationId,
+            "sessionId": app.id, // FIXME
+            "device": device.name
+        ]
     }
 
 }

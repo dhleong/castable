@@ -1,8 +1,9 @@
 import { CastContext } from "./cast.framework/cast-context";
 import {
+    ActiveInputState,
+    CastContextEventType,
     CastState,
     SessionState,
-    CastContextEventType,
 } from "./cast.framework/enums";
 import { ClientIO } from "./client-io";
 
@@ -17,6 +18,7 @@ class StaticClassContext {
 }
 
 class FrameworkStub {
+    public readonly ActiveInputState = ActiveInputState;
     public readonly CastState = CastState;
     public readonly SessionState = SessionState;
     public readonly CastContextEventType = CastContextEventType;

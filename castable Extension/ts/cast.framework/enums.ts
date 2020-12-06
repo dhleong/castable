@@ -19,3 +19,9 @@ export enum CastContextEventType {
     CAST_STATE_CHANGED = "caststatechanged",
     SESSION_STATE_CHANGED = "sessionstatechanged"
 }
+
+export enum ActiveInputState {
+    ACTIVE_INPUT_STATE_UNKNOWN,
+    ACTIVE_INPUT_STATE_NO,
+    ACTIVE_INPUT_STATE_YES,
+}

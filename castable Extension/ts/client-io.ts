@@ -43,6 +43,7 @@ export class ClientIO {
         any,
         {
             cancelled?: boolean,
+            sessionId: string,
         }
     >("requestSession");
 

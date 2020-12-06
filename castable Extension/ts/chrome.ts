@@ -1,6 +1,8 @@
-import { MediaStub } from "./chrome.cast/media";
 import { log } from "./log";
+import { proxy } from "./proxy";
+
 import { AutoJoinPolicy } from "./chrome.cast/enums";
+import { MediaStub } from "./chrome.cast/media";
 
 class CastError extends Error {
     constructor(
@@ -13,8 +15,10 @@ class CastError extends Error {
 }
 
 class ChromeCastStub {
+    public readonly VERSION = [1, 2];
+
     public readonly AutoJoinPolicy = AutoJoinPolicy;
-    public readonly media = new MediaStub();
+    public readonly media = proxy(new MediaStub(), "chrome.cast.media");
 
     public initialize(
         apiConfig: any,
@@ -26,7 +30,7 @@ class ChromeCastStub {
 }
 
 export class ChromeStub {
-    private readonly castStub = new ChromeCastStub();
+    private readonly castStub = proxy(new ChromeCastStub(), "chrome.cast");
 
     get cast() {
         log("READ chrome.cast");

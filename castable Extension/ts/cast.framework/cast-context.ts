@@ -4,6 +4,7 @@ import { log } from "../log";
 import { ErrorCode } from "../chrome.cast/enums";
 import { ClientIO } from "../client-io";
 
+import { CastSession } from "./cast-session";
 import { CastState, SessionState, CastContextEventType } from "./enums";
 
 export class CastContext {
@@ -12,6 +13,7 @@ export class CastContext {
     private options: any | undefined;
     private castState = CastState.NOT_CONNECTED;
     private sessionState = SessionState.NO_SESSION;
+    private currentSession: CastSession | null = null;
 
     constructor(
         private readonly io: ClientIO,
@@ -26,6 +28,7 @@ export class CastContext {
         log("CastContext.endCurrentSession", stopCasting);
         this.setCastState(CastState.NOT_CONNECTED);
         this.setSessionState(SessionState.SESSION_ENDING);
+        this.currentSession = null;
 
         try {
             await this.io.endCurrentSession({ stopCasting });
@@ -44,9 +47,8 @@ export class CastContext {
     }
 
     public getCurrentSession() {
-        log("CastContext.getCurrentSession");
-        // TODO
-        return null;
+        log("CastContext.getCurrentSession", this.currentSession);
+        return this.currentSession;
     }
 
     public getSessionState() {
@@ -67,6 +69,12 @@ export class CastContext {
 
             const result = await this.io.requestSession(this.options);
             log("requestSession -> ", result);
+
+            this.currentSession = new CastSession(
+                this.io,
+                this.options,
+                result.sessionId,
+            );
 
             this.setCastState(CastState.CONNECTED);
             this.setSessionState(SessionState.SESSION_STARTED);
@@ -99,14 +107,23 @@ export class CastContext {
     private setCastState(newState: CastState) {
         if (this.castState !== newState) {
             this.castState = newState;
-            this.emit(CastContextEventType.CAST_STATE_CHANGED, newState);
+            this.emit(CastContextEventType.CAST_STATE_CHANGED, {
+                castState: newState,
+            });
         }
     }
 
-    private setSessionState(newState: SessionState) {
+    private setSessionState(
+        newState: SessionState,
+        errorCode?: ErrorCode,
+    ) {
         if (this.sessionState !== newState) {
             this.sessionState = newState;
-            this.emit(CastContextEventType.SESSION_STATE_CHANGED, newState);
+            this.emit(CastContextEventType.SESSION_STATE_CHANGED, {
+                session: this.getCurrentSession(),
+                sessionState: newState,
+                errorCode,
+            });
         }
     }
 
