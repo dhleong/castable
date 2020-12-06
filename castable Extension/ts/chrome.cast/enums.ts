@@ -16,3 +16,22 @@ export enum ErrorCode {
     CHANNEL_ERROR,
     LOAD_MEDIA_FAILED,
 }
+
+export enum PlayerState {
+    IDLE = "IDLE",
+    PLAYING = "PLAYING",
+    PAUSED = "PAUSED",
+    BUFFERING = "BUFFERING",
+}
+
+export enum StreamType {
+    BUFFERED = "BUFFERED",
+    LIVE = "LIVE",
+    OTHER = "OTHER",
+}
+
+export enum TrackType {
+    TEXT = "TEXT",
+    VIDEO = "VIDEO",
+    AUDIO = "AUDIO",
+}

@@ -5,7 +5,7 @@ export function proxy<T extends object>(actual: T, name?: string): T {
         get: function(target, prop, receiver) {
             const got = Reflect.get(target, prop, receiver);
             const had = got !== undefined;
-            log("READ ", name ?? actual, ".", prop, `(found: ${had})`);
+            log("READ ", name ?? actual, ".", prop, `(found ${had})`);
             return got;
         }
     })

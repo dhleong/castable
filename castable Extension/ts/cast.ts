@@ -1,3 +1,6 @@
+import { ClientIO } from "./client-io";
+import { proxy } from "./proxy";
+
 import { CastContext } from "./cast.framework/cast-context";
 import {
     ActiveInputState,
@@ -5,7 +8,10 @@ import {
     CastState,
     SessionState,
 } from "./cast.framework/enums";
-import { ClientIO } from "./client-io";
+import {
+    RemotePlayer,
+    RemotePlayerController,
+} from "./cast.framework/remote-player";
 
 class StaticClassContext {
     constructor(
@@ -23,6 +29,8 @@ class FrameworkStub {
     public readonly SessionState = SessionState;
     public readonly CastContextEventType = CastContextEventType;
     public readonly CastContext: StaticClassContext;
+    public readonly RemotePlayer = RemotePlayer;
+    public readonly RemotePlayerController = RemotePlayerController;
 
     constructor(
         io: ClientIO,
@@ -37,6 +45,6 @@ export class CastStub {
     constructor(
         io: ClientIO,
     ) {
-        this.framework = new FrameworkStub(io);
+        this.framework = proxy(new FrameworkStub(io), "cast.framework");
     }
 }
