@@ -44,6 +44,13 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 
         default:
             NSLog("castable: Unexpected message: \(messageName)")
+
+            if let requestId = userInfo?["requestId"] {
+                page.dispatch(.ipcOutgoing, withArgs: [
+                    "requestId": requestId,
+                    "error": "Unknown message: \(messageName)",
+                ])
+            }
         }
     }
 

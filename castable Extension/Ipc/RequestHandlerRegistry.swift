@@ -8,6 +8,10 @@
 import Foundation
 import SwiftCoroutine
 
+enum ReqestHandlerError: Error {
+    case noRegisteredHandler
+}
+
 class RequestHandlerRegistry {
     private var handlers: [Message: RequestHandler] = [:]
 
@@ -20,7 +24,7 @@ class RequestHandlerRegistry {
     func dispatch(message: Message, withData data: [String : Any]? = nil) throws -> [String : Any]? {
         guard let handler = handlers[message] else {
             NSLog("castable: No handler registered for \(message)")
-            return nil
+            throw ReqestHandlerError.noRegisteredHandler
         }
 
         // it would be nice to have type safe handlers, but

@@ -27,6 +27,10 @@ class ChromeCastStub {
     ) {
         log("INITIALIZE", apiConfig);
     }
+
+    public requestSessionById(id: string) {
+        log("chrome.cast.requestSessionById", id);
+    }
 }
 
 export class ChromeStub {
