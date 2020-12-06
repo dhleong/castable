@@ -38,6 +38,8 @@
 		B6D9D0F0257C740700FBC92E /* protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0EE257C740700FBC92E /* protocol.swift */; };
 		B6D9D0F8257C7AE600FBC92E /* Dictionary+Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0F7257C7AE600FBC92E /* Dictionary+Parse.swift */; };
 		B6D9D0F9257C7AE600FBC92E /* Dictionary+Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0F7257C7AE600FBC92E /* Dictionary+Parse.swift */; };
+		B6D9D0FE257D121200FBC92E /* errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0FD257D121200FBC92E /* errors.swift */; };
+		B6D9D0FF257D121200FBC92E /* errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0FD257D121200FBC92E /* errors.swift */; };
 		B6EEE5D0257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5CF257BC6990051E721 /* PopoverView.swift */; };
 		B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5DB257BCD7C0051E721 /* AppState.swift */; };
@@ -139,6 +141,7 @@
 		B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastApp.swift; sourceTree = "<group>"; };
 		B6D9D0EE257C740700FBC92E /* protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = protocol.swift; sourceTree = "<group>"; };
 		B6D9D0F7257C7AE600FBC92E /* Dictionary+Parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Parse.swift"; sourceTree = "<group>"; };
+		B6D9D0FD257D121200FBC92E /* errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = errors.swift; sourceTree = "<group>"; };
 		B6EEE5CF257BC6990051E721 /* PopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		B6EEE5DB257BCD7C0051E721 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		B6EEE5F0257BD7C10051E721 /* SafariExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafariExtensions.swift; sourceTree = "<group>"; };
@@ -325,6 +328,7 @@
 				B666888E257B471600722037 /* UI */,
 				B6CAACE02577F2690019B1CC /* Assets.xcassets */,
 				B6EEE5DB257BCD7C0051E721 /* AppState.swift */,
+				B6D9D0FD257D121200FBC92E /* errors.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -517,6 +521,7 @@
 				B6EEE611257C21FC0051E721 /* CastMessage.swift in Sources */,
 				B6EEE5E2257BCE1B0051E721 /* CastDevice.swift in Sources */,
 				B6D9D0E9257C6CCE00FBC92E /* CastApp.swift in Sources */,
+				B6D9D0FE257D121200FBC92E /* errors.swift in Sources */,
 				B6D9D0E3257C5B1400FBC92E /* CastError.swift in Sources */,
 				B6EEE5E3257BCE1B0051E721 /* CastServiceDescriptor.swift in Sources */,
 				B6D9D0F8257C7AE600FBC92E /* Dictionary+Parse.swift in Sources */,
@@ -565,6 +570,7 @@
 				B6EEE60C257BEBE90051E721 /* CastSocket.swift in Sources */,
 				B6EEE5DD257BCD7C0051E721 /* AppState.swift in Sources */,
 				B645922C257AF5070034F034 /* Message.swift in Sources */,
+				B6D9D0FF257D121200FBC92E /* errors.swift in Sources */,
 				B645923B257AFCDD0034F034 /* RequestSessionHandler.swift in Sources */,
 				B6EEE612257C21FC0051E721 /* CastMessage.swift in Sources */,
 				B6EEE5D1257BC6990051E721 /* PopoverView.swift in Sources */,

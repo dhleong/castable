@@ -27,6 +27,13 @@ class AppState: ObservableObject {
         selectionPromises = []
     }
 
+    func notifyPopoverDismissed() {
+        for promise in selectionPromises {
+            promise.fail(GenericError.cancelled)
+        }
+        selectionPromises = []
+    }
+
     func deviceSelected() -> CoFuture<CastDevice> {
         let promise = CoPromise<CastDevice>()
         selectionPromises.append(promise)

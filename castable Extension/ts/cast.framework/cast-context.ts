@@ -43,12 +43,13 @@ export class CastContext {
             const result = await this.io.requestSession(this.options);
             log("requestSession -> ", result);
 
-            if (result.cancelled) {
+            return null;
+        } catch (e) {
+            log("requestSession ERROR: ", e);
+            if (e.id === "cancelled") {
                 return ErrorCode[ErrorCode.CANCEL];
             }
 
-            return null;
-        } catch (e) {
             return ErrorCode[ErrorCode.SESSION_ERROR];
         }
     }

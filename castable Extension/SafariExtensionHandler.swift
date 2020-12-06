@@ -61,6 +61,10 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         return SafariExtensionViewController.shared
     }
 
+    override func popoverDidClose(in window: SFSafariWindow) {
+        AppState.instance.notifyPopoverDismissed()
+    }
+
     private func dispatchMessage(_ message: (Message), with userInfo: [String : Any]?, forPage page: SFSafariPage) {
         DispatchQueue.main.startCoroutine { [self] in
             var response: [String : Any]?
@@ -78,6 +82,9 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                     response!.merge(fromHandler) { (original, _) in original }
                 }
 
+            } catch (GenericError.cancelled) {
+                response?["error"] = ["id": "cancelled"]
+                response?["cancelled"] = true
             } catch {
                 NSLog("castable: Error handling \(message): \(error)")
                 response?["error"] = error
