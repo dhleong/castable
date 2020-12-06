@@ -28,29 +28,6 @@ class CastDiscovery {
             // be responsible for this, perhaps over a coroutine channel?
             let state = AppState.instance
             state.devices = descriptors.map { CastDevice(withDescriptor: $0) }
-
-            // FIXME STOPSHIP testing only:
-            let target = descriptors.first { $0.model == "Chromecast" }
-            if let desc = target {
-                NSLog("castable: open socket")
-                let device = CastDevice(withDescriptor: desc)
-                DispatchQueue.main.startCoroutine {
-                    do {
-                        let status = try device.status().await()
-                        NSLog("castable: status = \(status)")
-
-                        let app = try device.app(withId: "C3DE6BC2").await()
-                        let _ = try app.launch().await()
-                        NSLog("castable: got app = \(app)")
-                    } catch {
-                        NSLog("castable: error = \(error)")
-                    }
-
-                    device.close()
-                }
-            } else {
-                NSLog("castable: No testable found")
-            }
         }
 
         b.start(queue: DispatchQueue.main)

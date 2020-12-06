@@ -28,6 +28,12 @@ struct RequestSessionHandler: RequestHandler {
 
         let device = try AppState.instance.deviceSelected().await()
 
+        // TODO notify popover UI of launching:
+        let app = try device.app(withId: req.receiverApplicationId).await()
+        let _ = try app.launch().await()
+        NSLog("launched app: \(app)")
+
+        // TODO cleanup popover:
         SafariExtensionViewController.shared.dismissPopover()
 
         return ["created": true, "appId": req.receiverApplicationId, "device": device.name]
