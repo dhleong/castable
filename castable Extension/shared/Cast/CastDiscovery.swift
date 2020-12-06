@@ -34,9 +34,18 @@ class CastDiscovery {
             if let desc = target {
                 NSLog("castable: open socket")
                 let device = CastDevice(withDescriptor: desc)
-                let future = device.appAvailability(appIds: ["C3DE6BC2", "", "123"])
-                future.whenComplete { result in
-                    NSLog("castable: availability <- \(result)")
+                DispatchQueue.main.startCoroutine {
+                    do {
+                        let status = try device.status().await()
+                        NSLog("castable: status = \(status)")
+
+                        let app = try device.app(withId: "C3DE6BC2").await()
+                        let _ = try app.launch().await()
+                        NSLog("castable: got app = \(app)")
+                    } catch {
+                        NSLog("castable: error = \(error)")
+                    }
+
                     device.close()
                 }
             } else {

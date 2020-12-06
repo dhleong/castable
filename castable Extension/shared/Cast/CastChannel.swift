@@ -10,7 +10,7 @@ import SwiftCoroutine
 
 class CastChannel {
     struct Options {
-        let destination: String? = nil
+        let destination: String?
     }
 
     public let namespace: String
@@ -99,7 +99,7 @@ class CastChannel {
             // ensure we've "CONNECT"'d to the destination, if provided
             hasConnected = true
             socket.write(message: CastMessage(
-                ns: CONNECTION_NS,
+                ns: Namespaces.connection,
                 data: .json(value: [
                     "type": "CONNECT",
                     "origin": [:],
@@ -111,5 +111,11 @@ class CastChannel {
             ns: namespace,
             data: payload,
             destination: destination))
+    }
+}
+
+extension CastChannel.Options {
+    init() {
+        self.init(destination: nil)
     }
 }

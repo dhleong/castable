@@ -9,4 +9,6 @@ import Foundation
 
 enum CastError: Error {
     case noResponse
+    case notAvailable
+    case unexpectedResponse(response: Any?)
 }

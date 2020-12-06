@@ -8,9 +8,6 @@
 import Foundation
 import SwiftCoroutine
 
-let CONNECTION_NS = "urn:x-cast:com.google.cast.tp.connection"
-let RECEIVER_NS = "urn:x-cast:com.google.cast.receiver"
-
 class CastDevice: Identifiable {
     typealias ID = String
 
@@ -32,9 +29,20 @@ class CastDevice: Identifiable {
         self.descriptor = desc
     }
 
-    func appAvailability(appIds: [String]) -> CoFuture<[String : CastApp.Availability]> {
+    func app(withId id: String) -> CoFuture<CastApp> {
         return DispatchQueue.main.coroutineFuture {
-            let receiver = try self.channel(withNamespace: RECEIVER_NS).await()
+            let availability = try self.appAvailability(ofIds: [id]).await()
+            if availability[id] != .available {
+                throw CastError.notAvailable
+            }
+
+            return CastApp(withId: id, status: self.status, openChannel: self.channel)
+        }
+    }
+
+    func appAvailability(ofIds appIds: [String]) -> CoFuture<[String : CastApp.Availability]> {
+        return DispatchQueue.main.coroutineFuture {
+            let receiver = try self.channel(withNamespace: Namespaces.receiver).await()
 
             NSLog("castable: request app availability...")
             let response = try receiver.send(data: [
@@ -57,6 +65,14 @@ class CastDevice: Identifiable {
         return DispatchQueue.main.coroutineFuture {
             let socket = self.ensureConnected()
             return CastChannel(on: socket, withNamespace: namespace, withOptions: opts)
+        }
+    }
+
+    func status() -> CoFuture<ReceiverStatus> {
+        return DispatchQueue.main.coroutineFuture {
+            let receiver = try self.channel(withNamespace: Namespaces.receiver).await()
+            let response = try receiver.send(data: ["type": "GET_STATUS"]).await()
+            return try response.parse(key: "status")
         }
     }
 
@@ -86,7 +102,7 @@ class CastDevice: Identifiable {
 
     private func prepare(connection: CastSocket) {
         // CONNECT to the device
-        let receiver = CastChannel(on: connection, withNamespace: CONNECTION_NS);
+        let receiver = CastChannel(on: connection, withNamespace: Namespaces.connection);
         receiver.write(payload: .json(value: ["type": "CONNECT"]))
 
         // TODO heartbeat
