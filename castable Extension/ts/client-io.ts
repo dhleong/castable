@@ -46,6 +46,13 @@ export class ClientIO {
         }
     >("requestSession");
 
+    public readonly endCurrentSession = this.createRpc<
+        {
+            stopCasting: boolean,
+        },
+        void
+    >("endCurrentSession");
+
     /**
      * Dispatch a one-off IPC message to the extension.
      */

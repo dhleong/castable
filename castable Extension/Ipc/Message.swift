@@ -12,4 +12,5 @@ enum Message: String {
     case ipcOutgoing = "castable-extension->browser"
 
     case requestSession
+    case endCurrentSession
 }

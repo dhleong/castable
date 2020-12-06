@@ -13,6 +13,8 @@ class AppState: ObservableObject {
     static let instance = AppState()
 
     @Published var devices: [CastDevice]
+    @Published var activeDevice: CastDevice? = nil
+    @Published var activeApp: CastApp? = nil
 
     private var selectionPromises: [CoPromise<CastDevice>] = []
 

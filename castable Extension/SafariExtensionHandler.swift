@@ -14,6 +14,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         let r = RequestHandlerRegistry()
 
         r.on(.requestSession, perform: RequestSessionHandler())
+        r.on(.endCurrentSession, perform: EndCurrentSessionHandler())
 
         return r
     }()
@@ -27,7 +28,6 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
 
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
-        // This method will be called when a content script provided by your extension calls safari.extension.dispatchMessage("message").
         NSLog("castable: Received (\(messageName)) with userInfo (\(userInfo ?? [:]))")
 
         page.getPropertiesWithCompletionHandler { properties in
@@ -48,7 +48,6 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }
 
     override func toolbarItemClicked(in window: SFSafariWindow) {
-        // This method will be called when your toolbar item is clicked.
         NSLog("The extension's toolbar item was clicked")
     }
 
