@@ -18,7 +18,8 @@ struct EndCurrentSessionHandler: RequestHandler {
 
         let state = AppState.instance
         if req.stopCasting, let app = state.activeApp {
-            NSLog("castable: TODO stop \(app)")
+            NSLog("castable: stop \(app)")
+            try app.stop().awaitComplete()
         }
 
         state.activeDevice?.close()

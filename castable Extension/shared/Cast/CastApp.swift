@@ -34,15 +34,34 @@ class CastApp {
         return self.channel(withNamespace: "").map { _ in true }
     }
 
+    /// Stop any running instance of this app
+    func stop() -> CoFuture<Bool> {
+        return DispatchQueue.main.coroutineFuture {
+            self.receiverApp = nil
+
+            // NOTE: we always fetch the session ID fresh, in case the app closed
+            // out from under us
+            if let sessionId = try self.findRunningInstance()?.sessionId {
+                let receiver = try self.openChannel(Namespaces.receiver, CastChannel.Options()).await()
+                try receiver.send(data: [
+                    "type": "STOP",
+                    "sessionId": sessionId,
+                ]).awaitComplete()
+                return true
+            }
+
+            // app was not running
+            return false
+        }
+    }
+
     func channel(withNamespace namespace: String) -> CoFuture<CastChannel> {
         return DispatchQueue.main.coroutineFuture {
             // figure out if we need to join or start the session
-            let status = try self.status().await()
-            for app in status.applications {
-                if app.appId == self.id {
-                    NSLog("castable: app \(self.id) already running")
-                    return try self.channelFromApp(app, withNamespace: namespace).await()
-                }
+            if let running = try self.findRunningInstance() {
+                // easy case; just join
+                NSLog("castable: app \(self.id) already running")
+                return try self.channelFromApp(running, withNamespace: namespace).await()
             }
 
             NSLog("castable: launching app: \(self.id)")
@@ -57,12 +76,9 @@ class CastApp {
             }
 
             let afterLaunch: ReceiverStatus = try response.parse(key: "status")
-
-            for app in afterLaunch.applications {
-                if app.appId == self.id {
-                    NSLog("castable: app launched!");
-                    return try self.channelFromApp(app, withNamespace: namespace).await()
-                }
+            if let app = afterLaunch.find(app: self) {
+                NSLog("castable: app launched!");
+                return try self.channelFromApp(app, withNamespace: namespace).await()
             }
 
             NSLog("castable: app didn't get launched")
@@ -70,10 +86,26 @@ class CastApp {
         }
     }
 
+    /// MUST Be called from within a coroutine
+    private func findRunningInstance() throws -> ReceiverApp? {
+        let status = try self.status().await()
+        return status.find(app: self)
+    }
+
     private func channelFromApp(_ app: ReceiverApp, withNamespace namespace: String) -> CoFuture<CastChannel> {
         let opts = CastChannel.Options(destination: app.transportId)
         receiverApp = app
         return openChannel(namespace, opts)
     }
+}
 
+fileprivate extension ReceiverStatus {
+    func find(app castApp: CastApp) -> ReceiverApp? {
+        for app in applications {
+            if app.appId == castApp.id {
+                return app
+            }
+        }
+        return nil
+    }
 }

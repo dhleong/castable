@@ -27,6 +27,8 @@
 		B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAAD072577F2690019B1CC /* SafariExtensionViewController.swift */; };
 		B6CAAD0D2577F2690019B1CC /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0C2577F2690019B1CC /* ToolbarItemIcon.pdf */; };
 		B6CAAD102577F2690019B1CC /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */; };
+		B6D3F1E6257FC3710041854E /* Coroutine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D3F1E5257FC3710041854E /* Coroutine+Extensions.swift */; };
+		B6D3F1E7257FC3710041854E /* Coroutine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D3F1E5257FC3710041854E /* Coroutine+Extensions.swift */; };
 		B6D9D0D8257C2CB900FBC92E /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = B6D9D0D7257C2CB900FBC92E /* SwiftProtobuf */; };
 		B6D9D0DD257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
 		B6D9D0DE257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
@@ -138,6 +140,7 @@
 		B6CAAD0F2577F2690019B1CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
 		B6CAAD112577F2690019B1CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6CAAD122577F2690019B1CC /* castable_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable_Extension.entitlements; sourceTree = "<group>"; };
+		B6D3F1E5257FC3710041854E /* Coroutine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coroutine+Extensions.swift"; sourceTree = "<group>"; };
 		B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastChannel.swift; sourceTree = "<group>"; };
 		B6D9D0E2257C5B1400FBC92E /* CastError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastError.swift; sourceTree = "<group>"; };
 		B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastApp.swift; sourceTree = "<group>"; };
@@ -335,6 +338,7 @@
 				B6CAACE02577F2690019B1CC /* Assets.xcassets */,
 				B6EEE5DB257BCD7C0051E721 /* AppState.swift */,
 				B6D9D0FD257D121200FBC92E /* errors.swift */,
+				B6D3F1E5257FC3710041854E /* Coroutine+Extensions.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -537,6 +541,7 @@
 				B6D9D0DD257C4C9000FBC92E /* CastChannel.swift in Sources */,
 				B6EEE638257C28680051E721 /* cast_channel.pb.swift in Sources */,
 				B6D9D0EF257C740700FBC92E /* protocol.swift in Sources */,
+				B6D3F1E6257FC3710041854E /* Coroutine+Extensions.swift in Sources */,
 				B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */,
 				B6EEE60B257BEBE90051E721 /* CastSocket.swift in Sources */,
 			);
@@ -562,6 +567,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6D3F1E7257FC3710041854E /* Coroutine+Extensions.swift in Sources */,
 				B6D9D0DE257C4C9000FBC92E /* CastChannel.swift in Sources */,
 				B6D9D0F9257C7AE600FBC92E /* Dictionary+Parse.swift in Sources */,
 				B6CAAD082577F2690019B1CC /* SafariExtensionViewController.swift in Sources */,
