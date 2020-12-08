@@ -8,7 +8,7 @@
 import Foundation
 import Network
 
-struct CastServiceDescriptor : Identifiable {
+struct CastServiceDescriptor: Hashable, Identifiable {
     typealias ID = String
 
     let id: String

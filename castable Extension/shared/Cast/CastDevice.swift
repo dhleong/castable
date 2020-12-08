@@ -8,13 +8,17 @@
 import Foundation
 import SwiftCoroutine
 
-class CastDevice: Identifiable {
+class CastDevice: CustomStringConvertible, Identifiable {
     typealias ID = String
 
     let name: String
     var descriptor: CastServiceDescriptor? = nil
 
     private var socket: CastSocket? = nil
+
+    var description: String {
+        "CastDevice(name: \(name))"
+    }
 
     var id: String {
         descriptor?.id ?? name

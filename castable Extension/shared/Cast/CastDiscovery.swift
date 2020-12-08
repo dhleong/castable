@@ -1,11 +1,15 @@
 import Foundation
 import Network
 import SafariServices
+import SwiftCoroutine
 
 @available(OSX 10.15, *)
 class CastDiscovery {
 
     private var browser: NWBrowser? = nil
+
+    private var receivers: [CoChannel<Set<CastServiceDescriptor>>] = []
+    private var lastDevices: Set<CastServiceDescriptor> = []
 
     func discover() {
         if browser != nil {
@@ -17,22 +21,35 @@ class CastDiscovery {
         browser = b
 
         b.browseResultsChangedHandler = { results, _ in
-            let descriptors = results.compactMap { result in
+            let descriptors = Set(results.compactMap { result in
                 CastServiceDescriptor(from: result)
-            }
+            })
             NSLog("castable: results = \(descriptors)")
 
-            // TODO emit on channel or something
-
-            // FIXME this is gross; some sort of observer should
-            // be responsible for this, perhaps over a coroutine channel?
-            let state = AppState.instance
-            state.devices = descriptors.map { CastDevice(withDescriptor: $0) }.sorted { $0.name < $1.name }
+            self.lastDevices = descriptors
+            for ch in self.receivers {
+                do {
+                    try ch.awaitSend(descriptors)
+                } catch {
+                    NSLog("castable: failed to forward descriptor: \(error)")
+                }
+            }
         }
 
         b.start(queue: DispatchQueue.main)
 
         NSLog("castable: Scheduled service browser")
+    }
+
+    func receive() -> CoChannel<Set<CastServiceDescriptor>> {
+        let ch = CoChannel<Set<CastServiceDescriptor>>(capacity: 1)
+        receivers.append(ch)
+
+        DispatchQueue.main.startCoroutine {
+            try ch.awaitSend(self.lastDevices)
+        }
+
+        return ch
     }
 
     func stop() {

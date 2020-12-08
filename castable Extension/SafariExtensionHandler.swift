@@ -9,6 +9,7 @@ import SafariServices
 import SwiftCoroutine
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
+    let scope = CoScope()
     let cast = CastDiscovery()
     let handlers: RequestHandlerRegistry = {
         let r = RequestHandlerRegistry()
@@ -21,11 +22,28 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }()
 
     override init() {
+        super.init()
+
         cast.discover()
+
+        DispatchQueue.main.startCoroutine(in: scope) { [weak self] in
+            guard let ch = self?.cast.receive() else {
+                return
+            }
+
+            for descriptors in ch.makeIterator() {
+                let state = AppState.instance
+                state.devices = descriptors
+                    .map { CastDevice(withDescriptor: $0) }
+                    .sorted { $0.name < $1.name }
+                NSLog("castable: got new devices: \(state.devices)")
+            }
+        }
     }
 
     deinit {
         cast.stop()
+        scope.cancel()
     }
 
     override func messageReceived(withName messageName: String, from page: SFSafariPage, userInfo: [String : Any]?) {
