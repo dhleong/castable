@@ -16,9 +16,9 @@ describe("callbackAsyncFunction", () => {
         const success = stub();
         const error = stub();
 
-        const multiply = callbackAsyncFunction(async (cargo: string) => {
-            return cargo + " x2";
-        });
+        const multiply = callbackAsyncFunction(async (
+            cargo: string,
+        ) => `${cargo} x2`);
 
         multiply("wobbly-headed dolls", success, error);
 

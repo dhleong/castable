@@ -10,7 +10,7 @@
     "check": "npm run lint && npm run build && npm run test",
     "clean": "rm -rf dist",
     "dev": "webpack --watch",
-    "lint": "eslint . --cache --ext .ts",
+    "lint": "eslint . --cache --ext .ts && eslint 'castable Extension/ts-test' --ext .ts",
     "prepublishOnly": "npm run check",
     "test": "mocha -r ts-node/register 'castable Extension/ts-test/**/*-test.ts'"
   },
