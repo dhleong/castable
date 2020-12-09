@@ -7,7 +7,9 @@ import { Receiver } from "./receiver";
 import { Listener } from "./generic-types";
 import { MediaStub } from "./media";
 import { callbackAsyncFunction } from "./util";
+
 import { ClientIO } from "../client-io";
+import { EventSpecIdentifier } from "../io/events";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
@@ -39,6 +41,11 @@ export class Session {
     ) {
         log("chrome.cast.Session.addMessageListener", namespace);
         this.events.on(namespace, listener);
+
+        this.io.events.on({
+            id: EventSpecIdentifier.sessionMessage,
+            param: namespace,
+        }, listener);
     }
 
     /**
@@ -79,7 +86,13 @@ export class Session {
         namespace: string,
         listener: IMessageListener,
     ) {
+        log("chrome.cast.Session.removeMessageListener", namespace);
         this.events.off(namespace, listener);
+
+        this.io.events.off({
+            id: EventSpecIdentifier.sessionMessage,
+            param: namespace,
+        }, listener);
     }
 
     public removeUpdateListener(listener: Listener<boolean>) {
@@ -92,7 +105,7 @@ export class Session {
             message: Record<string, unknown> | string,
         ) => {
             log("chrome.cast.Session.sendMessage:", namespace, message);
-            await this.io.sessionSendMessage({
+            await this.io.rpc.sessionSendMessage({
                 namespace,
                 stringMessage: typeof message === "string"
                     ? message

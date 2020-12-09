@@ -33,6 +33,7 @@
     "@types/mocha": "^8.0.4",
     "@types/sinon": "^9.0.8",
     "@types/sinon-chai": "^3.2.5",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
     "chai": "^4.2.0",
@@ -51,6 +52,7 @@
   },
   "dependencies": {
     "@types/safari-extension": "0.0.28",
-    "debug": "^4.2.0"
+    "debug": "^4.2.0",
+    "uuid": "^8.3.2"
   }
 }

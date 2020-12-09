@@ -36,7 +36,7 @@ export class CastSession {
         log("CastSession.endSession", stopCasting);
         // TODO events ?
         try {
-            await this.io.endCurrentSession({ stopCasting });
+            await this.io.rpc.endCurrentSession({ stopCasting });
         } catch (e) {
             log("CastSession.endSession ERROR: ", e);
         }
@@ -110,7 +110,7 @@ export class CastSession {
     public async loadMedia(loadRequest: LoadRequest) {
         log("CastSession.loadMedia", loadRequest);
         try {
-            await this.io.loadMedia(loadRequest);
+            await this.io.rpc.loadMedia(loadRequest);
             log("CastSession.loadMedia: success!");
             return null;
         } catch (e) {
