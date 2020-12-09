@@ -17,7 +17,6 @@ export interface IMessageListener {
 }
 
 export class Session {
-
     private readonly events = new EventEmitter();
 
     constructor(
@@ -90,7 +89,7 @@ export class Session {
     public readonly sendMessage = callbackAsyncFunction(
         async (
             namespace: string,
-            message: object | string,
+            message: Record<string, unknown> | string,
         ) => {
             log("chrome.cast.Session.sendMessage:", namespace, message);
             await this.io.sessionSendMessage({
@@ -107,6 +106,7 @@ export class Session {
             muted: boolean,
         ) => {
             // TODO
+            log("chrome.cast.Session.setReceiverMuted:", muted);
         },
     );
 
@@ -115,6 +115,7 @@ export class Session {
             newLevel: boolean,
         ) => {
             // TODO
+            log("chrome.cast.Session.setReceiverVolumeLevel:", newLevel);
         },
     );
 

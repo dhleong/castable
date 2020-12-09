@@ -12,7 +12,7 @@ function createScriptElement(url: string) {
     const newElement = document.createElement("script");
     newElement.src = url;
     newElement.id = STUB_ELEMENT_ID;
-    newElement.charset = 'utf-8';
+    newElement.charset = "utf-8";
     return newElement;
 }
 
@@ -28,7 +28,7 @@ function registerCast(registrar: EventRegistrar) {
     // insert script into the page's context so it has access to
     // our chromecast stubs
     const script = createScriptElement(
-        safari.extension.baseURI + "castable-script.js",
+        `${safari.extension.baseURI}castable-script.js`,
     );
     script.addEventListener(IPC_OUTGOING_EVENT, event => {
         const data = (event as CustomEvent<ClientEvent>).detail;

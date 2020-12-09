@@ -1,8 +1,12 @@
 import { log } from "./log";
 
-export function proxy<T extends object>(actual: T, name?: string): T {
-    const proxy = new Proxy(actual, {
-        get: function(target, prop, receiver) {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function proxy<T extends object>(
+    actual: T,
+    name?: string,
+): T {
+    const proxyObject = new Proxy(actual, {
+        get(target, prop, receiver) {
             const got = Reflect.get(target, prop, receiver);
             const had = got !== undefined;
 
@@ -11,7 +15,7 @@ export function proxy<T extends object>(actual: T, name?: string): T {
                 log("READ ", name ?? actual, ".", prop, `(found ${had})`);
             }
             return got;
-        }
-    })
-    return proxy as unknown as T;
+        },
+    });
+    return proxyObject as unknown as T;
 }

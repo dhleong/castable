@@ -100,6 +100,7 @@ export class CastContext {
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public setLaunchCredentialsData(data: any) {
         log("CastContext.setLaunchCredentialsData", data);
     }

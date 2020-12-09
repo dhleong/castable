@@ -17,7 +17,7 @@ export enum SessionState {
 
 export enum CastContextEventType {
     CAST_STATE_CHANGED = "caststatechanged",
-    SESSION_STATE_CHANGED = "sessionstatechanged"
+    SESSION_STATE_CHANGED = "sessionstatechanged",
 }
 
 export enum ActiveInputState {

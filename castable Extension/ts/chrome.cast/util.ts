@@ -29,7 +29,7 @@ function wrappingError(
             errorCallback(new CastError(e));
         } else {
             // ?
-            errorCallback(new CastError(ErrorCode.SESSION_ERROR, "" + e));
+            errorCallback(new CastError(ErrorCode.SESSION_ERROR, `${e}`));
         }
     };
 }
@@ -65,10 +65,10 @@ export function callbackAsyncFunction<T, Args extends Arr>(
 export function optionalCallbackAsyncFunction<T, Args extends Arr>(
     promiseFactory: (...args: [...Args]) => Promise<T>,
 ): (
-    successCallback: Listener<T>,
-    errorCallback: Listener<CastError>,
-    ...args: [...Args]
-) => void {
+        successCallback: Listener<T>,
+        errorCallback: Listener<CastError>,
+        ...args: [...Args]
+    ) => void {
     return (successCallback, errorCallback, ...args) => {
         promiseFactory(...args)
             .then(successCallback)

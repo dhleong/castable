@@ -13,10 +13,12 @@ export class CastSession {
     private readonly events = new EventEmitter();
     private readonly messages = new EventEmitter();
 
+    private activeInputState = ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
+
     constructor(
-        readonly io: ClientIO,
-        readonly options: any,
-        readonly device: Receiver,
+        public readonly io: ClientIO,
+        public readonly options: any,
+        public readonly device: Receiver,
         private readonly sessionId: string,
     ) {}
 
@@ -43,7 +45,7 @@ export class CastSession {
     public getActiveInputState() {
         log("CastSession.getActiveInputState");
         // ?
-        return ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
+        return this.activeInputState;
     }
 
     public getApplicationMetadata() {
@@ -56,6 +58,7 @@ export class CastSession {
         };
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public getApplicationStatus() {
         log("CastSession.getApplicationStatus");
         return null; // ?
@@ -66,6 +69,7 @@ export class CastSession {
         return this.device;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public getMediaSession() {
         log("CastSession.getMediaSession");
         // TODO
@@ -77,22 +81,26 @@ export class CastSession {
         return this.sessionId;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public getSessionObj() {
         log("CastSession.getSessionObj");
         return {}; // chrome.cast.Session
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public getSessionState() {
         log("CastSession.getSessionState");
         return SessionState.SESSION_STARTED;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public getVolume() {
         log("CastSession.getVolume");
         // TODO
         return 1;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public isMute() {
         log("CastSession.isMute");
         // TODO
@@ -121,16 +129,19 @@ export class CastSession {
         this.messages.off(event, handler);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public async sendMessage(namespace: string, data: any) {
         log("CastSession.sendMessage", namespace, data);
         // TODO
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public async setMute(isMute: boolean) {
         log("CastSession.setMute", isMute);
         // TODO
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public async setVolume(volume: number) {
         log("CastSession.setVolume", volume);
         // TODO

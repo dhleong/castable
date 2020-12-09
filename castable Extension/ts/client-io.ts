@@ -18,7 +18,7 @@ class Future<T> {
 }
 
 export class ClientIO {
-    private nextRequestId = 0
+    private nextRequestId = 0;
 
     private pendingResolves: {[id: number]: Future<any>} = {};
 
@@ -41,48 +41,48 @@ export class ClientIO {
     }
 
     public readonly endCurrentSession = this.createRpc<
-        {
-            stopCasting: boolean,
-        },
-        void
+    {
+        stopCasting: boolean,
+    },
+    void
     >("endCurrentSession");
 
     public readonly loadMedia = this.createRpc<
-        LoadRequest,
-        void
+    LoadRequest,
+    void
     >("loadMedia");
 
     public readonly requestSession = this.createRpc<
-        any,
-        {
-            cancelled?: boolean,
-            app: {
-                appId: string,
-                displayName: string,
-            },
-            device: {
-                id: string,
-                name: string,
-                model: string,
-            },
-            sessionId: string,
-        }
+    any,
+    {
+        cancelled?: boolean,
+        app: {
+            appId: string,
+            displayName: string,
+        },
+        device: {
+            id: string,
+            name: string,
+            model: string,
+        },
+        sessionId: string,
+    }
     >("requestSession");
 
     public readonly sessionSendMessage = this.createRpc<
-        {
-            namespace: string,
-            stringMessage?: string,
-            dictMessage?: any,
-        },
-        void
+    {
+        namespace: string,
+        stringMessage?: string,
+        dictMessage?: any,
+    },
+    void
     >("sessionSendMessage");
 
     public readonly sessionListen = this.createRpc<
-        {
-            namespace: string,
-        },
-        void
+    {
+        namespace: string,
+    },
+    void
     >("sessionListen");
 
     /**

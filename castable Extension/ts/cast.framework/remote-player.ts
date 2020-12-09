@@ -4,6 +4,6 @@ export class RemotePlayer {
 
 export class RemotePlayerController {
     constructor(
-        readonly player: RemotePlayer,
+        public readonly player: RemotePlayer,
     ) {}
 }

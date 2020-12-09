@@ -1,3 +1,4 @@
 .build
+.eslintcache
 dist
 castable Extension/Resources/castable-script.js
