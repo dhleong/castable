@@ -1,6 +1,9 @@
 import { log } from "./log";
 import { proxy } from "./proxy";
 
+import { CastStub } from "./cast";
+import { CastContext } from "./cast.framework/cast-context";
+
 import { ApiConfig } from "./chrome.cast/api-config";
 import { DialRequest } from "./chrome.cast/dial-request";
 import {
@@ -13,7 +16,6 @@ import { MediaStub } from "./chrome.cast/media";
 import { Receiver } from "./chrome.cast/receiver";
 import { SessionRequest } from "./chrome.cast/session-request";
 import { TimeoutStub } from "./chrome.cast/timeout";
-import { CastStub } from "./cast";
 
 class CastError extends Error {
     constructor(
@@ -97,20 +99,9 @@ class ChromeCastStub {
         const cast = this.cast.framework.CastContext.getInstance();
 
         (async () => {
-            cast.setOptions({
-                receiverApplicationId: request.appId,
-            });
-            const errorCode = await cast.requestSession();
-            if (errorCode) {
-                throw new Error(`Session error: ${errorCode}`);
-            }
-
-            // TODO ?
-
-        })().then(result => {
-            log("requestSession result: ", result);
-            // TODO forward to successCallback
-        }).catch(e => {
+            // TODO notify sessionListener
+            await this.requestSessionImpl(cast, request);
+        })().catch(e => {
             log("requestSession error: ", e);
             errorCallback(e);
         });
@@ -141,6 +132,20 @@ class ChromeCastStub {
         // TODO
     }
 
+    private async requestSessionImpl(
+        cast: CastContext,
+        request: SessionRequest,
+    ) {
+        cast.setOptions({
+            receiverApplicationId: request.appId,
+        });
+        const errorCode = await cast.requestSession();
+        if (errorCode) {
+            throw new Error(`Session error: ${errorCode}`);
+        }
+
+        // TODO provide a chrome.cast.Session
+    }
 }
 
 export class ChromeStub {
