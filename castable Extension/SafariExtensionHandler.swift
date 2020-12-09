@@ -55,9 +55,6 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 
         let message = Message(rawValue: messageName)
         switch message {
-        case .contentLoaded:
-            page.dispatchMessageToScript(withName: "register-cast")
-
         case .some(let message):
             dispatchMessage(message, with: userInfo, forPage: page)
 

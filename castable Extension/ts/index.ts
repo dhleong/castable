@@ -67,27 +67,9 @@ function initExt() {
         return;
     }
 
-    // NOTE: in order for our stub to be loaded into the actual
-    // page's context, we have to write a <script> into the DOM
-    // with *just* the right timing...
-    // Here, we wait until the DOM content has loaded, let the
-    // Swift extension know, and wait for it to tell us it's safe
-    // to register
-
     log("initExt", document.currentScript, safari, (window as any).chrome);
     const registrar = new EventRegistrar();
     registerCast(registrar);
-
-    document.addEventListener("DOMContentLoaded", () => {
-        log("content loaded...");
-
-        // registrar.once("register-cast", () => {
-        //     registerCast(registrar);
-        // });
-
-        dispatchMessage("content-loaded");
-        log("dispatched content-loaded!");
-    });
 }
 
 if (window.safari && window.safari.extension) {
