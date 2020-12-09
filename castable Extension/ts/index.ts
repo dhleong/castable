@@ -8,13 +8,18 @@ import { log } from "./log";
 import { init as initStub } from "./stub";
 import { ClientEvent } from "./client-io";
 
+function createScriptElement(url: string) {
+    const newElement = document.createElement("script");
+    newElement.src = url;
+    newElement.id = STUB_ELEMENT_ID;
+    newElement.charset = 'utf-8';
+    return newElement;
+}
+
 function registerCast(registrar: EventRegistrar) {
     log("registering cast stub");
 
-    if (!document.head) {
-        log("no document.head");
-        return;
-    }
+    const scriptContainer = document.head ?? document.documentElement;
 
     if (!window.safari) {
         throw new Error("registerCast MUST NOT be called from page context");
@@ -22,11 +27,10 @@ function registerCast(registrar: EventRegistrar) {
 
     // insert script into the page's context so it has access to
     // our chromecast stubs
-    const newElement = document.createElement("script");
-    newElement.src = safari.extension.baseURI + "castable-script.js";
-    newElement.id = STUB_ELEMENT_ID;
-    newElement.charset = 'utf-8';
-    newElement.addEventListener(IPC_OUTGOING_EVENT, event => {
+    const script = createScriptElement(
+        safari.extension.baseURI + "castable-script.js",
+    );
+    script.addEventListener(IPC_OUTGOING_EVENT, event => {
         const data = (event as CustomEvent<ClientEvent>).detail;
         log("forwarding message:", data);
 
@@ -35,7 +39,7 @@ function registerCast(registrar: EventRegistrar) {
 
     registrar.on(IPC_INCOMING_EVENT, event => {
         log("ext received ipc message", event);
-        newElement.dispatchEvent(new CustomEvent(IPC_INCOMING_EVENT, {
+        script.dispatchEvent(new CustomEvent(IPC_INCOMING_EVENT, {
             detail: {
                 name: event.name,
                 args: (event as any).message,
@@ -45,10 +49,10 @@ function registerCast(registrar: EventRegistrar) {
         }));
     });
 
-    if (document.head.hasChildNodes()) {
-        document.head.insertBefore(newElement, document.head.childNodes[0]);
+    if (scriptContainer.hasChildNodes()) {
+        scriptContainer.insertBefore(script, scriptContainer.childNodes[0]);
     } else {
-        document.head.appendChild(newElement);
+        scriptContainer.appendChild(script);
     }
 }
 
@@ -71,14 +75,15 @@ function initExt() {
     // to register
 
     log("initExt", document.currentScript, safari, (window as any).chrome);
+    const registrar = new EventRegistrar();
+    registerCast(registrar);
 
     document.addEventListener("DOMContentLoaded", () => {
         log("content loaded...");
 
-        const registrar = new EventRegistrar();
-        registrar.once("register-cast", () => {
-            registerCast(registrar);
-        });
+        // registrar.once("register-cast", () => {
+        //     registerCast(registrar);
+        // });
 
         dispatchMessage("content-loaded");
         log("dispatched content-loaded!");

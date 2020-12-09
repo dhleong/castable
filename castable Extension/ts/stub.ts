@@ -1,19 +1,9 @@
 import { CastStub } from "./cast";
 import { ChromeController } from "./chrome";
 import { ClientIO } from "./client-io";
+import { applyCompat } from "./compat";
 import { log } from "./log";
 import { proxy } from "./proxy";
-
-function needsUserAgentPatch() {
-    if ((window as any)._yt_player) {
-        // NOTE: youtube skips loading any chromecast stuff if it does
-        // not detect "Chrome" (or a few other options) in the userAgent
-        log("Running on Youtube; user agent patch required");
-        return true;
-    }
-
-    return false;
-}
 
 /**
  * Initializes chromecast stubbing
@@ -58,27 +48,9 @@ export function init() {
         },
     });
 
-    if (needsUserAgentPatch()) {
-        const actualUserAgent = window.navigator.userAgent;
-        const patchedUserAgent = actualUserAgent + " + Chrome/80";
-
-        Object.defineProperties(window.navigator, {
-            userAgent: {
-                value: patchedUserAgent,
-            },
-        });
-
-        log("Applied user agent patch: ", patchedUserAgent);
-    }
-
-    Object.defineProperties(window.navigator, {
-        presentation: {
-            get() {
-                log("READ window.navigator.presentation");
-                return {};
-            },
-        },
-    });
+    // not all sites work nicely out of the box. for now, at least,
+    // this is primarily aimed at youtube:
+    applyCompat();
 
     log("Created chromecast API stub");
 }
