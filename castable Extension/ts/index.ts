@@ -45,7 +45,11 @@ function registerCast(registrar: EventRegistrar) {
         }));
     });
 
-    document.head.appendChild(newElement);
+    if (document.head.hasChildNodes()) {
+        document.head.insertBefore(newElement, document.head.childNodes[0]);
+    } else {
+        document.head.appendChild(newElement);
+    }
 }
 
 function initExt() {

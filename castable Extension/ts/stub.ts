@@ -4,6 +4,17 @@ import { ClientIO } from "./client-io";
 import { log } from "./log";
 import { proxy } from "./proxy";
 
+function needsUserAgentPatch() {
+    if ((window as any)._yt_player) {
+        // NOTE: youtube skips loading any chromecast stuff if it does
+        // not detect "Chrome" (or a few other options) in the userAgent
+        log("Running on Youtube; user agent patch required");
+        return true;
+    }
+
+    return false;
+}
+
 /**
  * Initializes chromecast stubbing
  */
@@ -47,6 +58,19 @@ export function init() {
         },
     });
 
+    if (needsUserAgentPatch()) {
+        const actualUserAgent = window.navigator.userAgent;
+        const patchedUserAgent = actualUserAgent + " + Chrome/80";
+
+        Object.defineProperties(window.navigator, {
+            userAgent: {
+                value: patchedUserAgent,
+            },
+        });
+
+        log("Applied user agent patch: ", patchedUserAgent);
+    }
+
     Object.defineProperties(window.navigator, {
         presentation: {
             get() {
@@ -56,5 +80,5 @@ export function init() {
         },
     });
 
-    log("Created chromecast API stub", controller.chrome);
+    log("Created chromecast API stub");
 }
