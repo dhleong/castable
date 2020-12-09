@@ -12,7 +12,7 @@
     "dev": "webpack --watch",
     "lint": "eslint . --cache --ext .ts",
     "prepublishOnly": "npm run check",
-    "test": "mocha -r ts-node/register test/**/*-test.ts"
+    "test": "mocha -r ts-node/register 'castable Extension/ts-test/**/*-test.ts'"
   },
   "keywords": [
     "chromecast"

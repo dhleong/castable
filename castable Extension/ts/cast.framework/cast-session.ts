@@ -17,7 +17,7 @@ export class CastSession {
         readonly io: ClientIO,
         readonly options: any,
         readonly device: Receiver,
-        private readonly sessionId: String,
+        private readonly sessionId: string,
     ) {}
 
     public addEventListener(event: string, handler: any) {

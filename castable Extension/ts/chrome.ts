@@ -16,16 +16,13 @@ import { MediaStub } from "./chrome.cast/media";
 import { Receiver } from "./chrome.cast/receiver";
 import { SessionRequest } from "./chrome.cast/session-request";
 import { TimeoutStub } from "./chrome.cast/timeout";
-
-class CastError extends Error {
-    constructor(
-        public readonly code: string,
-        public readonly opt_description?: string,
-        public readonly opt_details?: any,
-    ) {
-        super(`chrome.cast.Error: ${code}`);
-    }
-}
+import { CastError } from "./chrome.cast/error";
+import { Listener } from "./chrome.cast/generic-types";
+import { Session } from "./chrome.cast/session";
+import {
+    callbackAsyncFunction,
+    optionalCallbackAsyncFunction,
+} from "./chrome.cast/util";
 
 class ChromeCastStub {
     public readonly VERSION = [1, 2];
@@ -53,7 +50,7 @@ class ChromeCastStub {
     public initialize(
         apiConfig: ApiConfig,
         onSuccess: () => void,
-        onError: (e: CastError) => void,
+        onError: Listener<CastError>,
     ) {
         log("INITIALIZE", apiConfig);
         this.config = apiConfig;
@@ -62,7 +59,7 @@ class ChromeCastStub {
             log("notifying API success:", apiConfig);
             onSuccess();
 
-            // FIXME: get this from the extension
+            // FIXME: get this state from the extension
             apiConfig.receiverListener(ReceiverAvailability.AVAILABLE);
         });
     }
@@ -85,27 +82,18 @@ class ChromeCastStub {
         log("chrome.cast.removeReceiverActionListener:", listener);
     }
 
-    public requestSession(
-        successCallback: any,
-        errorCallback: any,
-        sessionRequest?: SessionRequest,
-    ) {
-        const request = sessionRequest ?? this.config?.sessionRequest;
-        if (!request) {
-            throw new Error("No sessionRequest available");
-        }
+    public readonly requestSession = optionalCallbackAsyncFunction(
+        async (sessionRequest?: SessionRequest) => {
+            const request = sessionRequest ?? this.config?.sessionRequest;
+            if (!request) {
+                throw new Error("No sessionRequest available");
+            }
 
-        log("chrome.cast.requestSession", sessionRequest, "->", request);
-        const cast = this.cast.framework.CastContext.getInstance();
-
-        (async () => {
-            // TODO notify sessionListener
-            await this.requestSessionImpl(cast, request);
-        })().catch(e => {
-            log("requestSession error: ", e);
-            errorCallback(e);
-        });
-    }
+            log("chrome.cast.requestSession", sessionRequest, "->", request);
+            const cast = this.cast.framework.CastContext.getInstance();
+            return this.requestSessionImpl(cast, request);
+        },
+    );
 
     public requestSessionById(id: string) {
         log("chrome.cast.requestSessionById", id);
@@ -123,14 +111,12 @@ class ChromeCastStub {
         log("chrome.cast.setPageContext", win);
     }
 
-    public setReceiverDisplayStatus(
-        receiver: Receiver,
-        successCallback: any,
-        errorCallback: any,
-    ) {
-        log("chrome.cast.setReceiverDisplayStatus", receiver);
-        // TODO
-    }
+    public setReceiverDisplayStatus = callbackAsyncFunction(
+        async (receiver: Receiver) => {
+            // TODO
+            log("chrome.cast.setReceiverDisplayStatus", receiver);
+        },
+    );
 
     private async requestSessionImpl(
         cast: CastContext,
@@ -144,7 +130,15 @@ class ChromeCastStub {
             throw new Error(`Session error: ${errorCode}`);
         }
 
-        // TODO provide a chrome.cast.Session
+        const s = cast.getCurrentSession();
+
+        return new Session(
+            s!.getSessionId(),
+            request.appId,
+            s!.getApplicationMetadata().name,
+            s!.getApplicationMetadata().images,
+            s!.getCastDevice(),
+        );
     }
 }
 
