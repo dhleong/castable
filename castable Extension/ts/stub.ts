@@ -1,6 +1,7 @@
 import { CastStub } from "./cast";
 import { ChromeController } from "./chrome";
 import { ClientIO } from "./client-io";
+import { applyCompat } from "./compat";
 import { log } from "./log";
 import { proxy } from "./proxy";
 
@@ -47,14 +48,9 @@ export function init() {
         },
     });
 
-    Object.defineProperties(window.navigator, {
-        presentation: {
-            get() {
-                log("READ window.navigator.presentation");
-                return {};
-            },
-        },
-    });
+    // not all sites work nicely out of the box. for now, at least,
+    // this is primarily aimed at youtube:
+    applyCompat();
 
-    log("Created chromecast API stub", controller.chrome);
+    log("Created chromecast API stub");
 }
