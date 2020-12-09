@@ -7,6 +7,7 @@ import { Receiver } from "./receiver";
 import { Listener } from "./generic-types";
 import { MediaStub } from "./media";
 import { callbackAsyncFunction } from "./util";
+import { ClientIO } from "../client-io";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
@@ -25,9 +26,11 @@ export class Session {
         public readonly displayName: string,
         public readonly appImages: Image[],
         public readonly receiver: Receiver,
+        private readonly io: ClientIO,
     ) {}
 
     public addMediaListener(listener: Listener<MediaStub>) {
+        log("chrome.cast.Session.addMediaListener");
         this.events.on(MEDIA_EVENT, listener);
     }
 
@@ -35,6 +38,7 @@ export class Session {
         namespace: string,
         listener: IMessageListener,
     ) {
+        log("chrome.cast.Session.addMessageListener", namespace);
         this.events.on(namespace, listener);
     }
 
@@ -43,6 +47,7 @@ export class Session {
      * `receiver.volume` have changed
      */
     public addUpdateListener(listener: Listener<boolean>) {
+        log("chrome.cast.Session.addUpdateListener");
         this.events.on(UPDATE_EVENT, listener);
     }
 
@@ -87,8 +92,13 @@ export class Session {
             namespace: string,
             message: object | string,
         ) => {
-            // TODO
-            throw "SESSION_ERROR";
+            log("chrome.cast.Session.sendMessage:", namespace, message);
+            await this.io.sessionSendMessage({
+                namespace,
+                stringMessage: typeof message === "string"
+                    ? message
+                    : JSON.stringify(message),
+            });
         },
     );
 

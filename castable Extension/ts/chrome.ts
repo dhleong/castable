@@ -9,6 +9,7 @@ import { DialRequest } from "./chrome.cast/dial-request";
 import {
     AutoJoinPolicy,
     DefaultActionPolicy,
+    ErrorCode,
     ReceiverType,
     ReceiverAvailability,
 } from "./chrome.cast/enums";
@@ -31,6 +32,7 @@ class ChromeCastStub {
     public readonly AutoJoinPolicy = AutoJoinPolicy;
     public readonly DialRequest = DialRequest;
     public readonly DefaultActionPolicy = DefaultActionPolicy;
+    public readonly ErrorCode = ErrorCode;
     public readonly SessionRequest = SessionRequest;
     public readonly Receiver = Receiver;
     public readonly ReceiverAvailability = ReceiverAvailability;
@@ -91,7 +93,14 @@ class ChromeCastStub {
 
             log("chrome.cast.requestSession", sessionRequest, "->", request);
             const cast = this.cast.framework.CastContext.getInstance();
-            return this.requestSessionImpl(cast, request);
+            const session = await this.requestSessionImpl(cast, request);
+
+            log("chrome.cast.requestSession success:", session);
+
+            const listener = this.config?.sessionListener;
+            if (listener) listener(session);
+
+            return session;
         },
     );
 
@@ -118,6 +127,12 @@ class ChromeCastStub {
         },
     );
 
+    public unescape(s: string) {
+        log("chrome.cast.unescape", s);
+        // ?!
+        return unescape(s);
+    }
+
     private async requestSessionImpl(
         cast: CastContext,
         request: SessionRequest,
@@ -130,15 +145,17 @@ class ChromeCastStub {
             throw new Error(`Session error: ${errorCode}`);
         }
 
-        const s = cast.getCurrentSession();
+        const s = cast.getCurrentSession()!;
+        const appMeta = s.getApplicationMetadata();
 
-        return new Session(
-            s!.getSessionId(),
+        return proxy(new Session(
+            s.getSessionId(),
             request.appId,
-            s!.getApplicationMetadata().name,
-            s!.getApplicationMetadata().images,
-            s!.getCastDevice(),
-        );
+            appMeta.name,
+            appMeta.images,
+            s.getCastDevice(),
+            s.io,
+        ), `Session(${appMeta.name}#${s.getSessionId()})`);
     }
 }
 

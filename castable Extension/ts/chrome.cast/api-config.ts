@@ -1,12 +1,12 @@
 import { SessionRequest } from "./session-request";
 import { ReceiverAvailability } from "./enums";
-
-export type ReceiverListener = (availability: ReceiverAvailability) => void;
+import { Listener } from "./generic-types";
+import { Session } from "./session";
 
 export class ApiConfig {
     constructor(
         public sessionRequest: SessionRequest,
-        public sessionListener: any,
-        public receiverListener: ReceiverListener,
+        public sessionListener: Listener<Session>,
+        public receiverListener: Listener<ReceiverAvailability>,
     ) {}
 }

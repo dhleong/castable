@@ -69,6 +69,22 @@ export class ClientIO {
         }
     >("requestSession");
 
+    public readonly sessionSendMessage = this.createRpc<
+        {
+            namespace: string,
+            stringMessage?: string,
+            dictMessage?: any,
+        },
+        void
+    >("sessionSendMessage");
+
+    public readonly sessionListen = this.createRpc<
+        {
+            namespace: string,
+        },
+        void
+    >("sessionListen");
+
     /**
      * Dispatch a one-off IPC message to the extension.
      */

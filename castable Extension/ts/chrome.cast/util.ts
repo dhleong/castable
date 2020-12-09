@@ -1,3 +1,6 @@
+import { log } from "../log";
+
+import { ErrorCode } from "./enums";
 import { CastError } from "./error";
 import { Listener } from "./generic-types";
 
@@ -9,15 +12,24 @@ type WithListeners<T, Args extends Arr> = [
     Listener<CastError>,
 ];
 
+function isErrorCode(v: any): v is ErrorCode {
+    if (typeof v !== "string") return false;
+    const lookup: any = (ErrorCode as any)[v];
+    return lookup !== undefined;
+}
+
 function wrappingError(
     errorCallback: Listener<CastError>,
 ): (e: any) => void {
     return e => {
+        log("received error:", e);
         if (e instanceof CastError) {
             errorCallback(e);
+        } else if (isErrorCode(e)) {
+            errorCallback(new CastError(e));
         } else {
-            // TODO ?
-            errorCallback(new CastError("", "" + e));
+            // ?
+            errorCallback(new CastError(ErrorCode.SESSION_ERROR, "" + e));
         }
     };
 }

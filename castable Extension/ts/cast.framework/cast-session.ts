@@ -62,7 +62,7 @@ export class CastSession {
     }
 
     public getCastDevice() {
-        log("CastSession.getCastDevice");
+        log("CastSession.getCastDevice", this.device);
         return this.device;
     }
 

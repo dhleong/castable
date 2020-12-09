@@ -18,6 +18,8 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         r.on(.loadMedia, perform: LoadMediaHandler())
         r.on(.requestSession, perform: RequestSessionHandler())
 
+        r.on(.sessionSendMessage, perform: SessionSendHandler())
+
         return r
     }()
 

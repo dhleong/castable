@@ -1,4 +1,4 @@
-import { Capability } from "./enums";
+import { Capability, ReceiverType } from "./enums";
 
 export class Receiver {
     constructor(
@@ -7,4 +7,6 @@ export class Receiver {
         public readonly capabilities: Capability[] = [],
         // TODO volume ?
     ) {}
+
+    public receiverType: ReceiverType = ReceiverType.CAST;
 }
