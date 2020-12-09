@@ -32,16 +32,20 @@ export function dispatchMessage(
     e.dispatchMessage(messageName, content);
 }
 
-export function addEventListener(eventName: string, handler: MessageEventHandler) {
+function addEventListener(eventName: string, handler: MessageEventHandler) {
     const page = safari.self as unknown as MessagingSafariPage;
-    page.addEventListener("message", handler);
+    page.addEventListener(eventName, handler);
 }
 
-export function removeEventListener(eventName: string, handler: MessageEventHandler) {
+function removeEventListener(eventName: string, handler: MessageEventHandler) {
     const page = safari.self as unknown as MessagingSafariPage;
-    page.removeEventListener("message", handler);
+    page.removeEventListener(eventName, handler);
 }
 
+/**
+ * Supports listening to messages dispatched from the Safari extension.
+ * Not available when in client script mode
+ */
 export class EventRegistrar {
     private handlers: {[name: string]: MessageEventHandler} = {};
 

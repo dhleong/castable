@@ -32,7 +32,7 @@ export class CastContext {
         this.currentSession = null;
 
         try {
-            await this.io.endCurrentSession({ stopCasting });
+            await this.io.rpc.endCurrentSession({ stopCasting });
         } catch (e) {
             log("CastContext.endCurrentSession ERROR: ", e);
         } finally {
@@ -68,7 +68,7 @@ export class CastContext {
             this.setCastState(CastState.CONNECTING);
             this.setSessionState(SessionState.SESSION_STARTING);
 
-            const result = await this.io.requestSession(this.options);
+            const result = await this.io.rpc.requestSession(this.options);
             log("requestSession -> ", result);
 
             this.currentSession = new CastSession(

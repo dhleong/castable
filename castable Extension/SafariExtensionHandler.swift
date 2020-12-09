@@ -8,9 +8,16 @@
 import SafariServices
 import SwiftCoroutine
 
+let REQUEST_PAGE_KEY = ".request.page"
+
 class SafariExtensionHandler: SFSafariExtensionHandler {
     let scope = CoScope()
     let cast = CastDiscovery()
+
+    static let allSubscribers = [
+        SessionMessageSubscriber(),
+    ]
+
     let handlers: RequestHandlerRegistry = {
         let r = RequestHandlerRegistry()
 
@@ -19,6 +26,15 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         r.on(.requestSession, perform: RequestSessionHandler())
 
         r.on(.sessionSendMessage, perform: SessionSendHandler())
+
+        let events = AppState.instance.events
+        let subscribers = allSubscribers.reduce(into: [:]) { m, s in
+            m[s.event] = s
+        }
+        let subsRegistry = EventSubscriptionRegistry(subscribers: subscribers)
+
+        r.on(.listen, perform: ListenHandler(events: events, subscriptions: subsRegistry))
+        r.on(.unlisten, perform: UnlistenHandler(events: events, subscriptions: subsRegistry))
 
         return r
     }()
@@ -89,7 +105,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         AppState.instance.notifyPopoverDismissed()
     }
 
-    private func dispatchMessage(_ message: (Message), with userInfo: [String : Any]?, forPage page: SFSafariPage) {
+    private func dispatchMessage(_ message: Message, with userInfo: [String : Any]?, forPage page: SFSafariPage) {
         DispatchQueue.main.startCoroutine { [self] in
             var response: [String : Any]?
             if let userInfo = userInfo, let requestId = userInfo["castableRequestId"] {
@@ -98,8 +114,11 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 response = nil
             }
 
+            var data = userInfo
+            data?[REQUEST_PAGE_KEY] = page
+
             do {
-                let fromHandler = try handlers.dispatch(message: message, withData: userInfo)
+                let fromHandler = try handlers.dispatch(message: message, withData: data)
                 NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
 
                 if let fromHandler = fromHandler, response != nil {

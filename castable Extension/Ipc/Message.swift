@@ -14,5 +14,8 @@ enum Message: String {
     case loadMedia
     case requestSession
 
+    case listen
+    case unlisten
+
     case sessionSendMessage
 }

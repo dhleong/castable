@@ -4,9 +4,9 @@ import {
     IPC_INCOMING_EVENT,
 } from "./consts";
 import { dispatchMessage, EventRegistrar } from "./extension";
+import { ClientEvent } from "./io/model";
 import { log } from "./log";
 import { init as initStub } from "./stub";
-import { ClientEvent } from "./client-io";
 
 function createScriptElement(url: string) {
     const newElement = document.createElement("script");
@@ -30,6 +30,8 @@ function registerCast(registrar: EventRegistrar) {
     const script = createScriptElement(
         `${safari.extension.baseURI}castable-script.js`,
     );
+
+    // forward messages sent from the client script to the extension
     script.addEventListener(IPC_OUTGOING_EVENT, event => {
         const data = (event as CustomEvent<ClientEvent>).detail;
         log("forwarding message:", data);
@@ -37,6 +39,7 @@ function registerCast(registrar: EventRegistrar) {
         dispatchMessage(data.name, data.args);
     });
 
+    // forward messages received from the extension to the client script
     registrar.on(IPC_INCOMING_EVENT, event => {
         log("ext received ipc message", event);
         script.dispatchEvent(new CustomEvent(IPC_INCOMING_EVENT, {

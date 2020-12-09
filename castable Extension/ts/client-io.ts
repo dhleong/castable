@@ -3,87 +3,31 @@ import {
     IPC_OUTGOING_EVENT,
 } from "./consts";
 import { log } from "./log";
-import { LoadRequest } from "./chrome.cast/media";
+import { Listener } from "./chrome.cast/generic-types";
 
-export interface ClientEvent {
-    name: string,
-    args?: any,
-}
+import { RpcEventEmitter } from "./io/events";
+import { RpcMessaging } from "./io/messaging";
+import { ClientEvent, IClientIO } from "./io/model";
+import { Rpc } from "./io/rpc";
 
-class Future<T> {
-    constructor(
-        public readonly resolve: (v: T) => void,
-        public readonly reject: (e: any) => void,
-    ) {}
-}
-
-export class ClientIO {
-    private nextRequestId = 0;
-
-    private pendingResolves: {[id: number]: Future<any>} = {};
+export class ClientIO implements IClientIO {
+    public rpc: Rpc;
+    public events: RpcEventEmitter;
 
     constructor(
         private readonly script: HTMLScriptElement,
     ) {
-        script.addEventListener(IPC_INCOMING_EVENT, event => {
+        this.rpc = new Rpc(new RpcMessaging(this));
+        this.events = new RpcEventEmitter(this);
+    }
+
+    public registerEventListener(listener: Listener<ClientEvent>) {
+        this.script.addEventListener(IPC_INCOMING_EVENT, event => {
             const data = (event as CustomEvent<ClientEvent>).detail;
             log("stub received ipc message", data);
-
-            if (data.args && data.args.castableRequestId !== undefined) {
-                const future = this.pendingResolves[data.args.castableRequestId];
-                if (data.args.error) {
-                    future.reject(data.args.error);
-                } else {
-                    future.resolve(data.args);
-                }
-            }
+            listener(data);
         });
     }
-
-    public readonly endCurrentSession = this.createRpc<
-    {
-        stopCasting: boolean,
-    },
-    void
-    >("endCurrentSession");
-
-    public readonly loadMedia = this.createRpc<
-    LoadRequest,
-    void
-    >("loadMedia");
-
-    public readonly requestSession = this.createRpc<
-    any,
-    {
-        cancelled?: boolean,
-        app: {
-            appId: string,
-            displayName: string,
-        },
-        device: {
-            id: string,
-            name: string,
-            model: string,
-        },
-        sessionId: string,
-    }
-    >("requestSession");
-
-    public readonly sessionSendMessage = this.createRpc<
-    {
-        namespace: string,
-        stringMessage?: string,
-        dictMessage?: any,
-    },
-    void
-    >("sessionSendMessage");
-
-    public readonly sessionListen = this.createRpc<
-    {
-        namespace: string,
-    },
-    void
-    >("sessionListen");
 
     /**
      * Dispatch a one-off IPC message to the extension.
@@ -97,27 +41,5 @@ export class ClientIO {
             bubbles: true,
             cancelable: false,
         }));
-    }
-
-    private request(name: string, args?: any) {
-        const id = this.nextRequestId++;
-        return new Promise((resolve, reject) => {
-            this.pendingResolves[id] = new Future(resolve, reject);
-
-            this.dispatchMessage(name, {
-                ...args,
-
-                castableRequestId: id,
-            });
-        });
-    }
-
-    private createRpc<TRequest, TResponse>(
-        name: string,
-    ): (req: TRequest) => Promise<TResponse> {
-        return async (req: TRequest) => {
-            const response = await this.request(name, req);
-            return response as TResponse;
-        };
     }
 }
