@@ -12,6 +12,11 @@ export enum Capability {
     MULTIZONE_GROUP = "MULTIZONE_GROUP",
 }
 
+export enum DefaultActionPolicy {
+    CREATE_SESSION = "CREATE_SESSION",
+    CAST_THIS_TAB = "CAST_THIS_TAB",
+}
+
 export enum ErrorCode {
     CANCEL,
     TIMEOUT,
@@ -23,6 +28,18 @@ export enum ErrorCode {
     SESSION_ERROR,
     CHANNEL_ERROR,
     LOAD_MEDIA_FAILED,
+}
+
+export enum ReceiverAvailability {
+    AVAILABLE = "AVAILABLE",
+    UNAVAILABLE = "UNAVAILABLE",
+}
+
+export enum ReceiverType {
+    CAST = "CAST",
+    DIAL = "DIAL",
+    HANGOUT = "HANGOUT",
+    CUSTOM = "CUSTOM",
 }
 
 export enum PlayerState {

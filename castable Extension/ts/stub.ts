@@ -2,6 +2,7 @@ import { CastStub } from "./cast";
 import { ChromeController } from "./chrome";
 import { ClientIO } from "./client-io";
 import { log } from "./log";
+import { proxy } from "./proxy";
 
 /**
  * Initializes chromecast stubbing
@@ -21,16 +22,16 @@ export function init() {
         return;
     }
 
-    const controller = new ChromeController();
     const cast = new CastStub(new ClientIO(script));
+    const controller = new ChromeController(cast);
 
     Object.defineProperties(window, {
         chrome: {
-            value: controller.chrome,
+            value: proxy(controller.chrome, "chrome"),
         },
 
         cast: {
-            value: cast,
+            value: proxy(cast, "cast"),
         },
 
         __onGCastApiAvailable: {
@@ -42,6 +43,15 @@ export function init() {
             set(value) {
                 log("set onGCastApiAvailable <- ", value);
                 controller.setGCastApiAvailableHandler(value);
+            },
+        },
+    });
+
+    Object.defineProperties(window.navigator, {
+        presentation: {
+            get() {
+                log("READ window.navigator.presentation");
+                return {};
             },
         },
     });
