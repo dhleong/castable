@@ -25,15 +25,14 @@ extension Dictionary where Key == String {
     func parse<T : Decodable>() throws -> T {
         let safe: [String : Any] = self.reduce(into: [:]) { m, el in
             switch el.value {
-            case is Decodable, is String, is Int, is Double, is Float, is Dictionary, is Bool:
+            case is Decodable, is Dictionary, is Array<Any>, is String, is Int, is Double, is Float, is Bool:
                 m[el.key] = el.value
 
             default:
-                NSLog("castable: parse: \(el.value) is not Decodable")
+                NSLog("castable: parse \(type(of: el.value)): \(el.value) is not Decodable")
             }
         }
 
-        NSLog("castable: parse: \(self) -> \(safe)")
         guard let jsonData = try? JSONSerialization.data(withJSONObject: safe, options: []) else {
             throw ParseError.decoding(raw: self)
         }

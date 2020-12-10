@@ -20,20 +20,24 @@ class castableTests: XCTestCase {
 
     func testDictionaryToStruct() throws {
         struct SecretCargo {}
+        struct PublicCargo: Codable { let name: String }
         let dict: [String : Any] = [
             "smuggled": SecretCargo(),
-            "cargo": "wobbly-headed-geisha-dolls",
+            "cargo": ["name": "wobbly-headed-geisha-dolls"],
+            "name": "serenity",
             "gas": 42,
         ]
 
         struct Ship: Codable {
-            let cargo: String
+            let cargo: PublicCargo
+            let name: String
             let gas: Int
         }
 
         let ship: Ship = try dict.parse()
-        XCTAssert(ship.cargo == "wobbly-headed-geisha-dolls", "Safely skip non-codable values")
-        XCTAssert(ship.gas == 42, "Safely skip non-codable values")
+        XCTAssert(ship.cargo.name == "wobbly-headed-geisha-dolls", "Safely skip non-codable values")
+        XCTAssert(ship.name == "serenity")
+        XCTAssert(ship.gas == 42)
 
     }
 
