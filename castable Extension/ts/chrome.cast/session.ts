@@ -5,18 +5,14 @@ import { log } from "../log";
 import { Image } from "./image";
 import { Receiver } from "./receiver";
 import { Listener } from "./generic-types";
-import { MediaStub } from "./media";
+import { IMessageListener } from "./listeners";
+import { LoadRequest, MediaStub } from "./media";
 import { callbackAsyncFunction } from "./util";
 
-import { ClientIO } from "../client-io";
-import { EventSpecIdentifier } from "../io/events";
+import { CastSession } from "../cast.framework/cast-session";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
-
-export interface IMessageListener {
-    (namespace: string, message: string): void;
-}
 
 export class Session {
     private readonly events = new EventEmitter();
@@ -27,7 +23,7 @@ export class Session {
         public readonly displayName: string,
         public readonly appImages: Image[],
         public readonly receiver: Receiver,
-        private readonly io: ClientIO,
+        private readonly castSession: CastSession,
     ) {}
 
     public addMediaListener(listener: Listener<MediaStub>) {
@@ -40,12 +36,7 @@ export class Session {
         listener: IMessageListener,
     ) {
         log("chrome.cast.Session.addMessageListener", namespace);
-        this.events.on(namespace, listener);
-
-        this.io.events.on({
-            id: EventSpecIdentifier.sessionMessage,
-            param: namespace,
-        }, listener);
+        this.castSession.addMessageListener(namespace, listener);
     }
 
     /**
@@ -59,15 +50,15 @@ export class Session {
 
     public readonly leave = callbackAsyncFunction(
         async () => {
-            // TODO
             log("chrome.cast.Session.leave");
+            await this.castSession.endSession(false);
         },
     );
 
     public readonly loadMedia = callbackAsyncFunction(
-        async (media: MediaStub) => {
-            // TODO
-            log("chrome.cast.Session.loadMedia:", media);
+        async (loadRequest: LoadRequest) => {
+            log("chrome.cast.Session.loadMedia:", loadRequest);
+            return this.castSession.loadMedia(loadRequest);
         },
     );
 
@@ -75,6 +66,7 @@ export class Session {
         async (queue: any) => {
             // TODO
             log("chrome.cast.Session.queueLoad:", queue);
+            throw new Error("Unsupported: queueLoad");
         },
     );
 
@@ -87,12 +79,7 @@ export class Session {
         listener: IMessageListener,
     ) {
         log("chrome.cast.Session.removeMessageListener", namespace);
-        this.events.off(namespace, listener);
-
-        this.io.events.off({
-            id: EventSpecIdentifier.sessionMessage,
-            param: namespace,
-        }, listener);
+        this.castSession.removeMessageListener(namespace, listener);
     }
 
     public removeUpdateListener(listener: Listener<boolean>) {
@@ -105,12 +92,7 @@ export class Session {
             message: Record<string, unknown> | string,
         ) => {
             log("chrome.cast.Session.sendMessage:", namespace, message);
-            await this.io.rpc.sessionSendMessage({
-                namespace,
-                stringMessage: typeof message === "string"
-                    ? message
-                    : JSON.stringify(message),
-            });
+            return this.castSession.sendMessage(namespace, message);
         },
     );
 
@@ -118,23 +100,24 @@ export class Session {
         async (
             muted: boolean,
         ) => {
-            // TODO
             log("chrome.cast.Session.setReceiverMuted:", muted);
+            await this.castSession.setMute(muted);
         },
     );
 
     public readonly setReceiverVolumeLevel = callbackAsyncFunction(
         async (
-            newLevel: boolean,
+            newLevel: number,
         ) => {
-            // TODO
             log("chrome.cast.Session.setReceiverVolumeLevel:", newLevel);
+            await this.castSession.setVolume(newLevel);
         },
     );
 
     public readonly stop = callbackAsyncFunction(
         async () => {
-            // TODO
+            log("chrome.cast.Session.stop");
+            await this.castSession.endSession(true);
         },
     );
 }

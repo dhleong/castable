@@ -4,14 +4,15 @@ import { ActiveInputState, SessionState } from "./enums";
 
 import { log } from "../log";
 import { ClientIO } from "../client-io";
+import { EventSpecIdentifier } from "../io/events";
 
 import { ErrorCode } from "../chrome.cast/enums";
 import { LoadRequest } from "../chrome.cast/media";
 import { Receiver } from "../chrome.cast/receiver";
+import { IMessageListener } from "../chrome.cast/listeners";
 
 export class CastSession {
     private readonly events = new EventEmitter();
-    private readonly messages = new EventEmitter();
 
     private activeInputState = ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
 
@@ -27,16 +28,23 @@ export class CastSession {
         this.events.on(event, handler);
     }
 
-    public addMessageListener(event: string, handler: any) {
-        log("CastSession.addMessageListener", event, handler);
-        this.messages.on(event, handler);
+    public addMessageListener(namespace: string, listener: IMessageListener) {
+        log("CastSession.addMessageListener", namespace, listener);
+        this.io.events.on({
+            id: EventSpecIdentifier.sessionMessage,
+            param: namespace,
+        }, listener);
     }
 
     public async endSession(stopCasting: boolean) {
         log("CastSession.endSession", stopCasting);
-        // TODO events ?
         try {
             await this.io.rpc.endCurrentSession({ stopCasting });
+
+            // this should be the only event id we listen to here:
+            await this.io.events.clearMatching(
+                event => event.id === EventSpecIdentifier.sessionMessage,
+            );
         } catch (e) {
             log("CastSession.endSession ERROR: ", e);
         }
@@ -124,15 +132,26 @@ export class CastSession {
         this.events.off(event, handler);
     }
 
-    public removeMessageListener(event: string, handler: any) {
-        log("CastSession.removeMessageListener", event, handler);
-        this.messages.off(event, handler);
+    public removeMessageListener(namespace: string, listener: IMessageListener) {
+        log("CastSession.removeMessageListener", namespace, listener);
+        this.io.events.off({
+            id: EventSpecIdentifier.sessionMessage,
+            param: namespace,
+        }, listener);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    public async sendMessage(namespace: string, data: any) {
-        log("CastSession.sendMessage", namespace, data);
-        // TODO
+    public async sendMessage(
+        namespace: string,
+        message: string | Record<string,
+        unknown>,
+    ) {
+        log("CastSession.sendMessage", namespace, message);
+        return this.io.rpc.sessionSendMessage({
+            namespace,
+            stringMessage: typeof message === "string"
+                ? message
+                : JSON.stringify(message),
+        });
     }
 
     // eslint-disable-next-line class-methods-use-this
