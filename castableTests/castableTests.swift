@@ -18,9 +18,23 @@ class castableTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testDictionaryToStruct() throws {
+        struct SecretCargo {}
+        let dict: [String : Any] = [
+            "smuggled": SecretCargo(),
+            "cargo": "wobbly-headed-geisha-dolls",
+            "gas": 42,
+        ]
+
+        struct Ship: Codable {
+            let cargo: String
+            let gas: Int
+        }
+
+        let ship: Ship = try dict.parse()
+        XCTAssert(ship.cargo == "wobbly-headed-geisha-dolls", "Safely skip non-codable values")
+        XCTAssert(ship.gas == 42, "Safely skip non-codable values")
+
     }
 
     func testPerformanceExample() throws {
