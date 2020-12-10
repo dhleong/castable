@@ -12,8 +12,6 @@ import SwiftCoroutine
 class AppState: ObservableObject {
     static let instance = AppState()
 
-    var events = RemoteEventEmitter()
-
     @Published var devices: [CastDevice]
     @Published var activeDevice: CastDevice? = nil
     @Published var activeApp: CastApp? = nil

@@ -14,8 +14,9 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     let scope = CoScope()
     let cast = CastDiscovery()
 
+    static let events = RemoteEventEmitter()
     static let allSubscribers = [
-        SessionMessageSubscriber(),
+        SessionMessageSubscriber(events: events),
     ]
 
     let handlers: RequestHandlerRegistry = {
@@ -27,7 +28,6 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 
         r.on(.sessionSendMessage, perform: SessionSendHandler())
 
-        let events = AppState.instance.events
         let subscribers = allSubscribers.reduce(into: [:]) { m, s in
             m[s.event] = s
         }
