@@ -1,12 +1,12 @@
 import { EventEmitter } from "events";
 import { v4 as uuid } from "uuid";
 
-import { warn } from "../log";
+import { log, warn } from "../log";
 
 import { IClientIO } from "./model";
 
 export enum EventSpecIdentifier {
-    sessionMessage = "sendMessage",
+    sessionMessage = "sessionMessage",
 }
 
 export interface EventSpec {
@@ -37,6 +37,12 @@ export class RpcEventEmitter {
     ) {
         this.io.registerEventListener(event => {
             if (event.args && event.args.listenerId) {
+                log(
+                    "dispatching event:",
+                    event.args.listenerId,
+                    this.bridge.listenerCount(event.args.listenerId),
+                    event.args.params,
+                );
                 this.bridge.emit(
                     event.args.listenerId,
                     ...(event.args.params || []),

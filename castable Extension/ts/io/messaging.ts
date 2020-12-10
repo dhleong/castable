@@ -1,3 +1,5 @@
+import { log } from "../log";
+
 import { IClientIO } from "./model";
 
 class Future<T> {
@@ -17,6 +19,7 @@ export class RpcMessaging {
     ) {
         this.io.registerEventListener(data => {
             if (data.args && data.args.castableRequestId !== undefined) {
+                log("received rpc response:", data);
                 const future = this.pendingResolves[data.args.castableRequestId];
                 if (data.args.error) {
                     future.reject(data.args.error);

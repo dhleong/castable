@@ -2,7 +2,6 @@ import {
     IPC_INCOMING_EVENT,
     IPC_OUTGOING_EVENT,
 } from "./consts";
-import { log } from "./log";
 import { Listener } from "./chrome.cast/generic-types";
 
 import { RpcEventEmitter } from "./io/events";
@@ -24,7 +23,6 @@ export class ClientIO implements IClientIO {
     public registerEventListener(listener: Listener<ClientEvent>) {
         this.script.addEventListener(IPC_INCOMING_EVENT, event => {
             const data = (event as CustomEvent<ClientEvent>).detail;
-            log("stub received ipc message", data);
             listener(data);
         });
     }
