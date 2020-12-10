@@ -14,8 +14,7 @@ struct SessionMessageSubscriber: EventSubscriber {
     var event = EventSpec.Identifier.sessionMessage
 
     func subscribe(spec: EventSpec) -> CoFuture<Void> {
-        let scope = CoScope()
-        return DispatchQueue.main.coroutineFuture {
+        return DispatchQueue.main.scopedFuture { scope in
             guard let app = AppState.instance.activeApp else {
                 NSLog("castable: no app running")
                 throw GenericError.invalidRequest
