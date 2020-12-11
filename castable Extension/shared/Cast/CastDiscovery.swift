@@ -24,8 +24,13 @@ class CastDiscovery {
             let descriptors = Set(results.compactMap { result in
                 CastServiceDescriptor(from: result)
             })
-            NSLog("castable: results = \(descriptors)")
 
+            if descriptors == self.lastDevices {
+                // no change
+                return
+            }
+
+            NSLog("castable: results = \(descriptors)")
             self.lastDevices = descriptors
             for ch in self.receivers {
                 do {
@@ -64,10 +69,23 @@ class CastDiscovery {
     }
 }
 
+fileprivate enum CapabilitiesMask: Int, CaseIterable {
+    // these are guesses, based on this empirical data:
+    // Chromecast: 4101:   0x01005
+    // Ultra:      200709: 0x31005
+    // Nest Mini:  198660: 0x30804
+    case videoOut = 0x00001
+    case audioOut = 0x00004
+    case audioIn =  0x00800
+}
+
 @available(OSX 10.15, *)
 extension CastServiceDescriptor {
+
     init?(from: NWBrowser.Result) {
         if case let .bonjour(text) = from.metadata {
+            NSLog("castable: text = \(text)")
+
             if let id = text["id"] {
                 self.id = id
             } else {
@@ -89,11 +107,31 @@ extension CastServiceDescriptor {
                 return nil
             }
 
+            if let caValue = text["ca"], let capabilityMask = Int(caValue) {
+                // I'm *assuming* this is a "capabilities" bit mask,
+                // but I could totally be wrong...
+                for key in CapabilitiesMask.allCases {
+                    if capabilityMask & key.rawValue != 0 {
+                        capabilities.append(Capability(from: key))
+                    }
+                }
+            }
+
         } else {
             NSLog("castable: Unexpected result type: \(from.metadata) of \(from)")
             return nil
         }
 
         self.address = from.endpoint
+    }
+}
+
+fileprivate extension CastServiceDescriptor.Capability {
+    init(from: CapabilitiesMask) {
+        switch from {
+        case .audioIn: self = .audioIn
+        case .audioOut: self = .audioOut
+        case .videoOut: self = .videoOut
+        }
     }
 }
