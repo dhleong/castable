@@ -36,6 +36,7 @@ class ChromeCastStub {
     public readonly ErrorCode = ErrorCode;
     public readonly SessionRequest = SessionRequest;
     public readonly Receiver = Receiver;
+    public readonly ReceiverAction = ReceiverAction;
     public readonly ReceiverAvailability = ReceiverAvailability;
     public readonly ReceiverType = ReceiverType;
 
