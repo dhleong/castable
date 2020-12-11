@@ -31,6 +31,7 @@
     "@types/chai": "^4.2.14",
     "@types/debug": "^4.1.5",
     "@types/mocha": "^8.0.4",
+    "@types/safari-extension": "0.0.28",
     "@types/sinon": "^9.0.8",
     "@types/sinon-chai": "^3.2.5",
     "@types/uuid": "^8.3.0",
@@ -51,7 +52,6 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "@types/safari-extension": "0.0.28",
     "debug": "^4.2.0",
     "uuid": "^8.3.2"
   }
