@@ -27,6 +27,7 @@ import {
     optionalCallbackAsyncFunction,
 } from "./chrome.cast/util";
 import { IReceiverActionListener } from "./chrome.cast/listeners";
+import { CastError } from "./chrome.cast/error";
 
 const debug = _debug("castable:chrome.cast");
 
@@ -168,7 +169,7 @@ class ChromeCastStub {
         });
         const errorCode = await cast.requestSession();
         if (errorCode) {
-            throw new Error(`Session error: ${errorCode}`);
+            throw new CastError(errorCode);
         }
 
         const s = cast.getCurrentSession();
