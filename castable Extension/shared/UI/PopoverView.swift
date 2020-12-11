@@ -15,13 +15,21 @@ struct PopoverView: View {
     var body: some View {
         VStack(alignment: .leading) {
             List(appState.devices) { device in
-                Button(device.name) {
-                   NSLog("castable: select \(device.id)")
-                   appState.notifyDeviceSelected(device: device)
-                }
+                DeviceRowView(device: device, state: computeState(of: device))
             }
         }
-        .padding()
+    }
+
+    private func computeState(of device: CastDevice) -> DeviceRowView.State {
+        // ought to be a cleaner way...
+
+        if appState.connectingDevice?.id == device.id {
+            return .connecting
+        } else if appState.activeDevice?.id == device.id {
+            return .active
+        } else {
+            return .none
+        }
     }
 }
 
@@ -30,7 +38,8 @@ struct PopoverView_Previews: PreviewProvider {
     static var previews: some View {
         PopoverView().environmentObject(
             AppState(withDevices: [
-                CastDevice(withName: "Family Room TV")
-            ]))
+                CastDevice(withName: "Captain's TV"),
+                CastDevice(withName: "Mess Hall TV"),
+            ], withActive: CastDevice(withName: "Mess Hall TV")))
     }
 }

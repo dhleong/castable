@@ -13,13 +13,26 @@ class AppState: ObservableObject {
     static let instance = AppState()
 
     @Published var devices: [CastDevice]
+    @Published var connectingDevice: CastDevice? = nil
     @Published var activeDevice: CastDevice? = nil
     @Published var activeApp: CastApp? = nil
 
     private var selectionPromises: [CoPromise<CastDevice>] = []
 
-    init(withDevices devices: [CastDevice] = []) {
+    init(withDevices devices: [CastDevice] = [], withActive device: CastDevice? = nil) {
         self.devices = devices
+        self.activeDevice = device
+    }
+
+    func notifyDeviceStop(device: CastDevice) {
+        NSLog("Stopping device")
+        DispatchQueue.main.startCoroutine {
+            try self.activeApp?.stop().awaitComplete()
+            self.activeApp = nil
+
+            self.activeDevice?.close()
+            self.activeDevice = nil
+        }
     }
 
     func notifyDeviceSelected(device: CastDevice) {
