@@ -9,7 +9,7 @@ class CastDiscovery {
     private var browser: NWBrowser? = nil
 
     private var receivers: [CoChannel<Set<CastServiceDescriptor>>] = []
-    private var lastDevices: Set<CastServiceDescriptor> = []
+    private var lastDevices: Set<CastServiceDescriptor>? = nil
 
     func discover() {
         if browser != nil {
@@ -50,8 +50,10 @@ class CastDiscovery {
         let ch = CoChannel<Set<CastServiceDescriptor>>(capacity: 1)
         receivers.append(ch)
 
-        DispatchQueue.main.startCoroutine {
-            try ch.awaitSend(self.lastDevices)
+        if let lastDevices = self.lastDevices {
+            DispatchQueue.main.startCoroutine {
+                try ch.awaitSend(lastDevices)
+            }
         }
 
         return ch
