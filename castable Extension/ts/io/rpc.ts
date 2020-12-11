@@ -1,3 +1,4 @@
+import { Capability } from "../chrome.cast/enums";
 import { LoadRequest } from "../chrome.cast/media";
 import { RpcMessaging } from "./messaging";
 
@@ -33,6 +34,7 @@ export class Rpc {
                 id: string,
                 name: string,
                 model: string,
+                capabilities: Capability[],
             },
             sessionId: string,
         }

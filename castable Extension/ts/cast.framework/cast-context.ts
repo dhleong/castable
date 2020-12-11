@@ -87,6 +87,7 @@ export class CastContext {
                 new Receiver(
                     result.device.id,
                     result.device.name,
+                    result.device.capabilities,
                 ),
                 result.sessionId,
             );

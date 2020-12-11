@@ -20,11 +20,13 @@ struct RequestSessionHandler: RequestHandler {
             let id: String
             let name: String
             let model: String
+            let capabilities: [CastServiceDescriptor.Capability]
 
             init(from: CastServiceDescriptor) {
                 id = from.id
                 name = from.name
                 model = from.model
+                capabilities = from.capabilities
             }
         }
 
