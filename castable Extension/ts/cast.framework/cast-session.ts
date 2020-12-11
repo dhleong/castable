@@ -23,6 +23,13 @@ import {
     VolumeEventData,
 } from "./events";
 
+// NOTE: here instead of in events to avoid a circular dependency
+export interface SessionStateEventData {
+    session: CastSession;
+    sessionState: SessionState;
+    errorCode: ErrorCode;
+}
+
 export class CastSession {
     private readonly events = new EventEmitter();
 

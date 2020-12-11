@@ -10,8 +10,9 @@ import { IMessageListener } from "./listeners";
 import { LoadRequest, MediaStub } from "./media";
 import { callbackAsyncFunction } from "./util";
 
+import { CastContext } from "../cast.framework/cast-context";
 import { CastSession } from "../cast.framework/cast-session";
-import { SessionState } from "../cast.framework/enums";
+import { CastContextEventType, SessionState } from "../cast.framework/enums";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
@@ -19,12 +20,17 @@ const UPDATE_EVENT = ".update";
 export class Session {
     private readonly events = new EventEmitter();
 
+    private sessionStateListener = () => {
+        this.events.emit(UPDATE_EVENT, this.status === SessionStatus.CONNECTED);
+    };
+
     constructor(
         public readonly sessionId: string,
         public readonly appId: string,
         public readonly displayName: string,
         public readonly appImages: Image[],
         public readonly receiver: Receiver,
+        private readonly castContext: CastContext,
         private readonly castSession: CastSession,
     ) {}
 
@@ -64,9 +70,15 @@ export class Session {
      */
     public addUpdateListener(listener: Listener<boolean>) {
         log("chrome.cast.Session.addUpdateListener");
+        const oldCount = this.events.listenerCount(UPDATE_EVENT);
         this.events.on(UPDATE_EVENT, listener);
 
-        // TODO listen to session status
+        if (!oldCount) {
+            this.castContext.addEventListener(
+                CastContextEventType.SESSION_STATE_CHANGED,
+                this.sessionStateListener,
+            );
+        }
     }
 
     public readonly leave = callbackAsyncFunction(
@@ -105,6 +117,13 @@ export class Session {
 
     public removeUpdateListener(listener: Listener<boolean>) {
         this.events.off(UPDATE_EVENT, listener);
+
+        if (!this.events.listenerCount(UPDATE_EVENT)) {
+            this.castContext.removeEventListener(
+                CastContextEventType.SESSION_STATE_CHANGED,
+                this.sessionStateListener,
+            );
+        }
     }
 
     public readonly sendMessage = callbackAsyncFunction(

@@ -3,10 +3,12 @@ import { EventEmitter } from "events";
 import { ClientIO } from "../client-io";
 import { log } from "../log";
 import { ErrorCode } from "../chrome.cast/enums";
+import { Listener } from "../chrome.cast/generic-types";
 import { Receiver } from "../chrome.cast/receiver";
 
+import { CastSession, SessionStateEventData } from "./cast-session";
 import { CastState, SessionState, CastContextEventType } from "./enums";
-import { CastSession } from "./cast-session";
+import { CastStateEventData } from "./events";
 
 export class CastContext {
     private readonly events = new EventEmitter();
@@ -20,6 +22,14 @@ export class CastContext {
         private readonly io: ClientIO,
     ) {}
 
+    public addEventListener(
+        event: CastContextEventType.SESSION_STATE_CHANGED,
+        handler: Listener<SessionStateEventData>,
+    ): void;
+    public addEventListener(
+        event: CastContextEventType.CAST_STATE_CHANGED,
+        handler: Listener<CastStateEventData>,
+    ): void;
     public addEventListener(event: CastContextEventType, handler: any) {
         log("CastContext.addEventListener", event, handler);
         this.events.on(event, handler);

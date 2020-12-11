@@ -1,5 +1,6 @@
 import { Media } from "../chrome.cast/media/media";
-import { ActiveInputState } from "./enums";
+
+import { ActiveInputState, CastState } from "./enums";
 
 export interface ActiveInputStateEventData {
     activeInputState: ActiveInputState;
@@ -20,4 +21,8 @@ export interface MediaSessionEventData {
 export interface VolumeEventData {
     isMute?: boolean;
     volume?: number;
+}
+
+export interface CastStateEventData {
+    castState: CastState;
 }

@@ -179,6 +179,7 @@ class ChromeCastStub {
             appMeta.name,
             appMeta.images,
             s.getCastDevice(),
+            cast,
             s,
         ), `Session(${appMeta.name}#${s.getSessionId()})`);
     }
