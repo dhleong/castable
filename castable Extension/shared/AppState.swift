@@ -23,6 +23,16 @@ class AppState: ObservableObject {
         self.devices = devices
     }
 
+    func notifyDeviceStop(device: CastDevice) {
+        DispatchQueue.main.startCoroutine {
+            try self.activeApp?.stop().awaitComplete()
+            self.activeApp = nil
+
+            self.activeDevice?.close()
+            self.activeDevice = nil
+        }
+    }
+
     func notifyDeviceSelected(device: CastDevice) {
         for promise in selectionPromises {
             promise.success(device)

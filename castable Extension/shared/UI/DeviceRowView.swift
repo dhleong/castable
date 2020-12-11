@@ -26,7 +26,7 @@ struct DeviceRowView: View {
             switch state {
             case .active:
                 Button(action: {
-
+                    AppState.instance.notifyDeviceStop(device: device)
                 }, label: {
                     if #available(OSX 11.0, *) {
                         Image(systemName: "stop.circle")
