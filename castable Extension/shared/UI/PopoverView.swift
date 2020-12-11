@@ -22,9 +22,10 @@ struct PopoverView: View {
 
     private func computeState(of device: CastDevice) -> DeviceRowView.State {
         // ought to be a cleaner way...
-        if appState.connectingDevice === device {
+
+        if appState.connectingDevice?.id == device.id {
             return .connecting
-        } else if appState.activeDevice === device {
+        } else if appState.activeDevice?.id == device.id {
             return .active
         } else {
             return .none
@@ -39,6 +40,6 @@ struct PopoverView_Previews: PreviewProvider {
             AppState(withDevices: [
                 CastDevice(withName: "Captain's TV"),
                 CastDevice(withName: "Mess Hall TV"),
-            ]))
+            ], withActive: CastDevice(withName: "Mess Hall TV")))
     }
 }

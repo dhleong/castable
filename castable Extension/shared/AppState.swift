@@ -19,11 +19,13 @@ class AppState: ObservableObject {
 
     private var selectionPromises: [CoPromise<CastDevice>] = []
 
-    init(withDevices devices: [CastDevice] = []) {
+    init(withDevices devices: [CastDevice] = [], withActive device: CastDevice? = nil) {
         self.devices = devices
+        self.activeDevice = device
     }
 
     func notifyDeviceStop(device: CastDevice) {
+        NSLog("Stopping device")
         DispatchQueue.main.startCoroutine {
             try self.activeApp?.stop().awaitComplete()
             self.activeApp = nil

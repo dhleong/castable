@@ -46,6 +46,7 @@ struct RequestSessionHandler: RequestHandler {
 
         defer {
             // cleanup popover:
+            NSLog("castable: clean up popover")
             AppState.instance.connectingDevice = nil
             SafariExtensionViewController.shared.dismissPopover()
         }
