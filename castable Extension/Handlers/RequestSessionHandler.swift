@@ -41,9 +41,15 @@ struct RequestSessionHandler: RequestHandler {
         toolbar?.showPopover()
 
         let device = try AppState.instance.deviceSelected().await()
+        AppState.instance.connectingDevice = device
         AppState.instance.activeDevice = device
 
-        // TODO notify popover UI of launching:
+        defer {
+            // cleanup popover:
+            AppState.instance.connectingDevice = nil
+            SafariExtensionViewController.shared.dismissPopover()
+        }
+
         let app = try device.app(withId: req.receiverApplicationId).await()
         let ch = try app.channel(withNamespace: Namespaces.media).await()
 
@@ -54,9 +60,6 @@ struct RequestSessionHandler: RequestHandler {
         AppState.instance.activeApp = app
         let sessionId = ch.destination ?? receiver.sessionId
         NSLog("castable: launched app: \(app): dest=\(String(describing: ch.destination)); sess=\(sessionId)")
-
-        // TODO cleanup popover:
-        SafariExtensionViewController.shared.dismissPopover()
 
         // TODO could we return an Encodable directly in the protocol?
         return try Response(

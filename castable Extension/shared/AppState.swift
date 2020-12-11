@@ -13,6 +13,7 @@ class AppState: ObservableObject {
     static let instance = AppState()
 
     @Published var devices: [CastDevice]
+    @Published var connectingDevice: CastDevice? = nil
     @Published var activeDevice: CastDevice? = nil
     @Published var activeApp: CastApp? = nil
 

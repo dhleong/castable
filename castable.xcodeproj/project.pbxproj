@@ -22,6 +22,8 @@
 		B65D89F525818C3800C2C645 /* EventSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D89F425818C3800C2C645 /* EventSubscriber.swift */; };
 		B65D89FB25818D4900C2C645 /* SessionMessageSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D89FA25818D4900C2C645 /* SessionMessageSubscriber.swift */; };
 		B65D8A0325818F9700C2C645 /* EventSubscriptionRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D8A0225818F9700C2C645 /* EventSubscriptionRegistry.swift */; };
+		B691FF162583B23400FF89CA /* DeviceRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B691FF152583B23400FF89CA /* DeviceRowView.swift */; };
+		B691FF172583B23400FF89CA /* DeviceRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B691FF152583B23400FF89CA /* DeviceRowView.swift */; };
 		B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACD92577F2680019B1CC /* AppDelegate.swift */; };
 		B6CAACDD2577F2680019B1CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6CAACDB2577F2680019B1CC /* Main.storyboard */; };
 		B6CAACDF2577F2680019B1CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CAACDE2577F2680019B1CC /* ViewController.swift */; };
@@ -133,6 +135,7 @@
 		B65D89F425818C3800C2C645 /* EventSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSubscriber.swift; sourceTree = "<group>"; };
 		B65D89FA25818D4900C2C645 /* SessionMessageSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMessageSubscriber.swift; sourceTree = "<group>"; };
 		B65D8A0225818F9700C2C645 /* EventSubscriptionRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSubscriptionRegistry.swift; sourceTree = "<group>"; };
+		B691FF152583B23400FF89CA /* DeviceRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRowView.swift; sourceTree = "<group>"; };
 		B6CAACD52577F2680019B1CC /* castable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = castable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CAACD82577F2680019B1CC /* castable.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = castable.entitlements; sourceTree = "<group>"; };
 		B6CAACD92577F2680019B1CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -267,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				B6EEE5CF257BC6990051E721 /* PopoverView.swift */,
+				B691FF152583B23400FF89CA /* DeviceRowView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -569,6 +573,7 @@
 				B6CAACDA2577F2680019B1CC /* AppDelegate.swift in Sources */,
 				B6D9D0DD257C4C9000FBC92E /* CastChannel.swift in Sources */,
 				B6EEE638257C28680051E721 /* cast_channel.pb.swift in Sources */,
+				B691FF162583B23400FF89CA /* DeviceRowView.swift in Sources */,
 				B6D9D0EF257C740700FBC92E /* protocol.swift in Sources */,
 				B6D3F1E6257FC3710041854E /* Coroutine+Extensions.swift in Sources */,
 				B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */,
@@ -613,6 +618,7 @@
 				B6D9D0F0257C740700FBC92E /* protocol.swift in Sources */,
 				B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */,
 				B6EEE60C257BEBE90051E721 /* CastSocket.swift in Sources */,
+				B691FF172583B23400FF89CA /* DeviceRowView.swift in Sources */,
 				B6EEE5DD257BCD7C0051E721 /* AppState.swift in Sources */,
 				B645922C257AF5070034F034 /* Message.swift in Sources */,
 				B6D9D0FF257D121200FBC92E /* errors.swift in Sources */,
