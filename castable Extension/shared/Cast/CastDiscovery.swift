@@ -84,8 +84,6 @@ extension CastServiceDescriptor {
 
     init?(from: NWBrowser.Result) {
         if case let .bonjour(text) = from.metadata {
-            NSLog("castable: text = \(text)")
-
             if let id = text["id"] {
                 self.id = id
             } else {
