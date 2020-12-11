@@ -1,7 +1,6 @@
+import _debug from "debug";
 import { EventEmitter } from "events";
 import { v4 as uuid } from "uuid";
-
-import { log, warn } from "../log";
 
 import { IClientIO } from "./model";
 
@@ -23,6 +22,8 @@ interface ListenRequest {
     listenerId: string;
 }
 
+const debug = _debug("castable:RpcEventEmitter");
+
 /**
  * Convenient interface for registering event emitters that
  * get fulfilled by the extension via RPC.
@@ -37,7 +38,7 @@ export class RpcEventEmitter {
     ) {
         this.io.registerEventListener(event => {
             if (event.args && event.args.listenerId) {
-                log(
+                debug(
                     "dispatching event:",
                     event.args.listenerId,
                     this.bridge.listenerCount(event.args.listenerId),
@@ -65,7 +66,7 @@ export class RpcEventEmitter {
     public async off<T extends unknown[]>(event: EventSpec, listener: EventListener<T>) {
         const listenerId = this.listenerIds.get(listener);
         if (!listenerId) {
-            warn(`provided unknown listener: ${listener}`);
+            debug(`WARN provided unknown listener: ${listener}`);
             return;
         }
         this.bridge.off(listenerId, listener as any);

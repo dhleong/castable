@@ -1,4 +1,6 @@
-import { log } from "./log";
+import _debug from "debug";
+
+const debug = _debug("castable:proxy");
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function proxy<T extends object>(
@@ -12,8 +14,9 @@ export function proxy<T extends object>(
 
             // NOTE: we may want to show this in some verbose mode...
             if (!had) {
-                log("READ ", name ?? actual, ".", prop, `(found ${had})`);
+                debug("READ ", name ?? actual, ".", prop, `(found ${had})`);
             }
+
             return got;
         },
     });

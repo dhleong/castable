@@ -1,10 +1,12 @@
-import { log } from "../log";
+import _debug from "debug";
 
 import { CompatApplier, CompatContext } from "./model";
 
 // NOTE: this extra agent stuff convinces Youtube's JS
 // to initialize its chromecast support
 const extraAgentConfig = " + Chrome/80+Android";
+
+const debug = _debug("castable:compat:youtube");
 
 export class YoutubeCompat implements CompatApplier {
     // allow lack of "this"; it's an interface method
@@ -32,7 +34,7 @@ export class YoutubeCompat implements CompatApplier {
             },
         });
 
-        log("Applied YT user agent patch: ", patchedUserAgent);
+        debug("Applied YT user agent patch: ", patchedUserAgent);
     }
 
     private static applyAgentBackport(
@@ -44,7 +46,7 @@ export class YoutubeCompat implements CompatApplier {
         for (const key of Object.keys(yt)) {
             if (v[key] === actualUserAgent) {
                 v[key] = patchedUserAgent;
-                log("Back-ported user agent patch to _yt_player");
+                debug("Back-ported user agent patch to _yt_player");
                 break;
             }
         }

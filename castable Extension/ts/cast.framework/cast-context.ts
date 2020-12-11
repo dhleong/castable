@@ -1,7 +1,8 @@
+import _debug from "debug";
+
 import { EventEmitter } from "events";
 
 import { ClientIO } from "../client-io";
-import { log } from "../log";
 import { ErrorCode } from "../chrome.cast/enums";
 import { Listener } from "../chrome.cast/generic-types";
 import { Receiver } from "../chrome.cast/receiver";
@@ -9,6 +10,8 @@ import { Receiver } from "../chrome.cast/receiver";
 import { CastSession, SessionStateEventData } from "./cast-session";
 import { CastState, SessionState, CastContextEventType } from "./enums";
 import { CastStateEventData } from "./events";
+
+const debug = _debug("castable:CastContext");
 
 export class CastContext {
     private readonly events = new EventEmitter();
@@ -31,12 +34,12 @@ export class CastContext {
         handler: Listener<CastStateEventData>,
     ): void;
     public addEventListener(event: CastContextEventType, handler: any) {
-        log("CastContext.addEventListener", event, handler);
+        debug("addEventListener", event, handler);
         this.events.on(event, handler);
     }
 
     public async endCurrentSession(stopCasting: boolean) {
-        log("CastContext.endCurrentSession", stopCasting);
+        debug("endCurrentSession", stopCasting);
         this.setCastState(CastState.NOT_CONNECTED);
         this.setSessionState(SessionState.SESSION_ENDING);
         this.currentSession = null;
@@ -44,7 +47,7 @@ export class CastContext {
         try {
             await this.io.rpc.endCurrentSession({ stopCasting });
         } catch (e) {
-            log("CastContext.endCurrentSession ERROR: ", e);
+            debug("endCurrentSession ERROR: ", e);
         } finally {
             this.setCastState(CastState.NOT_CONNECTED);
             this.setSessionState(SessionState.SESSION_ENDED);
@@ -53,33 +56,33 @@ export class CastContext {
     }
 
     public getCastState() {
-        log("CastContext.getCastState <- ", this.castState);
+        debug("getCastState <- ", this.castState);
         return this.castState;
     }
 
     public getCurrentSession() {
-        log("CastContext.getCurrentSession", this.currentSession);
+        debug("getCurrentSession", this.currentSession);
         return this.currentSession;
     }
 
     public getSessionState() {
-        log("CastContext.getSessionState <- ", this.sessionState);
+        debug("getSessionState <- ", this.sessionState);
         return this.sessionState;
     }
 
     public removeEventListener(event: CastContextEventType, handler: any) {
-        log("CastContext.removeEventListener", event, handler);
+        debug("removeEventListener", event, handler);
         this.events.off(event, handler);
     }
 
     public async requestSession() {
-        log("CastContext.requestSession");
+        debug("requestSession");
         try {
             this.setCastState(CastState.CONNECTING);
             this.setSessionState(SessionState.SESSION_STARTING);
 
             const result = await this.io.rpc.requestSession(this.options);
-            log("requestSession -> ", result);
+            debug("requestSession -> ", result);
 
             this.currentSession = new CastSession(
                 this.io,
@@ -100,7 +103,7 @@ export class CastContext {
             this.setSessionState(SessionState.SESSION_START_FAILED);
             this.setSessionState(SessionState.NO_SESSION);
 
-            log("requestSession ERROR: ", e);
+            debug("requestSession ERROR: ", e);
             if (e.id === "cancelled") {
                 this.setCastState(CastState.NO_DEVICES_AVAILABLE);
                 return ErrorCode.CANCEL;
@@ -113,11 +116,11 @@ export class CastContext {
 
     // eslint-disable-next-line class-methods-use-this
     public setLaunchCredentialsData(data: any) {
-        log("CastContext.setLaunchCredentialsData", data);
+        debug("setLaunchCredentialsData", data);
     }
 
     public setOptions(opts: any) {
-        log("CastContext.setOptions", opts);
+        debug("setOptions", opts);
         this.options = opts;
     }
 
@@ -146,7 +149,7 @@ export class CastContext {
 
     private emit(event: string, ...args: any[]) {
         const receivers = this.events.listenerCount(event);
-        log("CastContext.emit (to", receivers, ")", event, ...args);
+        debug("emit (to", receivers, ")", event, ...args);
         this.events.emit(event, ...args);
     }
 }

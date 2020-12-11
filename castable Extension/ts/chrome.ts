@@ -1,4 +1,5 @@
-import { log } from "./log";
+import _debug from "debug";
+
 import { proxy } from "./proxy";
 
 import { CastStub } from "./cast";
@@ -26,6 +27,8 @@ import {
     optionalCallbackAsyncFunction,
 } from "./chrome.cast/util";
 import { IReceiverActionListener } from "./chrome.cast/listeners";
+
+const debug = _debug("castable:chrome.cast");
 
 class ChromeCastStub {
     public readonly VERSION = [1, 2];
@@ -57,7 +60,7 @@ class ChromeCastStub {
 
     public initialize = callbackAsyncFunction(
         async (apiConfig: ApiConfig) => {
-            log("INITIALIZE", apiConfig);
+            debug("INITIALIZE", apiConfig);
             this.config = apiConfig;
 
             // FIXME: get this state from the extension
@@ -66,7 +69,7 @@ class ChromeCastStub {
     );
 
     public addReceiverActionListener(listener: IReceiverActionListener) {
-        log("chrome.cast.addReceiverActionListener:", listener);
+        debug("addReceiverActionListener:", listener);
         const context = this.cast.framework.CastContext.getInstance();
         const wrapper = ({ sessionState }: {sessionState: SessionState}) => {
             const device = context.getCurrentSession()?.device;
@@ -84,16 +87,16 @@ class ChromeCastStub {
 
     // eslint-disable-next-line class-methods-use-this
     public logMessage(message: any) {
-        log("chrome.cast.logMessage:", message);
+        debug("logMessage:", message);
     }
 
     // eslint-disable-next-line class-methods-use-this
     public precache(data: any) {
-        log("chrome.cast.precache:", data);
+        debug("precache:", data);
     }
 
     public removeReceiverActionListener(listener: IReceiverActionListener) {
-        log("chrome.cast.removeReceiverActionListener:", listener);
+        debug("removeReceiverActionListener:", listener);
         const wrapper = this.listenerWrappers.get(listener);
         if (wrapper) {
             const context = this.cast.framework.CastContext.getInstance();
@@ -108,13 +111,13 @@ class ChromeCastStub {
                 throw new Error("No sessionRequest available");
             }
 
-            log("chrome.cast.requestSession", sessionRequest, "->", request);
+            debug("requestSession", sessionRequest, "->", request);
             const cast = this.cast.framework.CastContext.getInstance();
             const session = await ChromeCastStub.requestSessionImpl(
                 cast, request,
             );
 
-            log("chrome.cast.requestSession success:", session);
+            debug("requestSession success:", session);
 
             const listener = this.config?.sessionListener;
             if (listener) listener(session);
@@ -125,7 +128,7 @@ class ChromeCastStub {
 
     // eslint-disable-next-line class-methods-use-this
     public requestSessionById(id: string) {
-        log("chrome.cast.requestSessionById", id);
+        debug("requestSessionById", id);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -134,24 +137,24 @@ class ChromeCastStub {
         successCallback: any,
         errorCallback: any,
     ) {
-        log("chrome.cast.setCustomReceivers", receivers, successCallback, errorCallback);
+        debug("setCustomReceivers", receivers, successCallback, errorCallback);
     }
 
     // eslint-disable-next-line class-methods-use-this
     public setPageContext(win: any) {
-        log("chrome.cast.setPageContext", win);
+        debug("setPageContext", win);
     }
 
     public setReceiverDisplayStatus = callbackAsyncFunction(
         async (receiver: Receiver) => {
             // TODO
-            log("chrome.cast.setReceiverDisplayStatus", receiver);
+            debug("setReceiverDisplayStatus", receiver);
         },
     );
 
     // eslint-disable-next-line class-methods-use-this
     public unescape(s: string) {
-        log("chrome.cast.unescape", s);
+        debug("unescape", s);
         // ?!
         return unescape(s);
     }
@@ -203,6 +206,8 @@ export type GCastApiAvailabilityHandler =
 export class ChromeController {
     public readonly chrome: ChromeStub;
 
+    private readonly debug = _debug("castable:chrome");
+
     constructor(cast: CastStub) {
         this.chrome = new ChromeStub(cast);
     }
@@ -210,7 +215,7 @@ export class ChromeController {
     private receivedApiAvailableHandler: GCastApiAvailabilityHandler;
 
     public onGCastApiAvailable = (isAvailable: boolean, err: any) => {
-        log("received GCast API Availability: ", isAvailable, err);
+        this.debug("received GCast API Availability: ", isAvailable, err);
     };
 
     public setGCastApiAvailableHandler(callback: GCastApiAvailabilityHandler) {

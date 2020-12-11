@@ -1,4 +1,4 @@
-import { warn } from "./log";
+import _debug from "debug";
 
 export interface SafariMessageEvent {
     name: string;
@@ -23,6 +23,8 @@ interface MessagingSafariPage {
         handler: MessageEventHandler,
     ): void;
 }
+
+const debug = _debug("castable:extension");
 
 export function dispatchMessage(
     messageName: string,
@@ -83,7 +85,7 @@ export class EventRegistrar {
         if (handler) {
             handler(event);
         } else {
-            warn("No handler registered for:", event);
+            debug("No handler registered for:", event);
         }
     }
 }

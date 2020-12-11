@@ -1,3 +1,4 @@
+import _debug from "debug";
 import { EventEmitter } from "events";
 
 import {
@@ -6,7 +7,6 @@ import {
     SessionState,
 } from "./enums";
 
-import { log } from "../log";
 import { ClientIO } from "../client-io";
 import { EventSpecIdentifier } from "../io/events";
 
@@ -29,6 +29,8 @@ export interface SessionStateEventData {
     sessionState: SessionState;
     errorCode: ErrorCode;
 }
+
+const debug = _debug("castable:CastSession");
 
 export class CastSession {
     private readonly events = new EventEmitter();
@@ -64,12 +66,12 @@ export class CastSession {
         handler: Listener<VolumeEventData>,
     ): void;
     public addEventListener(event: string, handler: any) {
-        log("CastSession.addEventListener", event, handler);
+        debug("addEventListener", event, handler);
         this.events.on(event, handler);
     }
 
     public addMessageListener(namespace: string, listener: IMessageListener) {
-        log("CastSession.addMessageListener", namespace, listener);
+        debug("addMessageListener", namespace, listener);
         this.io.events.on({
             id: EventSpecIdentifier.sessionMessage,
             param: namespace,
@@ -77,7 +79,7 @@ export class CastSession {
     }
 
     public async endSession(stopCasting: boolean) {
-        log("CastSession.endSession", stopCasting);
+        debug("endSession", stopCasting);
         try {
             this.sessionState = SessionState.SESSION_ENDING;
             await this.io.rpc.endCurrentSession({ stopCasting });
@@ -89,12 +91,12 @@ export class CastSession {
                 event => event.id === EventSpecIdentifier.sessionMessage,
             );
         } catch (e) {
-            log("CastSession.endSession ERROR: ", e);
+            debug("endSession ERROR: ", e);
         }
     }
 
     public getActiveInputState() {
-        log("CastSession.getActiveInputState");
+        debug("getActiveInputState");
         // ?
         return this.activeInputState;
     }
@@ -111,71 +113,71 @@ export class CastSession {
 
     // eslint-disable-next-line class-methods-use-this
     public getApplicationStatus() {
-        log("CastSession.getApplicationStatus");
+        debug("getApplicationStatus");
         return null; // ?
     }
 
     public getCastDevice() {
-        log("CastSession.getCastDevice", this.device);
+        debug("getCastDevice", this.device);
         return this.device;
     }
 
     // eslint-disable-next-line class-methods-use-this
     public getMediaSession() {
-        log("CastSession.getMediaSession");
+        debug("getMediaSession");
         // TODO
         return null;
     }
 
     public getSessionId() {
-        log("CastSession.getSessionId");
+        debug("getSessionId");
         return this.sessionId;
     }
 
     // eslint-disable-next-line class-methods-use-this
     public getSessionObj() {
-        log("CastSession.getSessionObj");
+        debug("getSessionObj");
         return {}; // chrome.cast.Session
     }
 
     public getSessionState() {
-        log("CastSession.getSessionState", this.sessionState);
+        debug("getSessionState", this.sessionState);
         return this.sessionState;
     }
 
     // eslint-disable-next-line class-methods-use-this
     public getVolume() {
-        log("CastSession.getVolume");
+        debug("getVolume");
         // TODO
         return 1;
     }
 
     // eslint-disable-next-line class-methods-use-this
     public isMute() {
-        log("CastSession.isMute");
+        debug("isMute");
         // TODO
         return null;
     }
 
     public async loadMedia(loadRequest: LoadRequest) {
-        log("CastSession.loadMedia", loadRequest);
+        debug("loadMedia", loadRequest);
         try {
             await this.io.rpc.loadMedia(loadRequest);
-            log("CastSession.loadMedia: success!");
+            debug("loadMedia: success!");
             return null;
         } catch (e) {
-            log("CastSession.loadMedia: ERROR:", e);
+            debug("loadMedia: ERROR:", e);
             return ErrorCode.LOAD_MEDIA_FAILED;
         }
     }
 
     public removeEventListener(event: string, handler: any) {
-        log("CastSession.removeEventListener", event, handler);
+        debug("removeEventListener", event, handler);
         this.events.off(event, handler);
     }
 
     public removeMessageListener(namespace: string, listener: IMessageListener) {
-        log("CastSession.removeMessageListener", namespace, listener);
+        debug("removeMessageListener", namespace, listener);
         this.io.events.off({
             id: EventSpecIdentifier.sessionMessage,
             param: namespace,
@@ -187,7 +189,7 @@ export class CastSession {
         message: string | Record<string,
         unknown>,
     ) {
-        log("CastSession.sendMessage", namespace, message);
+        debug("sendMessage", namespace, message);
         return this.io.rpc.sessionSendMessage({
             namespace,
             stringMessage: typeof message === "string"
@@ -198,13 +200,13 @@ export class CastSession {
 
     // eslint-disable-next-line class-methods-use-this
     public async setMute(isMute: boolean) {
-        log("CastSession.setMute", isMute);
+        debug("setMute", isMute);
         // TODO
     }
 
     // eslint-disable-next-line class-methods-use-this
     public async setVolume(volume: number) {
-        log("CastSession.setVolume", volume);
+        debug("setVolume", volume);
         // TODO
     }
 }

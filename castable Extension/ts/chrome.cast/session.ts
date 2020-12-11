@@ -1,6 +1,5 @@
+import _debug from "debug";
 import { EventEmitter } from "events";
-
-import { log } from "../log";
 
 import { SessionStatus } from "./enums";
 import { Image } from "./image";
@@ -16,6 +15,8 @@ import { CastContextEventType, SessionState } from "../cast.framework/enums";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
+
+const debug = _debug("castable:chrome.cast.Session");
 
 export class Session {
     private readonly events = new EventEmitter();
@@ -52,7 +53,7 @@ export class Session {
     }
 
     public addMediaListener(listener: Listener<MediaStub>) {
-        log("chrome.cast.Session.addMediaListener");
+        debug("addMediaListener");
         this.events.on(MEDIA_EVENT, listener);
     }
 
@@ -60,7 +61,7 @@ export class Session {
         namespace: string,
         listener: IMessageListener,
     ) {
-        log("chrome.cast.Session.addMessageListener", namespace);
+        debug("addMessageListener", namespace);
         this.castSession.addMessageListener(namespace, listener);
     }
 
@@ -69,7 +70,7 @@ export class Session {
      * `receiver.volume` have changed
      */
     public addUpdateListener(listener: Listener<boolean>) {
-        log("chrome.cast.Session.addUpdateListener");
+        debug("addUpdateListener");
         const oldCount = this.events.listenerCount(UPDATE_EVENT);
         this.events.on(UPDATE_EVENT, listener);
 
@@ -83,14 +84,14 @@ export class Session {
 
     public readonly leave = callbackAsyncFunction(
         async () => {
-            log("chrome.cast.Session.leave");
+            debug("leave");
             await this.castSession.endSession(false);
         },
     );
 
     public readonly loadMedia = callbackAsyncFunction(
         async (loadRequest: LoadRequest) => {
-            log("chrome.cast.Session.loadMedia:", loadRequest);
+            debug("loadMedia:", loadRequest);
             return this.castSession.loadMedia(loadRequest);
         },
     );
@@ -98,7 +99,7 @@ export class Session {
     public readonly queueLoad = callbackAsyncFunction(
         async (queue: any) => {
             // TODO
-            log("chrome.cast.Session.queueLoad:", queue);
+            debug("queueLoad:", queue);
             throw new Error("Unsupported: queueLoad");
         },
     );
@@ -111,7 +112,7 @@ export class Session {
         namespace: string,
         listener: IMessageListener,
     ) {
-        log("chrome.cast.Session.removeMessageListener", namespace);
+        debug("removeMessageListener", namespace);
         this.castSession.removeMessageListener(namespace, listener);
     }
 
@@ -131,7 +132,7 @@ export class Session {
             namespace: string,
             message: Record<string, unknown> | string,
         ) => {
-            log("chrome.cast.Session.sendMessage:", namespace, message);
+            debug("sendMessage:", namespace, message);
             return this.castSession.sendMessage(namespace, message);
         },
     );
@@ -140,7 +141,7 @@ export class Session {
         async (
             muted: boolean,
         ) => {
-            log("chrome.cast.Session.setReceiverMuted:", muted);
+            debug("setReceiverMuted:", muted);
             await this.castSession.setMute(muted);
         },
     );
@@ -149,14 +150,14 @@ export class Session {
         async (
             newLevel: number,
         ) => {
-            log("chrome.cast.Session.setReceiverVolumeLevel:", newLevel);
+            debug("setReceiverVolumeLevel:", newLevel);
             await this.castSession.setVolume(newLevel);
         },
     );
 
     public readonly stop = callbackAsyncFunction(
         async () => {
-            log("chrome.cast.Session.stop");
+            debug("stop");
             await this.castSession.endSession(true);
         },
     );

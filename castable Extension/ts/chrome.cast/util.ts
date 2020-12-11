@@ -1,4 +1,4 @@
-import { log } from "../log";
+import _debug from "debug";
 
 import { ErrorCode } from "./enums";
 import { CastError } from "./error";
@@ -12,6 +12,8 @@ type WithListeners<T, Args extends Arr> = [
     Listener<CastError>,
 ];
 
+const debug = _debug("castable:chrome.cast:util");
+
 function isErrorCode(v: any): v is ErrorCode {
     if (typeof v !== "string") return false;
     const lookup: any = (ErrorCode as any)[v];
@@ -22,7 +24,7 @@ function wrappingError(
     errorCallback: Listener<CastError>,
 ): (e: any) => void {
     return e => {
-        log("received error:", e);
+        debug("received error:", e);
         if (e instanceof CastError) {
             errorCallback(e);
         } else if (isErrorCode(e)) {

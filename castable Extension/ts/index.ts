@@ -1,3 +1,5 @@
+import _debug from "debug";
+
 import {
     STUB_ELEMENT_ID,
     IPC_OUTGOING_EVENT,
@@ -5,8 +7,9 @@ import {
 } from "./consts";
 import { dispatchMessage, EventRegistrar } from "./extension";
 import { ClientEvent } from "./io/model";
-import { log } from "./log";
 import { init as initStub } from "./stub";
+
+const debug = _debug("castable:index");
 
 function createScriptElement(url: string) {
     const newElement = document.createElement("script");
@@ -17,7 +20,7 @@ function createScriptElement(url: string) {
 }
 
 function registerCast(registrar: EventRegistrar) {
-    log("registering cast stub");
+    debug("registering cast stub");
 
     const scriptContainer = document.head ?? document.documentElement;
 
@@ -34,14 +37,14 @@ function registerCast(registrar: EventRegistrar) {
     // forward messages sent from the client script to the extension
     script.addEventListener(IPC_OUTGOING_EVENT, event => {
         const data = (event as CustomEvent<ClientEvent>).detail;
-        log("forwarding message:", data);
+        debug("forwarding message:", data);
 
         dispatchMessage(data.name, data.args);
     });
 
     // forward messages received from the extension to the client script
     registrar.on(IPC_INCOMING_EVENT, event => {
-        log("ext received ipc message", event);
+        debug("ext received ipc message", event);
         script.dispatchEvent(new CustomEvent(IPC_INCOMING_EVENT, {
             detail: {
                 name: event.name,
@@ -61,18 +64,22 @@ function registerCast(registrar: EventRegistrar) {
 
 function initExt() {
     if (window.top !== window) {
-        log("ignoring non-top window:", window);
+        debug("ignoring non-top window:", window);
         return;
     }
 
     if (document.getElementById(STUB_ELEMENT_ID)) {
-        log("castable.script already enqueued");
+        debug("castable.script already enqueued");
         return;
     }
 
-    log("initExt", document.currentScript, safari, (window as any).chrome);
+    debug("initExt", document.currentScript, safari, (window as any).chrome);
     const registrar = new EventRegistrar();
     registerCast(registrar);
+}
+
+if (process.env.NODE_ENV !== "production") {
+    _debug.enable("castable:*");
 }
 
 if (window.safari && window.safari.extension) {

@@ -1,16 +1,19 @@
+import _debug from "debug";
+
 import { CastStub } from "./cast";
 import { ChromeController } from "./chrome";
 import { ClientIO } from "./client-io";
 import { applyCompat } from "./compat";
-import { log } from "./log";
 import { proxy } from "./proxy";
+
+const debug = _debug("castable:stub");
 
 /**
  * Initializes chromecast stubbing
  */
 export function init() {
-    log(
-        "stub.init",
+    debug(
+        "init",
         safari.extension as any,
         document.currentScript,
         window.safari,
@@ -19,7 +22,7 @@ export function init() {
 
     const script = document.currentScript;
     if (!script || !(script instanceof HTMLScriptElement)) {
-        log("ERROR: Unable to init cast stubs; unexpected currentScript:", script);
+        debug("ERROR: Unable to init cast stubs; unexpected currentScript:", script);
         return;
     }
 
@@ -37,12 +40,12 @@ export function init() {
 
         __onGCastApiAvailable: {
             get() {
-                log("READ onGCastApiAvailable <- ", typeof controller.onGCastApiAvailable);
+                debug("READ onGCastApiAvailable <- ", typeof controller.onGCastApiAvailable);
                 return controller.onGCastApiAvailable;
             },
 
             set(value) {
-                log("set onGCastApiAvailable <- ", value);
+                debug("set onGCastApiAvailable <- ", value);
                 controller.setGCastApiAvailableHandler(value);
             },
         },
@@ -52,5 +55,5 @@ export function init() {
     // this is primarily aimed at youtube:
     applyCompat();
 
-    log("Created chromecast API stub");
+    debug("Created chromecast API stub");
 }
