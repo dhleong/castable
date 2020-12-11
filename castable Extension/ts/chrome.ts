@@ -12,6 +12,7 @@ import {
     ErrorCode,
     ReceiverType,
     ReceiverAvailability,
+    ReceiverAction,
 } from "./chrome.cast/enums";
 import { MediaStub } from "./chrome.cast/media";
 import { Receiver } from "./chrome.cast/receiver";
@@ -22,6 +23,8 @@ import {
     callbackAsyncFunction,
     optionalCallbackAsyncFunction,
 } from "./chrome.cast/util";
+import { IReceiverActionListener } from "./chrome.cast/listeners";
+import { CastContextEventType, SessionState } from "./cast.framework/enums";
 
 class ChromeCastStub {
     public readonly VERSION = [1, 2];
@@ -43,6 +46,8 @@ class ChromeCastStub {
 
     private config: ApiConfig | undefined;
 
+    private readonly listenerWrappers = new Map<IReceiverActionListener, any>();
+
     constructor(
         private readonly cast: CastStub,
     ) {}
@@ -57,10 +62,21 @@ class ChromeCastStub {
         },
     );
 
-    // eslint-disable-next-line class-methods-use-this
-    public addReceiverActionListener(listener: any) {
-        // TODO forward to cast.framework?
+    public addReceiverActionListener(listener: IReceiverActionListener) {
         log("chrome.cast.addReceiverActionListener:", listener);
+        const context = this.cast.framework.CastContext.getInstance();
+        const wrapper = ({ sessionState }: {sessionState: SessionState}) => {
+            const device = context.getCurrentSession()?.device;
+            if (!device) return;
+            if (sessionState === SessionState.SESSION_STARTED) {
+                listener(device, ReceiverAction.CAST);
+            } else if (sessionState === SessionState.SESSION_ENDING) {
+                listener(device, ReceiverAction.STOP);
+            }
+        };
+
+        this.listenerWrappers.set(listener, wrapper);
+        context.addEventListener(CastContextEventType.SESSION_STATE_CHANGED, wrapper);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -73,10 +89,13 @@ class ChromeCastStub {
         log("chrome.cast.precache:", data);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    public removeReceiverActionListener(listener: any) {
-        // TODO forward to cast.framework?
+    public removeReceiverActionListener(listener: IReceiverActionListener) {
         log("chrome.cast.removeReceiverActionListener:", listener);
+        const wrapper = this.listenerWrappers.get(listener);
+        if (wrapper) {
+            const context = this.cast.framework.CastContext.getInstance();
+            context.removeEventListener(CastContextEventType.SESSION_STATE_CHANGED, wrapper);
+        }
     }
 
     public readonly requestSession = optionalCallbackAsyncFunction(

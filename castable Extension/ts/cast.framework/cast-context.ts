@@ -20,7 +20,7 @@ export class CastContext {
         private readonly io: ClientIO,
     ) {}
 
-    public addEventListener(event: string, handler: any) {
+    public addEventListener(event: CastContextEventType, handler: any) {
         log("CastContext.addEventListener", event, handler);
         this.events.on(event, handler);
     }
@@ -57,7 +57,7 @@ export class CastContext {
         return this.sessionState;
     }
 
-    public removeEventListener(event: string, handler: any) {
+    public removeEventListener(event: CastContextEventType, handler: any) {
         log("CastContext.removeEventListener", event, handler);
         this.events.off(event, handler);
     }

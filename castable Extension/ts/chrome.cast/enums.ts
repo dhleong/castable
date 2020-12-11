@@ -30,6 +30,11 @@ export enum ErrorCode {
     LOAD_MEDIA_FAILED = "LOAD_MEDIA_FAILED",
 }
 
+export enum ReceiverAction {
+    CAST = "CAST",
+    STOP = "STOP",
+}
+
 export enum ReceiverAvailability {
     AVAILABLE = "AVAILABLE",
     UNAVAILABLE = "UNAVAILABLE",
