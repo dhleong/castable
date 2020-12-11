@@ -30,6 +30,13 @@ export enum ErrorCode {
     LOAD_MEDIA_FAILED = "LOAD_MEDIA_FAILED",
 }
 
+export enum PlayerState {
+    IDLE = "IDLE",
+    PLAYING = "PLAYING",
+    PAUSED = "PAUSED",
+    BUFFERING = "BUFFERING",
+}
+
 export enum ReceiverAction {
     CAST = "CAST",
     STOP = "STOP",
@@ -47,11 +54,10 @@ export enum ReceiverType {
     CUSTOM = "CUSTOM",
 }
 
-export enum PlayerState {
-    IDLE = "IDLE",
-    PLAYING = "PLAYING",
-    PAUSED = "PAUSED",
-    BUFFERING = "BUFFERING",
+export enum SessionStatus {
+    CONNECTED = "CONNECTED",
+    DISCONNECTED = "DISCONNECTED",
+    STOPPED = "STOPPED",
 }
 
 export enum StreamType {

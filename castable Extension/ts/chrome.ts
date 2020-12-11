@@ -3,6 +3,7 @@ import { proxy } from "./proxy";
 
 import { CastStub } from "./cast";
 import { CastContext } from "./cast.framework/cast-context";
+import { CastContextEventType, SessionState } from "./cast.framework/enums";
 
 import { ApiConfig } from "./chrome.cast/api-config";
 import { DialRequest } from "./chrome.cast/dial-request";
@@ -13,6 +14,7 @@ import {
     ReceiverType,
     ReceiverAvailability,
     ReceiverAction,
+    SessionStatus,
 } from "./chrome.cast/enums";
 import { MediaStub } from "./chrome.cast/media";
 import { Receiver } from "./chrome.cast/receiver";
@@ -24,7 +26,6 @@ import {
     optionalCallbackAsyncFunction,
 } from "./chrome.cast/util";
 import { IReceiverActionListener } from "./chrome.cast/listeners";
-import { CastContextEventType, SessionState } from "./cast.framework/enums";
 
 class ChromeCastStub {
     public readonly VERSION = [1, 2];
@@ -35,6 +36,7 @@ class ChromeCastStub {
     public readonly DefaultActionPolicy = DefaultActionPolicy;
     public readonly ErrorCode = ErrorCode;
     public readonly SessionRequest = SessionRequest;
+    public readonly SessionStatus = SessionStatus;
     public readonly Receiver = Receiver;
     public readonly ReceiverAction = ReceiverAction;
     public readonly ReceiverAvailability = ReceiverAvailability;

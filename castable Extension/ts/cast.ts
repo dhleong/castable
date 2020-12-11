@@ -6,6 +6,7 @@ import {
     ActiveInputState,
     CastContextEventType,
     CastState,
+    SessionEventType,
     SessionState,
 } from "./cast.framework/enums";
 import {
@@ -31,6 +32,7 @@ class FrameworkStub {
     public readonly CastContext: StaticClassContext;
     public readonly RemotePlayer = RemotePlayer;
     public readonly RemotePlayerController = RemotePlayerController;
+    public readonly SessionEventType = SessionEventType;
 
     constructor(
         io: ClientIO,

@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 
 import { log } from "../log";
 
+import { SessionStatus } from "./enums";
 import { Image } from "./image";
 import { Receiver } from "./receiver";
 import { Listener } from "./generic-types";
@@ -10,6 +11,7 @@ import { LoadRequest, MediaStub } from "./media";
 import { callbackAsyncFunction } from "./util";
 
 import { CastSession } from "../cast.framework/cast-session";
+import { SessionState } from "../cast.framework/enums";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
@@ -25,6 +27,23 @@ export class Session {
         public readonly receiver: Receiver,
         private readonly castSession: CastSession,
     ) {}
+
+    public get status() {
+        switch (this.castSession.getSessionState()) {
+            case SessionState.NO_SESSION:
+            case SessionState.SESSION_START_FAILED:
+                return SessionStatus.STOPPED;
+
+            case SessionState.SESSION_RESUMED:
+            case SessionState.SESSION_STARTING:
+            case SessionState.SESSION_STARTED:
+                return SessionStatus.CONNECTED;
+
+            case SessionState.SESSION_ENDING:
+            case SessionState.SESSION_ENDED:
+                return SessionStatus.DISCONNECTED;
+        }
+    }
 
     public addMediaListener(listener: Listener<MediaStub>) {
         log("chrome.cast.Session.addMediaListener");
@@ -46,6 +65,8 @@ export class Session {
     public addUpdateListener(listener: Listener<boolean>) {
         log("chrome.cast.Session.addUpdateListener");
         this.events.on(UPDATE_EVENT, listener);
+
+        // TODO listen to session status
     }
 
     public readonly leave = callbackAsyncFunction(

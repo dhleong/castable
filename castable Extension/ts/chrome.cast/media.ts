@@ -1,5 +1,7 @@
 import { StreamType, PlayerState, TrackType } from "./enums";
 
+import { Media } from "./media/media";
+
 export class MediaInfo {
     constructor(
         public readonly contentId: string,
@@ -25,6 +27,7 @@ export class MediaStub {
     public readonly StreamType = StreamType;
     public readonly TrackType = TrackType;
 
+    public readonly Media = Media;
     public readonly MediaInfo = MediaInfo;
     public readonly LoadRequest = LoadRequest;
     public readonly SeekRequest = AssignableContainer;

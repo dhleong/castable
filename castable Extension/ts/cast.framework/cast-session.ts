@@ -1,6 +1,10 @@
 import { EventEmitter } from "events";
 
-import { ActiveInputState, SessionState } from "./enums";
+import {
+    ActiveInputState,
+    SessionEventType,
+    SessionState,
+} from "./enums";
 
 import { log } from "../log";
 import { ClientIO } from "../client-io";
@@ -10,11 +14,20 @@ import { ErrorCode } from "../chrome.cast/enums";
 import { LoadRequest } from "../chrome.cast/media";
 import { Receiver } from "../chrome.cast/receiver";
 import { IMessageListener } from "../chrome.cast/listeners";
+import { Listener } from "../chrome.cast/generic-types";
+import {
+    ActiveInputStateEventData,
+    ApplicationMetadataEventData,
+    ApplicationStatusEventData,
+    MediaSessionEventData,
+    VolumeEventData,
+} from "./events";
 
 export class CastSession {
     private readonly events = new EventEmitter();
 
     private activeInputState = ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
+    private sessionState = SessionState.SESSION_STARTED;
 
     constructor(
         public readonly io: ClientIO,
@@ -23,6 +36,26 @@ export class CastSession {
         private readonly sessionId: string,
     ) {}
 
+    public addEventListener(
+        event: SessionEventType.ACTIVE_INPUT_STATE_CHANGED,
+        handler: Listener<ActiveInputStateEventData>,
+    ): void;
+    public addEventListener(
+        event: SessionEventType.APPLICATION_METADATA_CHANGED,
+        handler: Listener<ApplicationMetadataEventData>,
+    ): void;
+    public addEventListener(
+        event: SessionEventType.APPLICATION_STATUS_CHANGED,
+        handler: Listener<ApplicationStatusEventData>,
+    ): void;
+    public addEventListener(
+        event: SessionEventType.MEDIA_SESSION,
+        handler: Listener<MediaSessionEventData>,
+    ): void;
+    public addEventListener(
+        event: SessionEventType.VOLUME_CHANGED,
+        handler: Listener<VolumeEventData>,
+    ): void;
     public addEventListener(event: string, handler: any) {
         log("CastSession.addEventListener", event, handler);
         this.events.on(event, handler);
@@ -39,7 +72,10 @@ export class CastSession {
     public async endSession(stopCasting: boolean) {
         log("CastSession.endSession", stopCasting);
         try {
+            this.sessionState = SessionState.SESSION_ENDING;
             await this.io.rpc.endCurrentSession({ stopCasting });
+
+            this.sessionState = SessionState.SESSION_ENDED;
 
             // this should be the only event id we listen to here:
             await this.io.events.clearMatching(
@@ -95,10 +131,9 @@ export class CastSession {
         return {}; // chrome.cast.Session
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getSessionState() {
-        log("CastSession.getSessionState");
-        return SessionState.SESSION_STARTED;
+        log("CastSession.getSessionState", this.sessionState);
+        return this.sessionState;
     }
 
     // eslint-disable-next-line class-methods-use-this
