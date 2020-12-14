@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 import { IClientIO } from "./model";
 
 export enum EventSpecIdentifier {
+    sessionMedia = "sessionMedia",
     sessionMessage = "sessionMessage",
 }
 

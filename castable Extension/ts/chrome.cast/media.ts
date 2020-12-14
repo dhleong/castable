@@ -1,13 +1,9 @@
 import { StreamType, PlayerState, TrackType } from "./enums";
 
-import { Media } from "./media/media";
-
-export class MediaInfo {
-    constructor(
-        public readonly contentId: string,
-        public readonly contentType: string,
-    ) {}
-}
+import {
+    Media,
+    MediaInfo,
+} from "./media/media";
 
 export class LoadRequest {
     public readonly type = "LOAD";

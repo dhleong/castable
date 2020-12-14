@@ -22,6 +22,7 @@ import {
     MediaSessionEventData,
     VolumeEventData,
 } from "./events";
+import { Namespaces } from "./namespaces";
 
 // NOTE: here instead of in events to avoid a circular dependency
 export interface SessionStateEventData {
@@ -37,6 +38,21 @@ export class CastSession {
 
     private activeInputState = ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
     private sessionState = SessionState.SESSION_STARTED;
+
+    private onMediaMessage = (_: string, message: string) => {
+        const parsed = JSON.parse(message);
+
+        if (parsed.status && parsed.status.length) {
+            for (const status of parsed.status) {
+                debug("MEDIA STATUS = ", parsed.status[0]);
+                this.events.emit(SessionEventType.MEDIA_SESSION, {
+                    mediaSession: status,
+                });
+            }
+        } else {
+            debug("MEDIA MESSAGE = ", parsed);
+        }
+    };
 
     constructor(
         public readonly io: ClientIO,
@@ -67,7 +83,17 @@ export class CastSession {
     ): void;
     public addEventListener(event: string, handler: any) {
         debug("addEventListener", event, handler);
+        const isFirst = !this.events.listenerCount(event);
         this.events.on(event, handler);
+        if (!isFirst) return;
+
+        switch (event) {
+            case SessionEventType.MEDIA_SESSION:
+                this.addMessageListener(Namespaces.MEDIA, this.onMediaMessage);
+                break;
+
+            default:
+        }
     }
 
     public addMessageListener(namespace: string, listener: IMessageListener) {
@@ -174,6 +200,14 @@ export class CastSession {
     public removeEventListener(event: string, handler: any) {
         debug("removeEventListener", event, handler);
         this.events.off(event, handler);
+        const isLast = !this.events.listenerCount(event);
+        if (!isLast) return;
+
+        switch (event) {
+            case SessionEventType.MEDIA_SESSION:
+                this.removeMessageListener(Namespaces.MEDIA, this.onMediaMessage);
+                break;
+        }
     }
 
     public removeMessageListener(namespace: string, listener: IMessageListener) {

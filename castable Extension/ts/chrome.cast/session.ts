@@ -58,13 +58,13 @@ export class Session {
     }
 
     public addMediaListener(listener: Listener<Media>) {
-        debug("addMediaListener");
-        const listeners = this.events.listenerCount(MEDIA_EVENT);
-        this.events.on(MEDIA_EVENT, listener);
+        const isFirst = !this.events.listenerCount(MEDIA_EVENT);
+        debug("addMediaListener; isFirst=", isFirst);
 
-        if (!listeners) {
-            this.castSession.addEventListener(SessionEventType.MEDIA_SESSION, this.mediaListener);
-        }
+        this.events.on(MEDIA_EVENT, listener);
+        if (!isFirst) return;
+
+        this.castSession.addEventListener(SessionEventType.MEDIA_SESSION, this.mediaListener);
     }
 
     public addMessageListener(
