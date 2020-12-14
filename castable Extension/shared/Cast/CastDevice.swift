@@ -15,6 +15,7 @@ class CastDevice: CustomStringConvertible, Identifiable {
     var descriptor: CastServiceDescriptor? = nil
 
     private var socket: CastSocket? = nil
+    private var heartbeat: HeartbeatRunner? = nil
 
     var description: String {
         "CastDevice(name: \(name))"
@@ -91,7 +92,11 @@ class CastDevice: CustomStringConvertible, Identifiable {
         }
 
         guard let descriptor = descriptor else {
-            // TODO
+            // NOTE: there's not much reason for us to create a
+            // CastDevice by name instead of by descriptor (except as
+            // stubs for SwiftUI Previews) so this *shouldn't* happen in
+            // normal use. If there ever is, as in my Stratocaster lib,
+            // we should try to discover the descriptor here
             fatalError("No descriptor")
         }
 
@@ -109,6 +114,8 @@ class CastDevice: CustomStringConvertible, Identifiable {
         let receiver = CastChannel(on: connection, withNamespace: Namespaces.connection);
         receiver.write(payload: .json(value: ["type": "CONNECT"]))
 
-        // TODO heartbeat
+        // handle heartbeat
+        heartbeat?.close()
+        heartbeat = HeartbeatRunner(on: connection)
     }
 }

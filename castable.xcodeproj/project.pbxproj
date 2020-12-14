@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B63889E2257B3F0C00687FBE /* SwiftCoroutine in Frameworks */ = {isa = PBXBuildFile; productRef = B63889E1257B3F0C00687FBE /* SwiftCoroutine */; };
+		6ED0F2182F18042A0314AF59 /* HeartbeatRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B1BA3FA8209C6D149F89D /* HeartbeatRunner.swift */; };
+		B63889E2257B3F0C00687FBE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B63889E1257B3F0C00687FBE /* SwiftPackageProductDependency */; };
 		B645920A257A8BEA0034F034 /* CastDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */; };
 		B645921C257A9D5F0034F034 /* CastDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645921B257A9D5F0034F034 /* CastDevice.swift */; };
 		B6459221257A9DA00034F034 /* CastServiceDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */; };
@@ -38,7 +39,7 @@
 		B6CAAD102577F2690019B1CC /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6CAAD0E2577F2690019B1CC /* SafariExtensionViewController.xib */; };
 		B6D3F1E6257FC3710041854E /* Coroutine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D3F1E5257FC3710041854E /* Coroutine+Extensions.swift */; };
 		B6D3F1E7257FC3710041854E /* Coroutine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D3F1E5257FC3710041854E /* Coroutine+Extensions.swift */; };
-		B6D9D0D8257C2CB900FBC92E /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = B6D9D0D7257C2CB900FBC92E /* SwiftProtobuf */; };
+		B6D9D0D8257C2CB900FBC92E /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B6D9D0D7257C2CB900FBC92E /* SwiftPackageProductDependency */; };
 		B6D9D0DD257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
 		B6D9D0DE257C4C9000FBC92E /* CastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0DC257C4C9000FBC92E /* CastChannel.swift */; };
 		B6D9D0E3257C5B1400FBC92E /* CastError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D9D0E2257C5B1400FBC92E /* CastError.swift */; };
@@ -60,10 +61,10 @@
 		B6EEE5E1257BCE1B0051E721 /* CastDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9DECE25797DB900DC86A9 /* CastDiscovery.swift */; };
 		B6EEE5E2257BCE1B0051E721 /* CastDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645921B257A9D5F0034F034 /* CastDevice.swift */; };
 		B6EEE5E3257BCE1B0051E721 /* CastServiceDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */; };
-		B6EEE5EC257BD7220051E721 /* SwiftCoroutine in Frameworks */ = {isa = PBXBuildFile; productRef = B6EEE5EB257BD7220051E721 /* SwiftCoroutine */; };
+		B6EEE5EC257BD7220051E721 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B6EEE5EB257BD7220051E721 /* SwiftPackageProductDependency */; };
 		B6EEE5F2257BD7C10051E721 /* SafariExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE5F0257BD7C10051E721 /* SafariExtensions.swift */; };
-		B6EEE5FE257BEA5C0051E721 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = B6EEE5FD257BEA5C0051E721 /* SwiftProtobuf */; };
-		B6EEE600257BEA5C0051E721 /* SwiftProtobufPluginLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = B6EEE5FF257BEA5C0051E721 /* SwiftProtobufPluginLibrary */; };
+		B6EEE5FE257BEA5C0051E721 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B6EEE5FD257BEA5C0051E721 /* SwiftPackageProductDependency */; };
+		B6EEE600257BEA5C0051E721 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B6EEE5FF257BEA5C0051E721 /* SwiftPackageProductDependency */; };
 		B6EEE60B257BEBE90051E721 /* CastSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE60A257BEBE90051E721 /* CastSocket.swift */; };
 		B6EEE60C257BEBE90051E721 /* CastSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE60A257BEBE90051E721 /* CastSocket.swift */; };
 		B6EEE611257C21FC0051E721 /* CastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE610257C21FC0051E721 /* CastMessage.swift */; };
@@ -71,6 +72,7 @@
 		B6EEE638257C28680051E721 /* cast_channel.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE637257C28680051E721 /* cast_channel.pb.swift */; };
 		B6EEE639257C28680051E721 /* cast_channel.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EEE637257C28680051E721 /* cast_channel.pb.swift */; };
 		B6F9DED52579964C00DC86A9 /* castable-script.js in Resources */ = {isa = PBXBuildFile; fileRef = B6F9DED42579964C00DC86A9 /* castable-script.js */; };
+		F5A0263D5194FEC02F8ED582 /* HeartbeatRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B1BA3FA8209C6D149F89D /* HeartbeatRunner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +124,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		674B1BA3FA8209C6D149F89D /* HeartbeatRunner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HeartbeatRunner.swift; sourceTree = "<group>"; };
 		B645921B257A9D5F0034F034 /* CastDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastDevice.swift; sourceTree = "<group>"; };
 		B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastServiceDescriptor.swift; sourceTree = "<group>"; };
 		B6459225257AF44C0034F034 /* RequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
@@ -181,8 +184,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6EEE5EC257BD7220051E721 /* SwiftCoroutine in Frameworks */,
-				B6D9D0D8257C2CB900FBC92E /* SwiftProtobuf in Frameworks */,
+				B6EEE5EC257BD7220051E721 /* BuildFile in Frameworks */,
+				B6D9D0D8257C2CB900FBC92E /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,10 +207,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6EEE600257BEA5C0051E721 /* SwiftProtobufPluginLibrary in Frameworks */,
+				B6EEE600257BEA5C0051E721 /* BuildFile in Frameworks */,
 				B6CAAD032577F2690019B1CC /* Cocoa.framework in Frameworks */,
-				B63889E2257B3F0C00687FBE /* SwiftCoroutine in Frameworks */,
-				B6EEE5FE257BEA5C0051E721 /* SwiftProtobuf in Frameworks */,
+				B63889E2257B3F0C00687FBE /* BuildFile in Frameworks */,
+				B6EEE5FE257BEA5C0051E721 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +231,7 @@
 				B6D9D0E2257C5B1400FBC92E /* CastError.swift */,
 				B6D9D0E8257C6CCE00FBC92E /* CastApp.swift */,
 				B6D9D0F7257C7AE600FBC92E /* Dictionary+Parse.swift */,
+				674B1BA3FA8209C6D149F89D /* HeartbeatRunner.swift */,
 			);
 			path = Cast;
 			sourceTree = "<group>";
@@ -404,8 +408,8 @@
 			);
 			name = castable;
 			packageProductDependencies = (
-				B6EEE5EB257BD7220051E721 /* SwiftCoroutine */,
-				B6D9D0D7257C2CB900FBC92E /* SwiftProtobuf */,
+				B6EEE5EB257BD7220051E721 /* SwiftPackageProductDependency */,
+				B6D9D0D7257C2CB900FBC92E /* SwiftPackageProductDependency */,
 			);
 			productName = castable;
 			productReference = B6CAACD52577F2680019B1CC /* castable.app */;
@@ -461,9 +465,9 @@
 			);
 			name = "castable Extension";
 			packageProductDependencies = (
-				B63889E1257B3F0C00687FBE /* SwiftCoroutine */,
-				B6EEE5FD257BEA5C0051E721 /* SwiftProtobuf */,
-				B6EEE5FF257BEA5C0051E721 /* SwiftProtobufPluginLibrary */,
+				B63889E1257B3F0C00687FBE /* SwiftPackageProductDependency */,
+				B6EEE5FD257BEA5C0051E721 /* SwiftPackageProductDependency */,
+				B6EEE5FF257BEA5C0051E721 /* SwiftPackageProductDependency */,
 			);
 			productName = "castable Extension";
 			productReference = B6CAACFD2577F2690019B1CC /* castable Extension.appex */;
@@ -504,8 +508,8 @@
 			);
 			mainGroup = B6CAACCC2577F2680019B1CC;
 			packageReferences = (
-				B63889E0257B3F0C00687FBE /* XCRemoteSwiftPackageReference "SwiftCoroutine" */,
-				B6EEE5FC257BEA5C0051E721 /* XCRemoteSwiftPackageReference "swift-protobuf" */,
+				B63889E0257B3F0C00687FBE /* RemoteSwiftPackageReference */,
+				B6EEE5FC257BEA5C0051E721 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = B6CAACD62577F2680019B1CC /* Products */;
 			projectDirPath = "";
@@ -578,6 +582,7 @@
 				B6D3F1E6257FC3710041854E /* Coroutine+Extensions.swift in Sources */,
 				B6EEE5DC257BCD7C0051E721 /* AppState.swift in Sources */,
 				B6EEE60B257BEBE90051E721 /* CastSocket.swift in Sources */,
+				6ED0F2182F18042A0314AF59 /* HeartbeatRunner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +638,7 @@
 				B6D9D104257D1A5D00FBC92E /* EndCurrentSessionHandler.swift in Sources */,
 				B6D9D0EA257C6CCE00FBC92E /* CastApp.swift in Sources */,
 				B6EEE5F2257BD7C10051E721 /* SafariExtensions.swift in Sources */,
+				F5A0263D5194FEC02F8ED582 /* HeartbeatRunner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1014,7 +1020,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B63889E0257B3F0C00687FBE /* XCRemoteSwiftPackageReference "SwiftCoroutine" */ = {
+		B63889E0257B3F0C00687FBE /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/belozierov/SwiftCoroutine";
 			requirement = {
@@ -1022,7 +1028,7 @@
 				minimumVersion = 2.1.9;
 			};
 		};
-		B6EEE5FC257BEA5C0051E721 /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
+		B6EEE5FC257BEA5C0051E721 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-protobuf.git";
 			requirement = {
@@ -1033,29 +1039,29 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B63889E1257B3F0C00687FBE /* SwiftCoroutine */ = {
+		B63889E1257B3F0C00687FBE /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B63889E0257B3F0C00687FBE /* XCRemoteSwiftPackageReference "SwiftCoroutine" */;
+			package = B63889E0257B3F0C00687FBE /* RemoteSwiftPackageReference */;
 			productName = SwiftCoroutine;
 		};
-		B6D9D0D7257C2CB900FBC92E /* SwiftProtobuf */ = {
+		B6D9D0D7257C2CB900FBC92E /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6EEE5FC257BEA5C0051E721 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			package = B6EEE5FC257BEA5C0051E721 /* RemoteSwiftPackageReference */;
 			productName = SwiftProtobuf;
 		};
-		B6EEE5EB257BD7220051E721 /* SwiftCoroutine */ = {
+		B6EEE5EB257BD7220051E721 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B63889E0257B3F0C00687FBE /* XCRemoteSwiftPackageReference "SwiftCoroutine" */;
+			package = B63889E0257B3F0C00687FBE /* RemoteSwiftPackageReference */;
 			productName = SwiftCoroutine;
 		};
-		B6EEE5FD257BEA5C0051E721 /* SwiftProtobuf */ = {
+		B6EEE5FD257BEA5C0051E721 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6EEE5FC257BEA5C0051E721 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			package = B6EEE5FC257BEA5C0051E721 /* RemoteSwiftPackageReference */;
 			productName = SwiftProtobuf;
 		};
-		B6EEE5FF257BEA5C0051E721 /* SwiftProtobufPluginLibrary */ = {
+		B6EEE5FF257BEA5C0051E721 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6EEE5FC257BEA5C0051E721 /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			package = B6EEE5FC257BEA5C0051E721 /* RemoteSwiftPackageReference */;
 			productName = SwiftProtobufPluginLibrary;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -10,5 +10,6 @@ import Foundation
 enum CastError: Error {
     case noResponse
     case notAvailable
+    case timeout
     case unexpectedResponse(response: Any?)
 }
