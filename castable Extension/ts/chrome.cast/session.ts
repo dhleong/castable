@@ -6,12 +6,14 @@ import { Image } from "./image";
 import { Receiver } from "./receiver";
 import { Listener } from "./generic-types";
 import { IMessageListener } from "./listeners";
-import { LoadRequest, MediaStub } from "./media";
+import { LoadRequest } from "./media";
 import { callbackAsyncFunction } from "./util";
 
 import { CastContext } from "../cast.framework/cast-context";
 import { CastSession } from "../cast.framework/cast-session";
-import { CastContextEventType, SessionState } from "../cast.framework/enums";
+import { CastContextEventType, SessionEventType, SessionState } from "../cast.framework/enums";
+import { MediaSessionEventData } from "../cast.framework/events";
+import { Media } from "./media/media";
 
 const MEDIA_EVENT = ".media";
 const UPDATE_EVENT = ".update";
@@ -23,6 +25,9 @@ export class Session {
 
     private sessionStateListener = () => {
         this.events.emit(UPDATE_EVENT, this.status === SessionStatus.CONNECTED);
+    };
+    private mediaListener = (event: MediaSessionEventData) => {
+        this.events.emit(MEDIA_EVENT, event.mediaSession);
     };
 
     constructor(
@@ -52,9 +57,14 @@ export class Session {
         }
     }
 
-    public addMediaListener(listener: Listener<MediaStub>) {
+    public addMediaListener(listener: Listener<Media>) {
         debug("addMediaListener");
+        const listeners = this.events.listenerCount(MEDIA_EVENT);
         this.events.on(MEDIA_EVENT, listener);
+
+        if (!listeners) {
+            this.castSession.addEventListener(SessionEventType.MEDIA_SESSION, this.mediaListener);
+        }
     }
 
     public addMessageListener(
@@ -104,8 +114,14 @@ export class Session {
         },
     );
 
-    public removeMediaListener(listener: Listener<MediaStub>) {
+    public removeMediaListener(listener: Listener<Media>) {
         this.events.off(MEDIA_EVENT, listener);
+        if (!this.events.listenerCount(MEDIA_EVENT)) {
+            this.castSession.removeEventListener(
+                SessionEventType.MEDIA_SESSION,
+                this.mediaListener,
+            );
+        }
     }
 
     public removeMessageListener(
