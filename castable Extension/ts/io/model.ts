@@ -5,7 +5,19 @@ export interface ClientEvent {
     args?: any,
 }
 
+export interface IMediaCommand {
+    type: string;
+    mediaSessionId: string;
+    [key: string]: any;
+}
+
+export interface IRpc {
+    sendMediaCommand(command: IMediaCommand): Promise<void>;
+}
+
 export interface IClientIO {
+    rpc: IRpc;
+
     /**
      * Dispatch a one-off IPC message to the extension.
      */

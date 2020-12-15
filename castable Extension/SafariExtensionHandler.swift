@@ -30,12 +30,12 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
         r.on(.endCurrentSession, perform: EndCurrentSessionHandler())
         r.on(.loadMedia, perform: LoadMediaHandler())
         r.on(.requestSession, perform: RequestSessionHandler())
-
-        r.on(.sessionSendMessage, perform: SessionSendHandler())
+        r.on(.sendMediaCommand, perform: SendMediaCommandHandler())
 
         r.on(.listen, perform: ListenHandler(events: events, subscriptions: subsRegistry))
         r.on(.unlisten, perform: UnlistenHandler(events: events, subscriptions: subsRegistry))
 
+        r.on(.sessionSendMessage, perform: SessionSendHandler())
         return r
     }()
 

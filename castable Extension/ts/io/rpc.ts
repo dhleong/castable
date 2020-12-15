@@ -1,8 +1,9 @@
 import { Capability } from "../chrome.cast/enums";
 import { LoadRequest } from "../chrome.cast/media";
 import { RpcMessaging } from "./messaging";
+import { IMediaCommand, IRpc } from "./model";
 
-export class Rpc {
+export class Rpc implements IRpc {
     /* eslint-disable @typescript-eslint/indent */
     // NOTE: the default indent rules make this very difficult to read
 
@@ -21,6 +22,11 @@ export class Rpc {
         LoadRequest,
         void
     >("loadMedia");
+
+    public readonly sendMediaCommand = this.messaging.createRpc<
+        IMediaCommand,
+        void
+    >("sendMediaCommand");
 
     public readonly requestSession = this.messaging.createRpc<
         any,

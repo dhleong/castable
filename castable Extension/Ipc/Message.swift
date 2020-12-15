@@ -13,6 +13,7 @@ enum Message: String {
     case endCurrentSession
     case loadMedia
     case requestSession
+    case sendMediaCommand
 
     case listen
     case unlisten

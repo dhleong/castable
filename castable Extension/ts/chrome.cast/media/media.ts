@@ -2,7 +2,9 @@ import _debug from "debug";
 import { EventEmitter } from "events";
 
 import { SessionEventType } from "../../cast.framework/enums";
+import { IClientIO } from "../../io/model";
 import { Listener } from "../generic-types";
+import { callbackAsyncFunction } from "../util";
 
 export class MediaInfo {
     constructor(
@@ -12,6 +14,8 @@ export class MediaInfo {
 }
 
 export interface MediaSessionDelegate {
+    io: IClientIO;
+
     addEventListener(
         event: SessionEventType.MEDIA_SESSION,
         listener: Listener<{ mediaSession: Media }>,
@@ -59,6 +63,20 @@ export class Media {
         return this.currentTime ?? 0;
     }
 
+    public readonly pause = callbackAsyncFunction(
+        async (request: any) => {
+            debug("pause:", request);
+            return this.sendMediaCommand("PAUSE");
+        },
+    );
+
+    public readonly play = callbackAsyncFunction(
+        async (request: any) => {
+            debug("play:", request);
+            return this.sendMediaCommand("PLAY");
+        },
+    );
+
     public removeUpdateListener(listener: Listener<Media>) {
         debug("removeUpdateListener");
 
@@ -71,5 +89,13 @@ export class Media {
                 this.onUpdate,
             );
         }
+    }
+
+    private async sendMediaCommand(type: string, extra?: {[key: string]: any}) {
+        return this.delegate.io.rpc.sendMediaCommand({
+            type,
+            mediaSessionId: this.mediaSessionId,
+            ...extra,
+        });
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19A4343B31E9F0397677F1F5 /* SendMediaCommandHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64BB6A38F5CC1718313C40 /* SendMediaCommandHandler.swift */; };
 		66566EC6E9A032C371BDE9F5 /* Collection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C717307ED3C6C991DC786C83 /* Collection+Extensions.swift */; };
 		6ED0F2182F18042A0314AF59 /* HeartbeatRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674B1BA3FA8209C6D149F89D /* HeartbeatRunner.swift */; };
 		B63889E2257B3F0C00687FBE /* SwiftCoroutine in Frameworks */ = {isa = PBXBuildFile; productRef = B63889E1257B3F0C00687FBE /* SwiftCoroutine */; };
@@ -126,6 +127,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B64BB6A38F5CC1718313C40 /* SendMediaCommandHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendMediaCommandHandler.swift; sourceTree = "<group>"; };
 		674B1BA3FA8209C6D149F89D /* HeartbeatRunner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HeartbeatRunner.swift; sourceTree = "<group>"; };
 		B645921B257A9D5F0034F034 /* CastDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastDevice.swift; sourceTree = "<group>"; };
 		B6459220257A9DA00034F034 /* CastServiceDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastServiceDescriptor.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				B65D89E025813B7A00C2C645 /* SessionSendHandler.swift */,
 				B65D89E52581746600C2C645 /* ListenHandler.swift */,
 				B65D89EA2581747900C2C645 /* UnlistenHandler.swift */,
+				5B64BB6A38F5CC1718313C40 /* SendMediaCommandHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 				B6D9D0EA257C6CCE00FBC92E /* CastApp.swift in Sources */,
 				B6EEE5F2257BD7C10051E721 /* SafariExtensions.swift in Sources */,
 				F5A0263D5194FEC02F8ED582 /* HeartbeatRunner.swift in Sources */,
+				19A4343B31E9F0397677F1F5 /* SendMediaCommandHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
