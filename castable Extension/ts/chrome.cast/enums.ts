@@ -1,33 +1,33 @@
 export enum AutoJoinPolicy {
-    TAB_AND_ORIGIN_SCOPED,
-    ORIGIN_SCOPED,
-    PAGE_SCOPED,
+    TAB_AND_ORIGIN_SCOPED = "tab_and_origin_scoped",
+    ORIGIN_SCOPED = "origin_scoped",
+    PAGE_SCOPED = "page_scoped",
 }
 
 export enum Capability {
-    VIDEO_OUT = "VIDEO_OUT",
-    AUDIO_OUT = "AUDIO_OUT",
-    VIDEO_IN = "VIDEO_IN",
-    AUDIO_IN = "AUDIO_IN",
-    MULTIZONE_GROUP = "MULTIZONE_GROUP",
+    VIDEO_OUT = "video_out",
+    AUDIO_OUT = "audio_out",
+    VIDEO_IN = "video_in",
+    AUDIO_IN = "audio_in",
+    MULTIZONE_GROUP = "multizone_group",
 }
 
 export enum DefaultActionPolicy {
-    CREATE_SESSION = "CREATE_SESSION",
-    CAST_THIS_TAB = "CAST_THIS_TAB",
+    CREATE_SESSION = "create_session",
+    CAST_THIS_TAB = "cast_this_tab",
 }
 
 export enum ErrorCode {
-    CANCEL = "CANCEL",
-    TIMEOUT = "TIMEOUT",
-    API_NOT_INITIALIZED = "API_NOT_INITIALIZED",
-    INVALID_PARAMETER = "INVALID_PARAMETER",
-    EXTENSION_NOT_COMPATIBLE = "EXTENSION_NOT_COMPATIBLE",
-    EXTENSION_MISSING = "EXTENSION_MISSING",
-    RECEIVER_UNAVAILABLE = "RECEIVER_UNAVAILABLE",
-    SESSION_ERROR = "SESSION_ERROR",
-    CHANNEL_ERROR = "CHANNEL_ERROR",
-    LOAD_MEDIA_FAILED = "LOAD_MEDIA_FAILED",
+    CANCEL = "cancel",
+    TIMEOUT = "timeout",
+    API_NOT_INITIALIZED = "api_not_initialized",
+    INVALID_PARAMETER = "invalid_parameter",
+    EXTENSION_NOT_COMPATIBLE = "extension_not_compatible",
+    EXTENSION_MISSING = "extension_missing",
+    RECEIVER_UNAVAILABLE = "receiver_unavailable",
+    SESSION_ERROR = "session_error",
+    CHANNEL_ERROR = "channel_error",
+    LOAD_MEDIA_FAILED = "load_media_failed",
 }
 
 export enum PlayerState {
@@ -38,26 +38,26 @@ export enum PlayerState {
 }
 
 export enum ReceiverAction {
-    CAST = "CAST",
-    STOP = "STOP",
+    CAST = "cast",
+    STOP = "stop",
 }
 
 export enum ReceiverAvailability {
-    AVAILABLE = "AVAILABLE",
-    UNAVAILABLE = "UNAVAILABLE",
+    AVAILABLE = "available",
+    UNAVAILABLE = "unavailable",
 }
 
 export enum ReceiverType {
-    CAST = "CAST",
-    DIAL = "DIAL",
-    HANGOUT = "HANGOUT",
-    CUSTOM = "CUSTOM",
+    CAST = "cast",
+    DIAL = "dial",
+    HANGOUT = "hangout",
+    CUSTOM = "custom",
 }
 
 export enum SessionStatus {
-    CONNECTED = "CONNECTED",
-    DISCONNECTED = "DISCONNECTED",
-    STOPPED = "STOPPED",
+    CONNECTED = "connected",
+    DISCONNECTED = "disconnected",
+    STOPPED = "stopped",
 }
 
 export enum StreamType {

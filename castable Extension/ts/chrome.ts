@@ -78,8 +78,10 @@ class ChromeCastStub {
             if (!device) return;
 
             if (sessionState === SessionState.SESSION_STARTED) {
+                debug("dispatch receiverAction:", device, ReceiverAction.CAST);
                 listener(device, ReceiverAction.CAST);
             } else if (sessionState === SessionState.SESSION_ENDING) {
+                debug("dispatch receiverAction:", device, ReceiverAction.STOP);
                 listener(device, ReceiverAction.STOP);
             }
         };
@@ -131,35 +133,34 @@ class ChromeCastStub {
 
     // eslint-disable-next-line class-methods-use-this
     public requestSessionById(id: string) {
-        debug("requestSessionById", id);
+        debug("TODO requestSessionById", id);
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    public setCustomReceivers(
-        receivers: any[],
-        successCallback: any,
-        errorCallback: any,
-    ) {
-        debug("setCustomReceivers", receivers, successCallback, errorCallback);
-    }
+    public setCustomReceivers = callbackAsyncFunction(
+        async (receivers: any[]) => {
+            debug("setCustomReceivers", receivers);
+            if (receivers.length) {
+                throw new Error("Unsupported: what does setCustomReceivers mean?");
+            }
+        },
+    );
 
     // eslint-disable-next-line class-methods-use-this
     public setPageContext(win: any) {
-        debug("setPageContext", win);
+        debug("TODO setPageContext", win);
     }
 
     public setReceiverDisplayStatus = callbackAsyncFunction(
         async (receiver: Receiver) => {
             // TODO
-            debug("setReceiverDisplayStatus", receiver);
+            debug("TODO setReceiverDisplayStatus", receiver);
         },
     );
 
     // eslint-disable-next-line class-methods-use-this
     public unescape(s: string) {
         debug("unescape", s);
-        // ?!
-        return unescape(s);
+        return unescape(s); // ?!
     }
 
     private static async requestSessionImpl(
