@@ -13,6 +13,7 @@ enum CastError: Error {
     case notAvailable
     case notConnected
     case timeout
+    case unableToEncode(message: [String : Any], cause: Error)
     case unableToParse(bytesCount: Int, hex: String)
     case unexpectedResponse(response: Any?)
 }

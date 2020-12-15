@@ -98,7 +98,7 @@ class CastSocket {
             throw CastError.notConnected
         }
 
-        let message = CastChannel_CastMessage.with {
+        let message = try CastChannel_CastMessage.with {
             $0.sourceID = message.source ?? senderId ?? DEFAULT_SOURCE
             $0.destinationID = message.destination ?? DEFAULT_DESTINATION
             $0.namespace = message.ns
@@ -114,32 +114,32 @@ class CastSocket {
                 $0.payloadUtf8 = value
 
             case .json(let value):
-                if let data = try? JSONSerialization.data(withJSONObject: value),
-                    let json = String(data: data, encoding: .utf8)
-                {
-                    $0.payloadType = .string
-                    $0.payloadUtf8 = json
-                } else {
-                    fatalError("Unable to encode: \(value)")
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: value)
+                    if let json = String(data: data, encoding: .utf8) {
+                        $0.payloadType = .string
+                        $0.payloadUtf8 = json
+                    } else {
+                        fatalError("Unable to UTF-8 encode: \(value)")
+                    }
+                } catch {
+                    throw CastError.unableToEncode(message: value, cause: error)
                 }
             }
         }
 
-        if let data = try? message.serializedData() {
-            let length = data.count
-            let header = withUnsafeBytes(of: UInt32(length).bigEndian) { bytes in
-                Data(bytes)
-            }
-
-            var withHeader = Data.init(capacity: length + 4)
-            withHeader.append(header)
-            withHeader.append(data)
-            NSLog("castable: sending \(message) as: \(withHeader.hexEncodedString())")
-
-            conn.send(content: withHeader, completion: .idempotent)
-        } else {
-            NSLog("castable: ERROR: Failed to encode \(message)")
+        let data = try message.serializedData()
+        let length = data.count
+        let header = withUnsafeBytes(of: UInt32(length).bigEndian) { bytes in
+            Data(bytes)
         }
+
+        var withHeader = Data.init(capacity: length + 4)
+        withHeader.append(header)
+        withHeader.append(data)
+        NSLog("castable: sending \(message) as: \(withHeader.hexEncodedString())")
+
+        conn.send(content: withHeader, completion: .idempotent)
     }
 
     func close() {
@@ -169,6 +169,8 @@ class CastSocket {
         while conn === self.connection {
             let packetLength = try self.readHeader(from: conn)
             let message = try self.readMessage(from: conn, withLength: packetLength)
+
+
 
             for receiver in self.receivers {
                 try receiver.awaitSend(message)
