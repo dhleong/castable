@@ -13,7 +13,6 @@ class CastDiscovery {
 
     func discover() {
         if browser != nil {
-            NSLog("castable: WARNING: duplicate discover() without stop()")
             return
         }
 
@@ -41,8 +40,6 @@ class CastDiscovery {
         }
 
         b.start(queue: DispatchQueue.main)
-
-        NSLog("castable: Scheduled service browser")
     }
 
     func receive() -> CoChannel<Set<CastServiceDescriptor>> {
@@ -60,7 +57,6 @@ class CastDiscovery {
 
     func stop() {
         if let browser = browser {
-            NSLog("castable: close browser")
             browser.cancel()
         }
 
