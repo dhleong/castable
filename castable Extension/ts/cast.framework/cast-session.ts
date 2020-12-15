@@ -54,7 +54,10 @@ export class CastSession {
                 );
 
                 // TODO this is lazy...
-                Object.assign(media, status);
+                Object.assign(media, {
+                    media: null,
+                    currentTime: 0,
+                }, status);
 
                 this.events.emit(SessionEventType.MEDIA_SESSION, {
                     mediaSession: proxy(media, "chrome.cast.media.Media()"),

@@ -82,8 +82,8 @@ export class Session {
      * `receiver.volume` have changed
      */
     public addUpdateListener(listener: Listener<boolean>) {
-        debug("addUpdateListener", listener);
         const isFirst = !this.events.listenerCount(UPDATE_EVENT);
+        debug("addUpdateListener", listener, "isFirst=", isFirst);
         this.events.on(UPDATE_EVENT, listener);
 
         if (isFirst) {

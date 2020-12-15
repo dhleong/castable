@@ -88,11 +88,11 @@ export class CastContext {
             this.currentSession = proxy(new CastSession(
                 this.io,
                 this.options,
-                new Receiver(
+                proxy(new Receiver(
                     result.device.id,
                     result.device.name,
                     result.device.capabilities,
-                ),
+                ), `chrome.cast.Receiver(${result.device.name})`),
                 result.sessionId,
             ), `cast.framework.CastSession(${result.sessionId})`);
 

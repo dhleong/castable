@@ -9,4 +9,13 @@ export class Receiver {
     ) {}
 
     public receiverType: ReceiverType = ReceiverType.CAST;
+
+    public toJSON() {
+        return {
+            label: this.label,
+            friendlyName: this.friendlyName,
+            capabilities: this.capabilities,
+            receiverType: this.receiverType,
+        };
+    }
 }
