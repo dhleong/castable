@@ -58,11 +58,6 @@ class CastSocket {
                 NSLog("castable: connection(\(address)) READY")
                 self.startReading(from: conn)
 
-                // TODO this probably belongs elsewhere...
-                try? self.write(message: CastMessage(
-                    ns: "urn:x-cast:com.google.cast.tp.heartbeat",
-                    data: .json(value: [ "type": "PING" ])))
-
             case .failed(let error):
                 NSLog("castable: connection(\(address)) FAILED: \(error)")
                 self.close()

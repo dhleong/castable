@@ -16,7 +16,7 @@ class HeartbeatRunner {
 
     private lazy var timer: DispatchSourceTimer = {
         let t = DispatchSource.makeTimerSource()
-        t.schedule(deadline: .now() + interval, repeating: interval)
+        t.schedule(deadline: .now(), repeating: interval)
         t.setEventHandler { [weak self] in
             self?.performHeartbeat()
         }
@@ -32,7 +32,12 @@ class HeartbeatRunner {
         self.channel = CastChannel(on: socket, withNamespace: Namespaces.connection)
         self.interval = interval
         self.timeout = timeout
+
         self.timer.resume()
+        DispatchQueue.global(qos: .background).startCoroutine(in: scope) {
+            let ch = self.socket.receive(in: self.scope)
+            try self.respondToHeartbeat(on: ch)
+        }
     }
 
     deinit {
@@ -65,5 +70,26 @@ class HeartbeatRunner {
                 self.close()
             }
         }
+    }
+
+    private func respondToHeartbeat(on ch: CoChannel<CastMessage>) throws {
+        for message in ch.makeIterator() {
+            switch message.data {
+            case .json(let json):
+                if json["type"] as? String == "PING" {
+                    try self.socket.write(message: CastMessage(
+                        ns: message.ns,
+                        data: .json(value: [ "type": "PONG" ]),
+                        source: message.destination,
+                        destination: message.source
+                    ))
+                }
+
+            default:
+                break // ignore
+            }
+        }
+
+        NSLog("castable: stop iterating")
     }
 }
