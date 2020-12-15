@@ -23,6 +23,8 @@ import {
     VolumeEventData,
 } from "./events";
 import { Namespaces } from "./namespaces";
+import { Media } from "../chrome.cast/media/media";
+import { proxy } from "../proxy";
 
 // NOTE: here instead of in events to avoid a circular dependency
 export interface SessionStateEventData {
@@ -45,8 +47,17 @@ export class CastSession {
         if (parsed.status && parsed.status.length) {
             for (const status of parsed.status) {
                 debug("MEDIA STATUS = ", parsed.status[0]);
+                const media = new Media(
+                    this.getSessionId(),
+                    status.mediaSessionId,
+                    this,
+                );
+
+                // TODO this is lazy...
+                Object.assign(media, status);
+
                 this.events.emit(SessionEventType.MEDIA_SESSION, {
-                    mediaSession: status,
+                    mediaSession: proxy(media, "chrome.cast.media.Media()"),
                 });
             }
         } else {
