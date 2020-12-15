@@ -68,7 +68,7 @@ class CastDevice: CustomStringConvertible, Identifiable {
 
     func channel(withNamespace namespace: String, withOptions opts: CastChannel.Options = CastChannel.Options()) -> CoFuture<CastChannel> {
         return DispatchQueue.main.coroutineFuture {
-            let socket = self.ensureConnected()
+            let socket = try self.ensureConnected()
             return CastChannel(on: socket, withNamespace: namespace, withOptions: opts)
         }
     }
@@ -86,7 +86,7 @@ class CastDevice: CustomStringConvertible, Identifiable {
         socket = nil
     }
 
-    private func ensureConnected() -> CastSocket {
+    private func ensureConnected() throws -> CastSocket {
         if let socket = socket, socket.isConnected {
             return socket
         }
@@ -104,15 +104,15 @@ class CastDevice: CustomStringConvertible, Identifiable {
         newSocket.open()
         self.socket = newSocket
 
-        prepare(connection: newSocket)
+        try prepare(connection: newSocket)
 
         return newSocket
     }
 
-    private func prepare(connection: CastSocket) {
+    private func prepare(connection: CastSocket) throws {
         // CONNECT to the device
         let receiver = CastChannel(on: connection, withNamespace: Namespaces.connection);
-        receiver.write(payload: .json(value: ["type": "CONNECT"]))
+        try receiver.write(payload: .json(value: ["type": "CONNECT"]))
 
         // handle heartbeat
         heartbeat?.close()

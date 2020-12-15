@@ -24,9 +24,9 @@ struct SessionSendHandler: RequestHandler {
 
         let ch = try app.channel(withNamespace: req.namespace).await()
         if let message = req.stringMessage {
-            ch.write(payload: .string(value: message))
+            try ch.write(payload: .string(value: message))
         } else if let dictMessage = request?["dictMessage"] as? [String : Any] {
-            ch.write(payload: .json(value: dictMessage))
+            try ch.write(payload: .json(value: dictMessage))
         }
 
         return [:]

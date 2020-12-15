@@ -53,6 +53,9 @@ class HeartbeatRunner {
                     .await(timeout: .milliseconds(Int(1000 * self.timeout)))
             } catch (CoFutureError.timeout) {
                 NSLog("castable: WARN: failed to receive heartbeat within deadline")
+            } catch {
+                NSLog("castable: ERROR: performing heartbeat: \(error)")
+                self.close()
             }
         }
     }

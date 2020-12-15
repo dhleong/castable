@@ -8,8 +8,11 @@
 import Foundation
 
 enum CastError: Error {
+    case eof
     case noResponse
     case notAvailable
+    case notConnected
     case timeout
+    case unableToParse(bytesCount: Int, hex: String)
     case unexpectedResponse(response: Any?)
 }

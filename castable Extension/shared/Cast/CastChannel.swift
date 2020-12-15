@@ -46,15 +46,20 @@ class CastChannel {
 
         DispatchQueue.main.startCoroutine(in: myScope) {
             let incoming = self.socket.receive(in: myScope)
-            for message in incoming.makeIterator() {
-                if message.ns != self.namespace {
-                    continue
-                }
-                if let dest = self.destination, message.source != dest {
-                    continue
-                }
+            do {
+                for message in incoming.makeIterator() {
+                    if message.ns != self.namespace {
+                        continue
+                    }
+                    if let dest = self.destination, message.source != dest {
+                        continue
+                    }
 
-                try ch.awaitSend(message.data)
+                    try ch.awaitSend(message.data)
+                }
+            } catch {
+                NSLog("castable:Channel error in receive: \(error)")
+                ch.cancel()
             }
         }
 
@@ -65,11 +70,12 @@ class CastChannel {
     /// (expecting a parsed JSON object)
     func send(data: [String : Any]) -> CoFuture<[String : Any]> {
         let id = socket.nextId()
-        write(payload: .json(value: data.merging([ "requestId": id ]) { $1 }))
-
-        let sentPing = data["type"] as? String == "PING"
-
         return DispatchQueue.main.coroutineFuture {
+            try self.write(payload: .json(value: data.merging([ "requestId": id ]) { $1 }))
+
+            let sentPing = data["type"] as? String == "PING"
+
+
             let ch = self.receive()
             defer { ch.cancel() }
 
@@ -94,11 +100,11 @@ class CastChannel {
     }
 
     /// Write any sort of data message to this channel.
-    func write(payload: CastMessage.Payload) {
+    func write(payload: CastMessage.Payload) throws {
         if let destination = destination, !hasConnected {
             // ensure we've "CONNECT"'d to the destination, if provided
             hasConnected = true
-            socket.write(message: CastMessage(
+            try socket.write(message: CastMessage(
                 ns: Namespaces.connection,
                 data: .json(value: [
                     "type": "CONNECT",
@@ -107,7 +113,7 @@ class CastChannel {
                 destination: destination))
         }
 
-        socket.write(message: CastMessage(
+        try socket.write(message: CastMessage(
             ns: namespace,
             data: payload,
             destination: destination))
