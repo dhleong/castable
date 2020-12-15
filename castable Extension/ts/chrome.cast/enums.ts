@@ -54,6 +54,11 @@ export enum ReceiverType {
     CUSTOM = "custom",
 }
 
+export enum ResumeState {
+    PLAYBACK_START = "PLAYBACK_START",
+    PLAYBACK_PAUSE = "PLAYBACK_PAUSE",
+}
+
 export enum SessionStatus {
     CONNECTED = "connected",
     DISCONNECTED = "disconnected",

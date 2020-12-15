@@ -39,12 +39,12 @@ class ChromeCastStub {
     public readonly DialRequest = DialRequest;
     public readonly DefaultActionPolicy = DefaultActionPolicy;
     public readonly ErrorCode = ErrorCode;
-    public readonly SessionRequest = SessionRequest;
-    public readonly SessionStatus = SessionStatus;
     public readonly Receiver = Receiver;
     public readonly ReceiverAction = ReceiverAction;
     public readonly ReceiverAvailability = ReceiverAvailability;
     public readonly ReceiverType = ReceiverType;
+    public readonly SessionRequest = SessionRequest;
+    public readonly SessionStatus = SessionStatus;
 
     public readonly media = proxy(new MediaStub(), "chrome.cast.media");
     public readonly timeout = proxy(new TimeoutStub(), "chrome.cast.timeout");

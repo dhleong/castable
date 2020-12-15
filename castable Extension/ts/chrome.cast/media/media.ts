@@ -4,6 +4,7 @@ import { EventEmitter } from "events";
 import { SessionEventType } from "../../cast.framework/enums";
 import { IClientIO } from "../../io/model";
 import { Listener } from "../generic-types";
+import { SeekRequest } from "../seek-request";
 import { callbackAsyncFunction } from "../util";
 
 export class MediaInfo {
@@ -74,6 +75,13 @@ export class Media {
         async (request: any) => {
             debug("play:", request);
             return this.sendMediaCommand("PLAY");
+        },
+    );
+
+    public readonly seek = callbackAsyncFunction(
+        async (request: SeekRequest) => {
+            debug("seek:", request);
+            return this.sendMediaCommand("SEEK", request);
         },
     );
 
