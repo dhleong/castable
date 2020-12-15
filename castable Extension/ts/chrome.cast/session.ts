@@ -24,9 +24,11 @@ export class Session {
     private readonly events = new EventEmitter();
 
     private sessionStateListener = () => {
+        debug("EMIT", UPDATE_EVENT, this.status === SessionStatus.CONNECTED);
         this.events.emit(UPDATE_EVENT, this.status === SessionStatus.CONNECTED);
     };
     private mediaListener = (event: MediaSessionEventData) => {
+        debug("EMIT", MEDIA_EVENT, event.mediaSession);
         this.events.emit(MEDIA_EVENT, event.mediaSession);
     };
 
@@ -60,11 +62,11 @@ export class Session {
     public addMediaListener(listener: Listener<Media>) {
         const isFirst = !this.events.listenerCount(MEDIA_EVENT);
         debug("addMediaListener; isFirst=", isFirst);
-
         this.events.on(MEDIA_EVENT, listener);
-        if (!isFirst) return;
 
-        this.castSession.addEventListener(SessionEventType.MEDIA_SESSION, this.mediaListener);
+        if (isFirst) {
+            this.castSession.addEventListener(SessionEventType.MEDIA_SESSION, this.mediaListener);
+        }
     }
 
     public addMessageListener(
@@ -80,11 +82,11 @@ export class Session {
      * `receiver.volume` have changed
      */
     public addUpdateListener(listener: Listener<boolean>) {
-        debug("addUpdateListener");
-        const oldCount = this.events.listenerCount(UPDATE_EVENT);
+        debug("addUpdateListener", listener);
+        const isFirst = !this.events.listenerCount(UPDATE_EVENT);
         this.events.on(UPDATE_EVENT, listener);
 
-        if (!oldCount) {
+        if (isFirst) {
             this.castContext.addEventListener(
                 CastContextEventType.SESSION_STATE_CHANGED,
                 this.sessionStateListener,

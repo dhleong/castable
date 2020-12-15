@@ -10,6 +10,7 @@ import { Receiver } from "../chrome.cast/receiver";
 import { CastSession, SessionStateEventData } from "./cast-session";
 import { CastState, SessionState, CastContextEventType } from "./enums";
 import { CastStateEventData } from "./events";
+import { proxy } from "../proxy";
 
 const debug = _debug("castable:CastContext");
 
@@ -84,7 +85,7 @@ export class CastContext {
             const result = await this.io.rpc.requestSession(this.options);
             debug("requestSession -> ", result);
 
-            this.currentSession = new CastSession(
+            this.currentSession = proxy(new CastSession(
                 this.io,
                 this.options,
                 new Receiver(
@@ -93,7 +94,7 @@ export class CastContext {
                     result.device.capabilities,
                 ),
                 result.sessionId,
-            );
+            ), `cast.framework.CastSession(${result.sessionId})`);
 
             this.setCastState(CastState.CONNECTED);
             this.setSessionState(SessionState.SESSION_STARTED);

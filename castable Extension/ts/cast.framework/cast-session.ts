@@ -231,8 +231,7 @@ export class CastSession {
 
     public async sendMessage(
         namespace: string,
-        message: string | Record<string,
-        unknown>,
+        message: string | Record<string, unknown>,
     ) {
         debug("sendMessage", namespace, message);
         return this.io.rpc.sessionSendMessage({

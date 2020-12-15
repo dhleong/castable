@@ -22,7 +22,7 @@ export interface MediaSessionDelegate {
     ): void;
 }
 
-const debug = _debug("chrome.cast.media.Media");
+const debug = _debug("castable:chrome.cast.media.Media");
 const UPDATE_EVENT = "update";
 
 export class Media {
@@ -62,7 +62,7 @@ export class Media {
     public removeUpdateListener(listener: Listener<Media>) {
         debug("removeUpdateListener");
 
-        this.events.on(UPDATE_EVENT, listener);
+        this.events.off(UPDATE_EVENT, listener);
         const isLast = !this.events.listenerCount(UPDATE_EVENT);
 
         if (isLast) {

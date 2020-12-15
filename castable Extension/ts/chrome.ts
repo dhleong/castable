@@ -74,7 +74,9 @@ class ChromeCastStub {
         const context = this.cast.framework.CastContext.getInstance();
         const wrapper = ({ sessionState }: {sessionState: SessionState}) => {
             const device = context.getCurrentSession()?.device;
+            debug("dispatch receiverAction:", device, sessionState);
             if (!device) return;
+
             if (sessionState === SessionState.SESSION_STARTED) {
                 listener(device, ReceiverAction.CAST);
             } else if (sessionState === SessionState.SESSION_ENDING) {
@@ -176,13 +178,15 @@ class ChromeCastStub {
         if (!s) throw new Error("No error, but no session created");
 
         const appMeta = s.getApplicationMetadata();
+        const device = s.getCastDevice();
+        debug("create session on", appMeta, device, "from:", s);
 
         return proxy(new Session(
             s.getSessionId(),
             request.appId,
             appMeta.name,
             appMeta.images,
-            s.getCastDevice(),
+            device,
             cast,
             s,
         ), `Session(${appMeta.name}#${s.getSessionId()})`);
