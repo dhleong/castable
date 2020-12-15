@@ -11,13 +11,18 @@ import SwiftCoroutine
 let REQUEST_PAGE_KEY = ".request.page"
 
 class SafariExtensionHandler: SFSafariExtensionHandler {
-    let scope = CoScope()
-    let cast = CastDiscovery()
+    static let cast = CastDiscovery()
 
     static let events = RemoteEventEmitter()
     static let allSubscribers = [
         SessionMessageSubscriber(events: events),
     ]
+    static let subsRegistry: EventSubscriptionRegistry = {
+        let subscribers = allSubscribers.reduce(into: [:]) { m, s in
+            m[s.event] = s
+        }
+        return EventSubscriptionRegistry(subscribers: subscribers)
+    }()
 
     let handlers: RequestHandlerRegistry = {
         let r = RequestHandlerRegistry()
@@ -28,39 +33,42 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
 
         r.on(.sessionSendMessage, perform: SessionSendHandler())
 
-        let subscribers = allSubscribers.reduce(into: [:]) { m, s in
-            m[s.event] = s
-        }
-        let subsRegistry = EventSubscriptionRegistry(subscribers: subscribers)
-
         r.on(.listen, perform: ListenHandler(events: events, subscriptions: subsRegistry))
         r.on(.unlisten, perform: UnlistenHandler(events: events, subscriptions: subsRegistry))
 
         return r
     }()
 
+    let scope = CoScope()
+
     override init() {
         super.init()
 
+        let cast = SafariExtensionHandler.cast
         cast.discover()
 
-        DispatchQueue.main.startCoroutine(in: scope) { [weak self] in
-            guard let ch = self?.cast.receive() else {
-                return
-            }
+        DispatchQueue.main.startCoroutine(in: scope) {
+            let state = AppState.instance
+            let existingDevices = state.devices.associateBy { $0.id }
 
+            let ch = cast.receive()
             for descriptors in ch.makeIterator() {
-                let state = AppState.instance
-                state.devices = descriptors
-                    .map { CastDevice(withDescriptor: $0) }
-                    .sorted { $0.name < $1.name }
+                let anyNew = descriptors.any { existingDevices[$0.id] != nil }
+                if !anyNew {
+                    continue
+                }
+
+                state.devices = descriptors.map { desc in
+                    existingDevices[desc.id]
+                    ?? CastDevice(withDescriptor: desc)
+                }.sorted { $0.name < $1.name }
                 NSLog("castable: got new devices: \(state.devices)")
             }
         }
     }
 
     deinit {
-        cast.stop()
+        SafariExtensionHandler.cast.stop()
         scope.cancel()
     }
 
@@ -137,7 +145,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 NSLog("castable: sending response: \(response)")
                 page.dispatch(.ipcOutgoing, withArgs: response)
             } else {
-                NSLog("castable: no response generated")
+                NSLog("castable: no response generated to \(message): \(String(describing: userInfo))")
             }
         }
     }

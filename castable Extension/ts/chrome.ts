@@ -220,6 +220,7 @@ export class ChromeController {
     };
 
     public setGCastApiAvailableHandler(callback: GCastApiAvailabilityHandler) {
+        this.debug("requested GCast API Availability: ", callback);
         this.receivedApiAvailableHandler = callback;
     }
 

@@ -30,7 +30,6 @@ class CastDiscovery {
                 return
             }
 
-            NSLog("castable: results = \(descriptors)")
             self.lastDevices = descriptors
             for ch in self.receivers {
                 do {
@@ -60,8 +59,6 @@ class CastDiscovery {
     }
 
     func stop() {
-        NSLog("castable: Mdns STOP")
-
         if let browser = browser {
             NSLog("castable: close browser")
             browser.cancel()
