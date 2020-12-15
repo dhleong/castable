@@ -46,6 +46,10 @@ class CastChannel {
 
         DispatchQueue.main.startCoroutine(in: myScope) {
             let incoming = self.socket.receive(in: myScope)
+            incoming.whenCanceled {
+                ch.cancel()
+            }
+
             do {
                 for message in incoming.makeIterator() {
                     if message.ns != self.namespace {
