@@ -24,6 +24,9 @@ class HeartbeatRunner {
     }()
     private var scope = CoScope()
 
+    private var timeoutsTotal = 0
+    private var timeoutsSequence = 0
+
     init(on socket: CastSocket, withInterval interval: TimeInterval = 30.0, timeout: TimeInterval = 5.0) {
         self.socket = socket
         self.channel = CastChannel(on: socket, withNamespace: Namespaces.connection)
@@ -51,8 +54,12 @@ class HeartbeatRunner {
             do {
                 let _ = try self.channel.send(data: [ "type": "PING" ])
                     .await(timeout: .milliseconds(Int(1000 * self.timeout)))
+
+                self.timeoutsSequence = 0
             } catch (CoFutureError.timeout) {
-                NSLog("castable: WARN: failed to receive heartbeat within deadline")
+                self.timeoutsTotal += 1
+                self.timeoutsSequence += 1
+                NSLog("castable: WARN: failed to receive heartbeat within deadline (\(self.timeoutsTotal) total; \(self.timeoutsSequence) in a row)")
             } catch {
                 NSLog("castable: ERROR: performing heartbeat: \(error)")
                 self.close()
