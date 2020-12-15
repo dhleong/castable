@@ -19,6 +19,7 @@ class CastSocket {
     private var address: NWEndpoint
     private let senderId: String?
 
+    private var scope = CoScope()
     private var connection: NWConnection? = nil
     private var receivers: [CoChannel<CastMessage>] = []
     private var myNextId = 1
@@ -57,11 +58,6 @@ class CastSocket {
                 NSLog("castable: connection(\(address)) READY")
                 self.startReading(from: conn)
 
-                // TODO this probably belongs elsewhere...
-                self.write(message: CastMessage(
-                    ns: "urn:x-cast:com.google.cast.tp.heartbeat",
-                    data: .json(value: [ "type": "PING" ])))
-
             case .failed(let error):
                 NSLog("castable: connection(\(address)) FAILED: \(error)")
                 self.close()
@@ -91,13 +87,13 @@ class CastSocket {
         return ch
     }
 
-    func write(message: CastMessage) {
+    func write(message: CastMessage) throws {
         guard let conn = connection else {
-            NSLog("castable: ERROR: not connected")
-            return
+            NSLog("castable: ERROR: attempting to write \(message) when disconnected")
+            throw CastError.notConnected
         }
 
-        let message = CastChannel_CastMessage.with {
+        let message = try CastChannel_CastMessage.with {
             $0.sourceID = message.source ?? senderId ?? DEFAULT_SOURCE
             $0.destinationID = message.destination ?? DEFAULT_DESTINATION
             $0.namespace = message.ns
@@ -113,37 +109,39 @@ class CastSocket {
                 $0.payloadUtf8 = value
 
             case .json(let value):
-                if let data = try? JSONSerialization.data(withJSONObject: value),
-                    let json = String(data: data, encoding: .utf8)
-                {
-                    $0.payloadType = .string
-                    $0.payloadUtf8 = json
-                } else {
-                    fatalError("Unable to encode: \(value)")
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: value)
+                    if let json = String(data: data, encoding: .utf8) {
+                        $0.payloadType = .string
+                        $0.payloadUtf8 = json
+                    } else {
+                        fatalError("Unable to UTF-8 encode: \(value)")
+                    }
+                } catch {
+                    throw CastError.unableToEncode(message: value, cause: error)
                 }
             }
         }
 
-        if let data = try? message.serializedData() {
-            let length = data.count
-            let header = withUnsafeBytes(of: UInt32(length).bigEndian) { bytes in
-                Data(bytes)
-            }
-
-            var withHeader = Data.init(capacity: length + 4)
-            withHeader.append(header)
-            withHeader.append(data)
-            NSLog("castable: sending \(message) as: \(withHeader.hexEncodedString())")
-
-            conn.send(content: withHeader, completion: .idempotent)
-        } else {
-            NSLog("castable: ERROR: Failed to encode \(message)")
+        let data = try message.serializedData()
+        let length = data.count
+        let header = withUnsafeBytes(of: UInt32(length).bigEndian) { bytes in
+            Data(bytes)
         }
+
+        var withHeader = Data.init(capacity: length + 4)
+        withHeader.append(header)
+        withHeader.append(data)
+        NSLog("castable: sending \(message) as: \(withHeader.hexEncodedString())")
+
+        conn.send(content: withHeader, completion: .idempotent)
     }
 
     func close() {
         connection?.cancel()
         connection = nil
+
+        scope.cancel()
 
         for receiver in receivers {
             receiver.cancel()
@@ -152,35 +150,45 @@ class CastSocket {
     }
 
     private func startReading(from conn: NWConnection) {
-        self.readHeader(from: conn)
-    }
-
-    private func readHeader(from conn: NWConnection) {
-        conn.receiveCompletely(length: 4) { data in
-            let length = UInt32(bigEndian: data.withUnsafeBytes { $0.load(as: UInt32.self) })
-            self.readMessage(from: conn, withLength: Int(length))
+        DispatchQueue.global().startCoroutine(in: scope) {
+            do {
+                try self.readAndDispatchPackets(from: conn)
+            } catch {
+                NSLog("castable: ERROR in socket read loop: \(error) (\(self.receivers.count) receivers)")
+                self.close()
+            }
         }
     }
 
-    private func readMessage(from conn: NWConnection, withLength length: Int) {
-        conn.receiveCompletely(length: length) { data in
-            guard let parsed = try? CastChannel_CastMessage(serializedData: data) else {
-                NSLog("castable: ERROR: failed to parse: \(data.hexEncodedString()) (\(data.count) bytes)")
-                return
-            }
+    private func readAndDispatchPackets(from conn: NWConnection) throws {
+        while conn === self.connection {
+            let packetLength = try self.readHeader(from: conn)
+            let message = try self.readMessage(from: conn, withLength: packetLength)
 
-            let message = CastMessage(from: parsed)
 
-            NSLog("castable: received \(parsed) -> \(message)")
+
             for receiver in self.receivers {
-                // TODO we should probably send instead of offer
-                receiver.offer(message)
-            }
-
-            if self.connection === conn {
-                self.startReading(from: conn)
+                try receiver.awaitSend(message)
             }
         }
+    }
+
+    private func readHeader(from conn: NWConnection) throws -> Int {
+        let data = try conn.receiveCompletely(length: 4).await()
+        let length = UInt32(bigEndian: data.withUnsafeBytes { $0.load(as: UInt32.self) })
+        return Int(length)
+    }
+
+    private func readMessage(from conn: NWConnection, withLength length: Int) throws -> CastMessage {
+        let data = try conn.receiveCompletely(length: length).await()
+        guard let parsed = try? CastChannel_CastMessage(serializedData: data) else {
+            NSLog("castable: ERROR: failed to parse: \(data.hexEncodedString()) (\(data.count) bytes)")
+            throw CastError.unableToParse(bytesCount: data.count, hex: data.hexEncodedString())
+        }
+
+        let message = CastMessage(from: parsed)
+        NSLog("castable: received \(parsed) -> \(message)")
+        return message
     }
 
     private func insecureTLSParameters() -> NWParameters {
@@ -204,8 +212,25 @@ class CastSocket {
 }
 
 fileprivate extension NWConnection {
-    // TODO coroutine probably?
-    func receiveCompletely(length: Int, completion: @escaping (Data) -> ()) {
+    func receiveCompletely(length: Int) -> CoFuture<Data> {
+        let promise = CoPromise<Data>()
+
+        receiveCompletely(
+            length: length,
+            completion: { data in promise.success(data) },
+            onError: { error in promise.fail(error) }
+        )
+
+        return promise
+    }
+
+    func receiveCompletely(
+        length: Int,
+        completion: @escaping (Data) -> (),
+        onError: @escaping (Error) -> () = { e in
+            NSLog("castable:receiveCompletely ERROR: \(e)")
+        }
+    ) {
         self.receive(
             minimumIncompleteLength: length,
             maximumLength: length
@@ -216,12 +241,12 @@ fileprivate extension NWConnection {
             }
 
             if let error = error {
-                NSLog("castable: ERROR receiving: = \(error)")
+                onError(error)
                 return
             }
 
             if isComplete {
-                NSLog("castable: EOF")
+                onError(CastError.eof)
                 return
             }
 
