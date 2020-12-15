@@ -30,11 +30,14 @@ class CastDiscovery {
             }
 
             self.lastDevices = descriptors
-            for ch in self.receivers {
-                do {
-                    try ch.awaitSend(descriptors)
-                } catch {
-                    NSLog("castable: failed to forward descriptor: \(error)")
+
+            DispatchQueue.main.startCoroutine {
+                for ch in self.receivers {
+                    do {
+                        try ch.awaitSend(descriptors)
+                    } catch {
+                        NSLog("castable: failed to forward descriptor: \(error)")
+                    }
                 }
             }
         }

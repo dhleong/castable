@@ -54,7 +54,7 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
             let ch = cast.receive()
             for descriptors in ch.makeIterator() {
                 let anyNew = descriptors.any { existingDevices[$0.id] == nil }
-                if !anyNew {
+                if !anyNew && descriptors.count == existingDevices.count {
                     continue
                 }
 
