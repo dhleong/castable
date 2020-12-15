@@ -29,8 +29,12 @@ export class Session {
     };
     private mediaListener = (event: MediaSessionEventData) => {
         debug("EMIT", MEDIA_EVENT, event.mediaSession);
+        this.currentMedia = [event.mediaSession];
+
         this.events.emit(MEDIA_EVENT, event.mediaSession);
     };
+
+    private currentMedia: Media[] = [];
 
     constructor(
         public readonly sessionId: string,
@@ -108,6 +112,10 @@ export class Session {
         },
     );
 
+    public get media() {
+        return this.currentMedia;
+    }
+
     public readonly queueLoad = callbackAsyncFunction(
         async (queue: any) => {
             // TODO
@@ -118,7 +126,9 @@ export class Session {
 
     public removeMediaListener(listener: Listener<Media>) {
         this.events.off(MEDIA_EVENT, listener);
-        if (!this.events.listenerCount(MEDIA_EVENT)) {
+        const isLast = !this.events.listenerCount(MEDIA_EVENT);
+
+        if (isLast) {
             this.castSession.removeEventListener(
                 SessionEventType.MEDIA_SESSION,
                 this.mediaListener,
