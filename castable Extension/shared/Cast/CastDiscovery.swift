@@ -69,9 +69,12 @@ class CastDiscovery {
 
 fileprivate enum CapabilitiesMask: Int, CaseIterable {
     // these are guesses, based on this empirical data:
-    // Chromecast: 4101:   0x01005
-    // Ultra:      200709: 0x31005
-    // Nest Mini:  198660: 0x30804
+    // Chromecast:  4101:   0x01005
+    // Ultra:       200709: 0x31005
+    // Nest Mini:   198660: 0x30804
+    // Home Mini:   198660: 0x30804
+    // Google Home: 198660: 0x30804
+    // Audio Group: 198692: 0x30824
     case videoOut = 0x00001
     case audioOut = 0x00004
     case audioIn =  0x00800
