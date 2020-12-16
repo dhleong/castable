@@ -44,12 +44,15 @@ class DeviceManager {
                     continue
                 }
 
-                self.onNewDescriptors(descriptors)
+                self.handleNewDescriptors(descriptors, in: scope)
             }
         }
     }
 
-    private func onNewDescriptors(_ descriptors: Set<CastServiceDescriptor>) {
+    private func handleNewDescriptors(
+        _ descriptors: Set<CastServiceDescriptor>,
+        in scope: CoScope
+    ) {
         var newDevicesSet = Set<CastDevice>()
         for desc in descriptors {
             if let existing = managedSet[desc.id] {
@@ -57,7 +60,7 @@ class DeviceManager {
             } else {
                 let new = CastDevice(withDescriptor: desc)
                 newDevicesSet.insert(new)
-                manage(device: new)
+                manage(device: new, in: scope)
             }
         }
 
@@ -72,13 +75,34 @@ class DeviceManager {
         NSLog("castable: got new devices set: \(newDevices)")
     }
 
-    private func manage(device: CastDevice) {
+    private func manage(device: CastDevice, in scope: CoScope) {
         NSLog("castable: managing new device: \(device)")
         self.managedSet[device.id] = device
+
+        DispatchQueue.global(qos: .background).startCoroutine(in: scope) {
+            let wasConnected = device.isConnected
+            defer {
+                if !wasConnected {
+                    // don't leave a connection dangling
+                    device.close()
+                }
+            }
+
+            let status = try device.status().await()
+            let anyAppsRunning = status.applications.any { !$0.isIdleScreen }
+            if anyAppsRunning {
+                NSLog("castable: \(device) is active: \(status)")
+                AppState.instance.activeDevice = device
+            }
+        }
     }
 
     private func stopManaging(device: CastDevice) {
         NSLog("castable: stopManaging old device: \(device)")
         self.managedSet.removeValue(forKey: device.id)
+
+        // NOTE: nothing to do here, currently; we don't want to close()
+        // the device because it could be in use by the user, and we might
+        // "stop managing" because our scope is closing
     }
 }

@@ -28,13 +28,15 @@ struct ReceiverApp: Codable {
     let transportId: String
 }
 
+struct ReceiverVolume: Codable {
+    let controlType: String
+    let level: Double
+    let muted: Bool
+    let stepInterval: Double
+}
+
 struct ReceiverStatus: Codable {
     let applications: [ReceiverApp]
     // let userEq: unknown,
-    // volume: {
-    //     controlType: "attenuation",
-    //     level: number,
-    //     muted: boolean,
-    //     stepInterval: number,
-    // }
+    let volume: ReceiverVolume
 }

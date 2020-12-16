@@ -27,6 +27,10 @@ class CastDevice: CustomStringConvertible, Identifiable {
         descriptor?.id ?? name
     }
 
+    var isConnected: Bool {
+        socket?.isConnected == true
+    }
+
     init(withName name: String) {
         self.name = name
     }
