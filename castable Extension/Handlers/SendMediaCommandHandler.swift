@@ -20,13 +20,8 @@ struct SendMediaCommandHandler: RequestHandler {
             throw GenericError.invalidRequest
         }
 
-        // this unpacking is a bummer; we should probably bite the bullet
-        // and add a "context" argument (or something) to handle():
-        var toSend = request
-        toSend.removeValue(forKey: REQUEST_PAGE_KEY)
-
         let ch = try app.channel(withNamespace: Namespaces.media).await()
-        try ch.send(data: toSend).awaitComplete()
+        try ch.send(data: request).awaitComplete()
 
         return [:]
     }

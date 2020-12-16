@@ -17,8 +17,8 @@ struct ListenHandler: RequestHandler {
     let events: RemoteEventEmitter
     let subscriptions: EventSubscriptionRegistry
 
-    func handle(request: [String : Any]?) throws -> [String : Any]? {
-        let (event, handler) = try request.unpackEventHandler()
+    func handle(context: RequestContext, request: [String : Any]?) throws -> [String : Any]? {
+        let (event, handler) = try context.unpackEventHandler(request: request)
 
         events.register(spec: event, handler: handler)
         subscriptions.subscribe(to: event)
@@ -27,12 +27,9 @@ struct ListenHandler: RequestHandler {
     }
 }
 
-extension Optional where Wrapped == Dictionary<String, Any> {
-    func unpackEventHandler() throws -> (EventSpec, EventHandler) {
-        let req: ListenHandler.Request = try self.parseRequest()
-        guard let page = self?[REQUEST_PAGE_KEY] as? SFSafariPage else {
-            throw GenericError.invalidRequest
-        }
+extension RequestContext {
+    func unpackEventHandler(request: [String : Any]?) throws -> (EventSpec, EventHandler) {
+        let req: ListenHandler.Request = try request.parseRequest()
         return (req.event, EventHandler(page: page, listenerId: req.listenerId))
     }
 }
