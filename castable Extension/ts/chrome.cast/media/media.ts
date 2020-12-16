@@ -4,8 +4,10 @@ import { EventEmitter } from "events";
 import { SessionEventType } from "../../cast.framework/enums";
 import { IClientIO } from "../../io/model";
 import { Listener } from "../generic-types";
-import { SeekRequest } from "../seek-request";
 import { callbackAsyncFunction } from "../util";
+
+import { SeekRequest } from "./seek-request";
+import { VolumeRequest } from "./volume-request";
 
 export class MediaInfo {
     constructor(
@@ -75,6 +77,13 @@ export class Media {
         async (request: SeekRequest) => {
             debug("seek:", request);
             return this.sendMediaCommand("SEEK", request);
+        },
+    );
+
+    public readonly setVolume = callbackAsyncFunction(
+        async (request: VolumeRequest) => {
+            debug("volume:", request);
+            return this.sendMediaCommand("SET_VOLUME", request.volume);
         },
     );
 

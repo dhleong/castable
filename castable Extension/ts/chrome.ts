@@ -28,6 +28,7 @@ import {
 } from "./chrome.cast/util";
 import { IReceiverActionListener } from "./chrome.cast/listeners";
 import { CastError } from "./chrome.cast/error";
+import { Volume } from "./chrome.cast/volume";
 
 const debug = _debug("castable:chrome.cast");
 
@@ -45,6 +46,7 @@ class ChromeCastStub {
     public readonly ReceiverType = ReceiverType;
     public readonly SessionRequest = SessionRequest;
     public readonly SessionStatus = SessionStatus;
+    public readonly Volume = Volume;
 
     public readonly media = proxy(new MediaStub(), "chrome.cast.media");
     public readonly timeout = proxy(new TimeoutStub(), "chrome.cast.timeout");
