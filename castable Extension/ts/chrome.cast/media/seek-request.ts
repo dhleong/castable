@@ -1,4 +1,4 @@
-import { ResumeState } from "./enums";
+import { ResumeState } from "../enums";
 
 export class SeekRequest {
     currentTime?: number;
