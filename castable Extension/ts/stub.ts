@@ -38,7 +38,7 @@ export function init() {
                 if (controller.receivedApiAvailableHandler) {
                     return chromeProxy;
                 }
-            }
+            },
         },
 
         cast: {

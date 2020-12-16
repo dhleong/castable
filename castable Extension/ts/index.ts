@@ -79,15 +79,15 @@ function initExt() {
 }
 
 function init() {
-  if (process.env.NODE_ENV !== "production") {
-      _debug.enable("castable:*");
-  }
+    if (process.env.NODE_ENV !== "production") {
+        _debug.enable("castable:*");
+    }
 
-  if (window.safari && window.safari.extension) {
-      initExt();
-  } else {
-      initStub();
-  }
+    if (window.safari && window.safari.extension) {
+        initExt();
+    } else {
+        initStub();
+    }
 }
 
 if (window.location.protocol === "https:") {
