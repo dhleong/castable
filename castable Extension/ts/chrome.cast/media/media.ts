@@ -64,19 +64,12 @@ export class Media {
         return this.currentTime ?? 0;
     }
 
-    public readonly pause = callbackAsyncFunction(
-        async (request: any) => {
-            debug("pause:", request);
-            return this.sendMediaCommand("PAUSE");
-        },
-    );
+    public readonly pause = this.createSimpleMediaCommand("PAUSE");
+    public readonly play = this.createSimpleMediaCommand("PLAY");
+    public readonly stop = this.createSimpleMediaCommand("STOP");
 
-    public readonly play = callbackAsyncFunction(
-        async (request: any) => {
-            debug("play:", request);
-            return this.sendMediaCommand("PLAY");
-        },
-    );
+    public readonly queueNext = this.createSimpleMediaCommand("QUEUE_NEXT");
+    public readonly queuePrev = this.createSimpleMediaCommand("QUEUE_PREV");
 
     public readonly seek = callbackAsyncFunction(
         async (request: SeekRequest) => {
@@ -97,6 +90,15 @@ export class Media {
                 this.onUpdate,
             );
         }
+    }
+
+    private async createSimpleMediaCommand(type: string) {
+        return callbackAsyncFunction(
+            async (request: any) => {
+                debug("media command: ", type, request);
+                return this.sendMediaCommand(type);
+            },
+        );
     }
 
     private async sendMediaCommand(type: string, extra?: {[key: string]: any}) {
