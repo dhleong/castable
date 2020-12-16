@@ -101,7 +101,7 @@ export class Media {
         }
     }
 
-    private async createSimpleMediaCommand(type: string) {
+    private createSimpleMediaCommand(type: string) {
         return callbackAsyncFunction(
             async (request: any) => {
                 debug("media command: ", type, request);
