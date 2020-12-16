@@ -12,7 +12,7 @@ import SwiftCoroutine
 struct RequestSessionHandler: RequestHandler {
     struct Request: Codable {
         let receiverApplicationId: String
-        let autoJoinPolicy: Int?
+        let autoJoinPolicy: String?
     }
 
     struct Response: Codable {
