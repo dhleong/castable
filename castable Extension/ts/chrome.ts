@@ -220,7 +220,7 @@ export class ChromeController {
         this.chrome = new ChromeStub(cast);
     }
 
-    private receivedApiAvailableHandler: GCastApiAvailabilityHandler;
+    public receivedApiAvailableHandler: GCastApiAvailabilityHandler;
 
     public onGCastApiAvailable = (isAvailable: boolean, err: any) => {
         this.debug("received GCast API Availability: ", isAvailable, err);
@@ -229,6 +229,8 @@ export class ChromeController {
     public setGCastApiAvailableHandler(callback: GCastApiAvailabilityHandler) {
         this.debug("requested GCast API Availability: ", callback);
         this.receivedApiAvailableHandler = callback;
+
+        if (callback) callback(true);
     }
 
     public notifyGCastAvailable(isAvailable: boolean) {

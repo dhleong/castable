@@ -29,13 +29,24 @@ export function init() {
     const cast = new CastStub(new ClientIO(script));
     const controller = new ChromeController(cast);
 
+    const chromeProxy = proxy(controller.chrome, "chrome");
+    const castProxy = proxy(cast, "cast");
+
     Object.defineProperties(window, {
         chrome: {
-            value: proxy(controller.chrome, "chrome"),
+            get() {
+                if (controller.receivedApiAvailableHandler) {
+                    return chromeProxy;
+                }
+            },
         },
 
         cast: {
-            value: proxy(cast, "cast"),
+            get() {
+                if (controller.receivedApiAvailableHandler) {
+                    return castProxy;
+                }
+            },
         },
 
         __onGCastApiAvailable: {
