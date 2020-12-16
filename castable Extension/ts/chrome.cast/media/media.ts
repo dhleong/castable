@@ -3,8 +3,10 @@ import { EventEmitter } from "events";
 
 import { SessionEventType } from "../../cast.framework/enums";
 import { IClientIO } from "../../io/model";
+import { PlayerState } from "../enums";
 import { Listener } from "../generic-types";
 import { callbackAsyncFunction } from "../util";
+import { Volume } from "../volume";
 
 import { SeekRequest } from "./seek-request";
 import { VolumeRequest } from "./volume-request";
@@ -35,6 +37,8 @@ const UPDATE_EVENT = "update";
 export class Media {
     public media: MediaInfo | undefined;
     public currentTime: number | undefined;
+    public playerState = PlayerState.IDLE;
+    public volume?: Volume;
 
     private readonly events = new EventEmitter();
     private readonly onUpdate = ({ mediaSession }: { mediaSession: Media }) => {

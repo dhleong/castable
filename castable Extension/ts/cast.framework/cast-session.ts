@@ -40,6 +40,7 @@ export class CastSession {
 
     private activeInputState = ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
     private sessionState = SessionState.SESSION_STARTED;
+    private mediaSession?: Media;
 
     private onMediaMessage = (_: string, message: string) => {
         const parsed = JSON.parse(message);
@@ -58,6 +59,8 @@ export class CastSession {
                     media: null,
                     currentTime: 0,
                 }, status);
+
+                this.mediaSession = media;
 
                 this.events.emit(SessionEventType.MEDIA_SESSION, {
                     mediaSession: proxy(media, "chrome.cast.media.Media()"),
@@ -165,8 +168,7 @@ export class CastSession {
     // eslint-disable-next-line class-methods-use-this
     public getMediaSession() {
         debug("getMediaSession");
-        // TODO
-        return null;
+        return this.mediaSession;
     }
 
     public getSessionId() {

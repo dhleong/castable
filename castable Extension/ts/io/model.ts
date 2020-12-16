@@ -5,10 +5,13 @@ export interface ClientEvent {
     args?: any,
 }
 
-export interface IMediaCommand {
+export interface IPartialMediaCommand {
     type: string;
-    mediaSessionId: string;
     [key: string]: any;
+}
+
+export interface IMediaCommand extends IPartialMediaCommand {
+    mediaSessionId: string;
 }
 
 export interface IRpc {
