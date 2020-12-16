@@ -7,7 +7,9 @@ import { Media } from "../chrome.cast/media/media";
 import { IPartialMediaCommand } from "../io/model";
 
 import { CastContext } from "./cast-context";
-import { RemotePlayerEventType } from "./enums";
+import { CastSession, SessionStateEventData } from "./cast-session";
+import { CastContextEventType, RemotePlayerEventType, SessionEventType } from "./enums";
+import { MediaSessionEventData } from "./events";
 
 export class RemotePlayer {
     public controller: RemotePlayerController | undefined;
@@ -33,6 +35,7 @@ function findCastableContext() {
 
 export class RemotePlayerController {
     private readonly events = new EventEmitter();
+    private totalListeners = 0;
 
     constructor(
         public readonly player: RemotePlayer,
@@ -46,8 +49,15 @@ export class RemotePlayerController {
         type: RemotePlayerEventType,
         handler: Listener<RemotePlayerChangedEvent>,
     ) {
-        debug("TODO addEventListener(", type, ")");
+        debug("addEventListener(", type, ")");
         this.events.on(type, handler);
+
+        const firstListener = !this.totalListeners;
+        ++this.totalListeners;
+
+        if (firstListener) {
+            this.subscribeToEvents();
+        }
     }
 
     public getFormattedTime(timeInSec: number) {
@@ -106,8 +116,13 @@ export class RemotePlayerController {
         type: RemotePlayerEventType,
         handler: Listener<RemotePlayerChangedEvent>,
     ) {
-        // TODO
         this.events.off(type, handler);
+        --this.totalListeners;
+        const isLast = !this.totalListeners;
+
+        if (isLast) {
+            this.unsubscribeFromEvents();
+        }
     }
 
     private createSimpleMediaCommand(type: string) {
@@ -137,5 +152,45 @@ export class RemotePlayerController {
                 mediaSessionId: media.mediaSessionId,
             });
         };
+    }
+
+    private async subscribeToEvents() {
+        debug("subscribe to media events");
+        const session = await this.awaitSession();
+        session.addEventListener(SessionEventType.MEDIA_SESSION, this.onMediaSession);
+    }
+
+    private async unsubscribeFromEvents() {
+        debug("unsubscribe from media events");
+        const session = this.context.getCurrentSession();
+        if (session) {
+            session.removeEventListener(
+                SessionEventType.MEDIA_SESSION,
+                this.onMediaSession,
+            );
+        }
+    }
+
+    private onMediaSession = (session: MediaSessionEventData) => {
+        debug("TODO media=", session.mediaSession);
+        // TODO update the Player and dispatch events
+    };
+
+    private async awaitSession() {
+        const { context } = this;
+        const session = context.getCurrentSession();
+        if (session) return session;
+
+        return new Promise<CastSession>(resolve => {
+            function listener(event: SessionStateEventData) {
+                resolve(event.session);
+                context.removeEventListener(
+                    CastContextEventType.SESSION_STATE_CHANGED,
+                    listener,
+                );
+            }
+
+            context.addEventListener(CastContextEventType.SESSION_STATE_CHANGED, listener);
+        });
     }
 }
