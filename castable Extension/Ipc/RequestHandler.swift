@@ -7,11 +7,32 @@
 
 import Foundation
 import SwiftCoroutine
+import SafariServices
+
+struct RequestContext {
+    let page: SFSafariPage
+}
 
 protocol RequestHandler {
     /// Handle the provided request; this will be called in a Coroutine, so
-    /// `await()` etc may be used
+    /// so `await()` etc may be used. By default, simply calls through
+    /// to the overload with a `context`
+    func handle(context: RequestContext, request: [String : Any]?) throws -> [String : Any]?
+
+    /// See the other handle() method; by default this just throws an
+    /// exception; one or the other of these methods MUST be implemented,
+    /// but not both
     func handle(request: [String : Any]?) throws -> [String : Any]?
+}
+
+extension RequestHandler {
+    func handle(context: RequestContext, request: [String : Any]?) throws -> [String : Any]? {
+        return try self.handle(request: request)
+    }
+
+    func handle(request: [String : Any]?) throws -> [String : Any]? {
+        throw GenericError.cancelled
+    }
 }
 
 extension Optional where Wrapped == [String : Any] {

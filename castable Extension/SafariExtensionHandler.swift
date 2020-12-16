@@ -8,8 +8,6 @@
 import SafariServices
 import SwiftCoroutine
 
-let REQUEST_PAGE_KEY = ".request.page"
-
 class SafariExtensionHandler: SFSafariExtensionHandler {
     static let cast = CastDiscovery()
 
@@ -105,11 +103,14 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
                 response = nil
             }
 
-            var data = userInfo
-            data?[REQUEST_PAGE_KEY] = page
+            let context = RequestContext(page: page)
 
             do {
-                let fromHandler = try handlers.dispatch(message: message, withData: data)
+                let fromHandler = try handlers.dispatch(
+                    context: context,
+                    message: message,
+                    withData: userInfo
+                )
                 NSLog("castable: responding to sessionRequest: \(userInfo ?? [:])")
 
                 if let fromHandler = fromHandler, response != nil {

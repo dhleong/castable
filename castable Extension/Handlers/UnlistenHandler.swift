@@ -11,8 +11,8 @@ struct UnlistenHandler: RequestHandler {
     let events: RemoteEventEmitter
     let subscriptions: EventSubscriptionRegistry
 
-    func handle(request: [String : Any]?) throws -> [String : Any]? {
-        let (event, handler) = try request.unpackEventHandler()
+    func handle(context: RequestContext, request: [String : Any]?) throws -> [String : Any]? {
+        let (event, handler) = try context.unpackEventHandler(request: request)
 
         events.unregister(spec: event, handler: handler)
         subscriptions.cancel(spec: event)
