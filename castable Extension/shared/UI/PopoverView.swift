@@ -23,9 +23,9 @@ struct PopoverView: View {
     private func computeState(of device: CastDevice) -> DeviceRowView.State {
         // ought to be a cleaner way...
 
-        if appState.connectingDevice?.id == device.id {
+        if appState.connectingDevice == device {
             return .connecting
-        } else if appState.activeDevice?.id == device.id {
+        } else if appState.activeDevice == device {
             return .active
         } else {
             return .none

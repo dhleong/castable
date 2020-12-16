@@ -40,35 +40,18 @@ class SafariExtensionHandler: SFSafariExtensionHandler {
     }()
 
     let scope = CoScope()
+    let deviceManager = DeviceManager(
+        discovery: SafariExtensionHandler.cast,
+        initialDevices: AppState.instance.devices
+    )
 
     override init() {
         super.init()
 
-        let cast = SafariExtensionHandler.cast
-        cast.discover()
-
-        DispatchQueue.main.startCoroutine(in: scope) {
-            let state = AppState.instance
-            let existingDevices = state.devices.associateBy { $0.id }
-
-            let ch = cast.receive()
-            for descriptors in ch.makeIterator() {
-                let anyNew = descriptors.any { existingDevices[$0.id] == nil }
-                if !anyNew && descriptors.count == existingDevices.count {
-                    continue
-                }
-
-                state.devices = descriptors.map { desc in
-                    existingDevices[desc.id]
-                    ?? CastDevice(withDescriptor: desc)
-                }.sorted { $0.name < $1.name }
-                NSLog("castable: got new devices: \(state.devices)")
-            }
-        }
+        deviceManager.startManaging(in: scope)
     }
 
     deinit {
-        SafariExtensionHandler.cast.stop()
         scope.cancel()
     }
 

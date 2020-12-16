@@ -22,7 +22,13 @@ class CastDevice: CustomStringConvertible, Identifiable {
     }
 
     var id: String {
+        // NOTE: it's vanishingly unlikely that a name will conflict
+        // with an ID, since IDs are UUIDs
         descriptor?.id ?? name
+    }
+
+    var isConnected: Bool {
+        socket?.isConnected == true
     }
 
     init(withName name: String) {
@@ -117,5 +123,23 @@ class CastDevice: CustomStringConvertible, Identifiable {
         // handle heartbeat
         heartbeat?.close()
         heartbeat = HeartbeatRunner(on: connection)
+    }
+}
+
+extension CastDevice: Equatable {
+    static func ==(lhs: CastDevice, rhs: CastDevice) -> Bool {
+        // in general all our CastDevices should have descriptors,
+        // but just in case... compare same to same
+        if let left = lhs.descriptor, let right = rhs.descriptor {
+            return left.id == right.id
+        }
+
+        return lhs.name == rhs.name
+    }
+}
+
+extension CastDevice: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
