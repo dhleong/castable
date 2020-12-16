@@ -1,7 +1,7 @@
 import { ResumeState } from "../enums";
 
 export class SeekRequest {
-    currentTime?: number;
-    customData?: any;
-    resumeState?: ResumeState;
+    public currentTime?: number;
+    public customData?: any;
+    public resumeState?: ResumeState;
 }
