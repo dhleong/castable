@@ -12,13 +12,11 @@ class DeviceManager {
     private let discovery: CastDiscovery
 
     private var managedSet: [String : CastDevice] = [:]
+    private var initialDevices: [CastDevice]? = nil
 
     init(discovery: CastDiscovery, initialDevices: [CastDevice]) {
         self.discovery = discovery
-
-        for device in initialDevices {
-            managedSet[device.id] = device
-        }
+        self.initialDevices = initialDevices
     }
 
     func startManaging(in scope: CoScope) {
@@ -27,6 +25,13 @@ class DeviceManager {
         scope.whenComplete {
             for device in self.managedSet.values {
                 self.stopManaging(device: device)
+            }
+        }
+
+        if let initialDevices = self.initialDevices {
+            self.initialDevices = nil
+            for device in initialDevices {
+                self.manage(device: device, in: scope)
             }
         }
 
