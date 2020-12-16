@@ -83,6 +83,7 @@ class DeviceManager {
     private func manage(device: CastDevice, in scope: CoScope) {
         NSLog("castable: managing new device: \(device)")
         self.managedSet[device.id] = device
+        let state = AppState.instance
 
         DispatchQueue.global(qos: .background).startCoroutine(in: scope) {
             let wasConnected = device.isConnected
@@ -94,10 +95,11 @@ class DeviceManager {
             }
 
             let status = try device.status().await()
-            let anyAppsRunning = status.applications.any { !$0.isIdleScreen }
-            if anyAppsRunning {
+            let activeApp = status.applications.first { !$0.isIdleScreen }
+            if let activeApp = activeApp, state.activeApp == nil {
                 NSLog("castable: \(device) is active: \(status)")
-                AppState.instance.activeDevice = device
+                state.activeDevice = device
+                state.activeApp = try device.app(withId: activeApp.appId).await()
             }
         }
     }
