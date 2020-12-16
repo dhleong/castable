@@ -6,6 +6,7 @@ import {
     ActiveInputState,
     CastContextEventType,
     CastState,
+    RemotePlayerEventType,
     SessionEventType,
     SessionState,
 } from "./cast.framework/enums";
@@ -25,6 +26,8 @@ class StaticClassContext {
 }
 
 class FrameworkStub {
+    public readonly VERSION = "1.0.14";
+
     public readonly ActiveInputState = ActiveInputState;
     public readonly CastState = CastState;
     public readonly SessionState = SessionState;
@@ -32,6 +35,7 @@ class FrameworkStub {
     public readonly CastContext: StaticClassContext;
     public readonly RemotePlayer = RemotePlayer;
     public readonly RemotePlayerController = RemotePlayerController;
+    public readonly RemotePlayerEventType = RemotePlayerEventType;
     public readonly SessionEventType = SessionEventType;
 
     constructor(
