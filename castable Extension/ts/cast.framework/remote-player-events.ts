@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { MediaCommand, PlayerState } from "../chrome.cast/enums";
+import { PlayerState } from "../chrome.cast/enums";
 
 import { Media } from "../chrome.cast/media/media";
 import { RemotePlayerEventType } from "./enums";
@@ -17,14 +17,29 @@ interface RemotePlayerTransform {
     (media: Media): any | undefined;
 }
 
+const MEDIA_COMMAND_PAUSE = 0x01;
+const MEDIA_COMMAND_SEEK = 0x02;
+const MEDIA_COMMAND_VOLUME = 0x04;
+
+function supports(media: Media, mask: number) {
+    /* eslint-disable no-bitwise */
+    return ((media.supportedMediaCommands ?? 0) & mask) !== 0;
+}
+
 /**
  * A map of RemotePlayer keys to transform functions, which return
  * a new value for that key (or undefined to not change it)
  */
 const transforms: {[key: string]: RemotePlayerTransform} = {
-    canControlVolume: m => m.supportedMediaCommands?.includes(MediaCommand.STREAM_VOLUME),
-    canPause: m => m.supportedMediaCommands?.includes(MediaCommand.PAUSE),
-    canSeek: m => m.supportedMediaCommands?.includes(MediaCommand.SEEK),
+    // To be restored when supportedMediaCommands has the proper type:
+    // canControlVolume: m => m.supportedMediaCommands?.includes(MediaCommand.STREAM_VOLUME),
+    // canPause: m => m.supportedMediaCommands?.includes(MediaCommand.PAUSE),
+    // canSeek: m => m.supportedMediaCommands?.includes(MediaCommand.SEEK),
+
+    canControlVolume: m => supports(m, MEDIA_COMMAND_VOLUME),
+    canPause: m => supports(m, MEDIA_COMMAND_PAUSE),
+    canSeek: m => supports(m, MEDIA_COMMAND_SEEK),
+
     currentTime: m => m.currentTime,
     duration: m => m.media?.duration,
     isMediaLoaded: m => m.media !== undefined,

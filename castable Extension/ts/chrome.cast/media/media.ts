@@ -41,8 +41,11 @@ export class Media {
     public media: MediaInfo | undefined;
     public currentTime: number | undefined;
     public playerState = PlayerState.IDLE;
-    public supportedMediaCommands?: MediaCommand[];
     public volume?: Volume;
+
+    // FIXME: the correct type here is an array of MediaCommand; we need to
+    // transform this from what we get via the socket (an int mask)
+    public supportedMediaCommands?: number;
 
     private readonly events = new EventEmitter();
     private readonly onUpdate = ({ mediaSession }: { mediaSession: Media }) => {
