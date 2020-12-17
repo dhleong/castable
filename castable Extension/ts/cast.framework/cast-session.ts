@@ -154,7 +154,6 @@ export class CastSession {
         };
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getApplicationStatus() {
         debug("getApplicationStatus");
         return null; // ?
@@ -165,7 +164,6 @@ export class CastSession {
         return this.device;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getMediaSession() {
         debug("getMediaSession");
         return this.mediaSession;
@@ -176,7 +174,6 @@ export class CastSession {
         return this.sessionId;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getSessionObj() {
         debug("getSessionObj");
         return {}; // chrome.cast.Session
@@ -187,14 +184,12 @@ export class CastSession {
         return this.sessionState;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getVolume() {
         debug("getVolume");
         // TODO
         return 1;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public isMute() {
         debug("isMute");
         // TODO
@@ -247,13 +242,11 @@ export class CastSession {
         });
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public async setMute(isMute: boolean) {
         debug("setMute", isMute);
         // TODO
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public async setVolume(volume: number) {
         debug("setVolume", volume);
         // TODO
