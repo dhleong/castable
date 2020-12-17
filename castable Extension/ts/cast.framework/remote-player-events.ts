@@ -1,7 +1,9 @@
+import _debug from "debug";
 import { EventEmitter } from "events";
-import { PlayerState } from "../chrome.cast/enums";
 
+import { PlayerState } from "../chrome.cast/enums";
 import { Media } from "../chrome.cast/media/media";
+
 import { RemotePlayerEventType } from "./enums";
 import { RemotePlayer } from "./remote-player";
 
@@ -51,6 +53,8 @@ const transforms: {[key: string]: RemotePlayerTransform} = {
     volumeLevel: m => m.volume?.level,
 };
 
+const debug = _debug("castable:cast.framework.RemotePlayerEventTransformer");
+
 export class RemotePlayerEventTransformer {
     private static keyToChangedEvent = Object.keys(RemotePlayerEventType)
         .reduce((m, key) => {
@@ -73,8 +77,12 @@ export class RemotePlayerEventTransformer {
             const value = transform(media);
             if (value === undefined) continue;
 
+            const oldValue = player[key];
+            if (oldValue === value) continue;
+
             (player as any)[key] = value;
             const type = RemotePlayerEventTransformer.keyToChangedEvent[key];
+            debug(media.sessionId, ".", key, "CHANGED:", type, oldValue, value);
 
             events.emit(type, new RemotePlayerChangedEvent(type, key, value));
             events.emit(
