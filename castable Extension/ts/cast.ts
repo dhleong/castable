@@ -10,10 +10,8 @@ import {
     SessionEventType,
     SessionState,
 } from "./cast.framework/enums";
-import {
-    RemotePlayer,
-    RemotePlayerController,
-} from "./cast.framework/remote-player";
+import { RemotePlayer } from "./cast.framework/remote-player";
+import { RemotePlayerController } from "./cast.framework/remote-player-controller";
 
 class StaticClassContext {
     constructor(
