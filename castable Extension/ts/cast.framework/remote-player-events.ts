@@ -1,4 +1,5 @@
 import { EventEmitter } from "events";
+import { MediaCommand, PlayerState } from "../chrome.cast/enums";
 
 import { Media } from "../chrome.cast/media/media";
 import { RemotePlayerEventType } from "./enums";
@@ -16,9 +17,23 @@ interface RemotePlayerTransform {
     (media: Media): any | undefined;
 }
 
+/**
+ * A map of RemotePlayer keys to transform functions, which return
+ * a new value for that key (or undefined to not change it)
+ */
 const transforms: {[key: string]: RemotePlayerTransform} = {
+    canControlVolume: m => m.supportedMediaCommands?.includes(MediaCommand.STREAM_VOLUME),
+    canPause: m => m.supportedMediaCommands?.includes(MediaCommand.PAUSE),
+    canSeek: m => m.supportedMediaCommands?.includes(MediaCommand.SEEK),
     currentTime: m => m.currentTime,
+    duration: m => m.media?.duration,
+    isMediaLoaded: m => m.media !== undefined,
+    isMuted: m => m.volume?.muted,
+    isPaused: m => m.playerState === PlayerState.PAUSED,
+    mediaInfo: m => m.media,
+    playerState: m => m.playerState,
     title: m => m.media?.metadata?.title,
+    volumeLevel: m => m.volume?.level,
 };
 
 export class RemotePlayerEventTransformer {

@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 
 import { SessionEventType } from "../../cast.framework/enums";
 import { IClientIO } from "../../io/model";
-import { PlayerState } from "../enums";
+import { MediaCommand, PlayerState } from "../enums";
 import { Listener } from "../generic-types";
 import { callbackAsyncFunction } from "../util";
 import { Volume } from "../volume";
@@ -12,6 +12,7 @@ import { SeekRequest } from "./seek-request";
 import { VolumeRequest } from "./volume-request";
 
 export class MediaInfo {
+    public duration?: number;
     public metadata?: any;
 
     constructor(
@@ -40,6 +41,7 @@ export class Media {
     public media: MediaInfo | undefined;
     public currentTime: number | undefined;
     public playerState = PlayerState.IDLE;
+    public supportedMediaCommands?: MediaCommand[];
     public volume?: Volume;
 
     private readonly events = new EventEmitter();
