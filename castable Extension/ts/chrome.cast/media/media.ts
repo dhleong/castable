@@ -12,6 +12,8 @@ import { SeekRequest } from "./seek-request";
 import { VolumeRequest } from "./volume-request";
 
 export class MediaInfo {
+    public metadata?: any;
+
     constructor(
         public readonly contentId: string,
         public readonly contentType: string,

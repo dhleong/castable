@@ -3,7 +3,10 @@ import { mock, SinonMock } from "sinon";
 
 import { CastContext } from "../../ts/cast.framework/cast-context";
 import { CastSession } from "../../ts/cast.framework/cast-session";
-import { RemotePlayer, RemotePlayerController } from "../../ts/cast.framework/remote-player";
+import { RemotePlayer } from "../../ts/cast.framework/remote-player";
+import {
+    RemotePlayerController,
+} from "../../ts/cast.framework/remote-player-controller";
 import { PlayerState } from "../../ts/chrome.cast/enums";
 import { Media } from "../../ts/chrome.cast/media/media";
 import { IClientIO } from "../../ts/io/model";
