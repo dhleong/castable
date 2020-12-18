@@ -95,7 +95,7 @@ class DeviceManager {
             }
 
             let status = try device.status().await()
-            let activeApp = status.applications.first { !$0.isIdleScreen }
+            let activeApp = status.applications?.first { !$0.isIdleScreen }
             if let activeApp = activeApp, state.activeApp == nil {
                 NSLog("castable: \(device) is active: \(status)")
                 state.activeDevice = device

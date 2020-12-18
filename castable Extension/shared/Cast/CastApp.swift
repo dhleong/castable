@@ -101,6 +101,10 @@ class CastApp {
 
 fileprivate extension ReceiverStatus {
     func find(app castApp: CastApp) -> ReceiverApp? {
+        guard let applications = self.applications else {
+            return nil
+        }
+
         for app in applications {
             if app.appId == castApp.id {
                 return app

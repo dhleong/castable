@@ -36,7 +36,7 @@ struct ReceiverVolume: Codable {
 }
 
 struct ReceiverStatus: Codable {
-    let applications: [ReceiverApp]
+    let applications: [ReceiverApp]?
     // let userEq: unknown,
     let volume: ReceiverVolume
 }
