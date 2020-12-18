@@ -47,7 +47,7 @@ const transforms: {[key: string]: RemotePlayerTransform} = {
     isMediaLoaded: m => m.media !== undefined,
     isMuted: m => m.volume?.muted,
     isPaused: m => m.playerState === PlayerState.PAUSED,
-    mediaInfo: m => m.media,
+    mediaInfo: m => (m.media === null ? undefined : m.media),
     playerState: m => m.playerState,
     title: m => m.media?.metadata?.title,
     volumeLevel: m => m.volume?.level,
@@ -82,17 +82,22 @@ export class RemotePlayerEventTransformer {
 
             (player as any)[key] = value;
             const type = RemotePlayerEventTransformer.keyToChangedEvent[key];
-            debug(media.sessionId, ".", key, "CHANGED:", type, oldValue, value);
 
+            this.emit(events, RemotePlayerEventType.ANY_CHANGE, key, value);
+            this.emit(events, type, key, value);
+        }
+    }
+
+    private emit(
+        events: EventEmitter,
+        type: RemotePlayerEventType,
+        key: keyof RemotePlayer,
+        value: any,
+    ) {
+        try {
             events.emit(type, new RemotePlayerChangedEvent(type, key, value));
-            events.emit(
-                RemotePlayerEventType.ANY_CHANGE,
-                new RemotePlayerChangedEvent(
-                    RemotePlayerEventType.ANY_CHANGE,
-                    key,
-                    value,
-                ),
-            );
+        } catch (e) {
+            debug("WARN error dispatching", type, key, value);
         }
     }
 }
