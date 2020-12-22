@@ -29,6 +29,14 @@ function supports(media: Media, mask: number) {
 }
 
 /**
+ * Returns the given value unless it's `null`, in which case
+ * `undefined` is returned instead
+ */
+function ignoreNull<T>(value: T | null | undefined) {
+    return value === null ? undefined : value;
+}
+
+/**
  * A map of RemotePlayer keys to transform functions, which return
  * a new value for that key (or undefined to not change it)
  */
@@ -47,7 +55,7 @@ const transforms: {[key: string]: RemotePlayerTransform} = {
     isMediaLoaded: m => m.media !== undefined,
     isMuted: m => m.volume?.muted,
     isPaused: m => m.playerState === PlayerState.PAUSED,
-    mediaInfo: m => (m.media === null ? undefined : m.media),
+    mediaInfo: m => ignoreNull(m.media),
     playerState: m => m.playerState,
     title: m => m.media?.metadata?.title,
     volumeLevel: m => m.volume?.level,
