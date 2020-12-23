@@ -92,12 +92,10 @@ class ChromeCastStub {
         context.addEventListener(CastContextEventType.SESSION_STATE_CHANGED, wrapper);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public logMessage(message: any) {
         debug("logMessage:", message);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public precache(data: any) {
         debug("precache:", data);
     }
@@ -133,7 +131,6 @@ class ChromeCastStub {
         },
     );
 
-    // eslint-disable-next-line class-methods-use-this
     public requestSessionById(id: string) {
         debug("TODO requestSessionById", id);
     }
@@ -147,7 +144,6 @@ class ChromeCastStub {
         },
     );
 
-    // eslint-disable-next-line class-methods-use-this
     public setPageContext(win: any) {
         debug("TODO setPageContext", win);
     }
@@ -159,7 +155,6 @@ class ChromeCastStub {
         },
     );
 
-    // eslint-disable-next-line class-methods-use-this
     public unescape(s: string) {
         debug("unescape", s);
         return unescape(s); // ?!

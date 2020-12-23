@@ -9,8 +9,6 @@ const extraAgentConfig = " + Chrome/80+Android";
 const debug = _debug("castable:compat:youtube");
 
 export class YoutubeCompat implements CompatApplier {
-    // allow lack of "this"; it's an interface method
-    // eslint-disable-next-line class-methods-use-this
     public apply({ actualUserAgent, host }: CompatContext) {
         if (!host.endsWith("youtube.com")) return; // nop
 

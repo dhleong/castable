@@ -5,6 +5,38 @@ export enum CastState {
     CONNECTED = "CONNECTED",
 }
 
+export enum RemotePlayerEventType {
+    ANY_CHANGE = "anyChanged",
+    BREAK_CLIP_ID_CHANGED = "breakClipIdChanged",
+    BREAK_ID_CHANGED = "breakIdChanged",
+    CAN_CONTROL_VOLUME_CHANGED = "canControlVolumeChanged",
+    CAN_PAUSE_CHANGED = "canPauseChanged",
+    CAN_SEEK_CHANGED = "canSeekChanged",
+    CURRENT_BREAK_CLIP_NUMBER_CHANGED = "currentBreakClipNumberChanged",
+    CURRENT_BREAK_CLIP_TIME_CHANGED = "currentBreakClipTimeChanged",
+    CURRENT_BREAK_TIME_CHANGED = "currentBreakTimeChanged",
+    CURRENT_TIME_CHANGED = "currentTimeChanged",
+    DISPLAY_NAME_CHANGED = "displayNameChanged",
+    DISPLAY_STATUS_CHANGED = "displayStatusChanged",
+    DURATION_CHANGED = "durationChanged",
+    IMAGE_URL_CHANGED = "imageUrlChanged",
+    IS_CONNECTED_CHANGED = "isConnectedChanged",
+    IS_MEDIA_LOADED_CHANGED = "isMediaLoadedChanged",
+    IS_MUTED_CHANGED = "isMutedChanged",
+    IS_PAUSED_CHANGED = "isPausedChanged",
+    IS_PLAYING_BREAK_CHANGED = "isPlayingBreakChanged",
+    LIVE_SEEKABLE_RANGE_CHANGED = "liveSeekableRangeChanged",
+    MEDIA_INFO_CHANGED = "mediaInfoChanged",
+    NUMBER_BREAK_CLIPS_CHANGED = "numberBreakClipsChanged",
+    PLAYER_STATE_CHANGED = "playerStateChanged",
+    QUEUE_DATA_CHANGED = "queueDataChanged",
+    STATUS_TEXT_CHANGED = "statusTextChanged",
+    TITLE_CHANGED = "titleChanged",
+    VIDEO_INFO_CHANGED = "videoInfoChanged",
+    VOLUME_LEVEL_CHANGED = "volumeLevelChanged",
+    WHEN_SKIPPABLE_CHANGED = "whenSkippableChanged",
+}
+
 export enum SessionEventType {
     APPLICATION_STATUS_CHANGED = "APPLICATION_STATUS_CHANGED",
     APPLICATION_METADATA_CHANGED = "APPLICATION_METADATA_CHANGED",

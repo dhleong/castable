@@ -3,13 +3,18 @@ import { EventEmitter } from "events";
 
 import { SessionEventType } from "../../cast.framework/enums";
 import { IClientIO } from "../../io/model";
+import { PlayerState } from "../enums";
 import { Listener } from "../generic-types";
 import { callbackAsyncFunction } from "../util";
+import { Volume } from "../volume";
 
 import { SeekRequest } from "./seek-request";
 import { VolumeRequest } from "./volume-request";
 
 export class MediaInfo {
+    public duration?: number;
+    public metadata?: any;
+
     constructor(
         public readonly contentId: string,
         public readonly contentType: string,
@@ -33,8 +38,14 @@ const debug = _debug("castable:chrome.cast.media.Media");
 const UPDATE_EVENT = "update";
 
 export class Media {
-    public media: MediaInfo | undefined;
-    public currentTime: number | undefined;
+    public media?: MediaInfo | null;
+    public currentTime?: number;
+    public playerState = PlayerState.IDLE;
+    public volume?: Volume;
+
+    // FIXME: the correct type here is an array of MediaCommand; we need to
+    // transform this from what we get via the socket (an int mask)
+    public supportedMediaCommands?: number;
 
     private readonly events = new EventEmitter();
     private readonly onUpdate = ({ mediaSession }: { mediaSession: Media }) => {

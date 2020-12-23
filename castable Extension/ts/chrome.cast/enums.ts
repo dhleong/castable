@@ -30,6 +30,13 @@ export enum ErrorCode {
     LOAD_MEDIA_FAILED = "load_media_failed",
 }
 
+export enum MediaCommand {
+    PAUSE = "PAUSE",
+    SEEK = "SEEK",
+    STREAM_VOLUME = "STREAM_VOLUME",
+    STREAM_MUTE = "STREAM_MUTE",
+}
+
 export enum PlayerState {
     IDLE = "IDLE",
     PLAYING = "PLAYING",

@@ -40,6 +40,7 @@ export class CastSession {
 
     private activeInputState = ActiveInputState.ACTIVE_INPUT_STATE_UNKNOWN;
     private sessionState = SessionState.SESSION_STARTED;
+    private mediaSession?: Media;
 
     private onMediaMessage = (_: string, message: string) => {
         const parsed = JSON.parse(message);
@@ -58,6 +59,8 @@ export class CastSession {
                     media: null,
                     currentTime: 0,
                 }, status);
+
+                this.mediaSession = media;
 
                 this.events.emit(SessionEventType.MEDIA_SESSION, {
                     mediaSession: proxy(media, "chrome.cast.media.Media()"),
@@ -151,7 +154,6 @@ export class CastSession {
         };
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getApplicationStatus() {
         debug("getApplicationStatus");
         return null; // ?
@@ -162,11 +164,9 @@ export class CastSession {
         return this.device;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getMediaSession() {
         debug("getMediaSession");
-        // TODO
-        return null;
+        return this.mediaSession;
     }
 
     public getSessionId() {
@@ -174,7 +174,6 @@ export class CastSession {
         return this.sessionId;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getSessionObj() {
         debug("getSessionObj");
         return {}; // chrome.cast.Session
@@ -185,14 +184,12 @@ export class CastSession {
         return this.sessionState;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public getVolume() {
         debug("getVolume");
         // TODO
         return 1;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public isMute() {
         debug("isMute");
         // TODO
@@ -245,13 +242,11 @@ export class CastSession {
         });
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public async setMute(isMute: boolean) {
         debug("setMute", isMute);
         // TODO
     }
 
-    // eslint-disable-next-line class-methods-use-this
     public async setVolume(volume: number) {
         debug("setVolume", volume);
         // TODO
