@@ -38,7 +38,7 @@ const debug = _debug("castable:chrome.cast.media.Media");
 const UPDATE_EVENT = "update";
 
 export class Media {
-    public media?: MediaInfo;
+    public media?: MediaInfo | null;
     public currentTime?: number;
     public playerState = PlayerState.IDLE;
     public volume?: Volume;

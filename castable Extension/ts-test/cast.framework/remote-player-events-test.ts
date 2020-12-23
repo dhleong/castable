@@ -71,4 +71,18 @@ describe("RemotePlayerEventTransformer", () => {
 
         player.currentTime.should.equal(42);
     });
+
+    it("does not emit events with null values", () => {
+        media.media = null;
+
+        transformer.transform(media, player, emitter);
+
+        events.should.not.deep.contain(
+            new RemotePlayerChangedEvent(
+                RemotePlayerEventType.MEDIA_INFO_CHANGED,
+                "mediaInfo",
+                null,
+            ),
+        );
+    });
 });
