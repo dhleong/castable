@@ -4,6 +4,10 @@ export interface CompatContext {
     window: Window;
 }
 
+export interface CompatMatcher {
+    (context: CompatContext): boolean;
+}
+
 export interface CompatApplier {
     apply(context: CompatContext): void;
 }

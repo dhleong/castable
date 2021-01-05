@@ -2,17 +2,11 @@ import _debug from "debug";
 
 import { CompatApplier, CompatContext } from "./model";
 
-// NOTE: this extra agent stuff convinces Youtube's JS
-// to initialize its chromecast support
-const extraAgentConfig = " + Chrome/80+Android";
-
 const debug = _debug("castable:compat:youtube");
 
 export class YoutubeCompat implements CompatApplier {
-    public apply({ actualUserAgent, host }: CompatContext) {
-        if (!host.endsWith("youtube.com")) return; // nop
-
-        const patchedUserAgent = actualUserAgent + extraAgentConfig;
+    public apply({ actualUserAgent }: CompatContext) {
+        const patchedUserAgent = window.navigator.userAgent;
 
         // it's the name of the var; not much we can do about the dangle:
         // eslint-disable-next-line no-underscore-dangle
@@ -23,16 +17,9 @@ export class YoutubeCompat implements CompatApplier {
                 actualUserAgent,
                 patchedUserAgent,
             );
+
+            debug("Applied YT patch: ", patchedUserAgent);
         }
-
-        // patch the userAgent in case it hasn't already been read
-        Object.defineProperties(window.navigator, {
-            userAgent: {
-                value: patchedUserAgent,
-            },
-        });
-
-        debug("Applied YT user agent patch: ", patchedUserAgent);
     }
 
     private static applyAgentBackport(
