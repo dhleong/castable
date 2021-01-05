@@ -19,6 +19,18 @@ export function proxy<T extends object>(
 
             return got;
         },
+
+        set(target, prop, value, receiver) {
+            const got = Reflect.get(target, prop, receiver);
+            const had = got !== undefined;
+
+            if (!had) {
+                debug("WRITE ", name ?? actual, ".", prop, `(found ${had})`, " <- ", value);
+                Reflect.set(target, prop, value, receiver);
+            }
+
+            return true;
+        },
     });
     return proxyObject as unknown as T;
 }
