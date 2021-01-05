@@ -52,6 +52,7 @@ class ChromeCastStub {
     public readonly timeout = proxy(new TimeoutStub(), "chrome.cast.timeout");
 
     public readonly isAvailable = true;
+    public readonly usingPresentationApi = false;
 
     private config: ApiConfig | undefined;
 
