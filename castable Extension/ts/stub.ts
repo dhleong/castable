@@ -8,6 +8,16 @@ import { proxy } from "./proxy";
 
 const debug = _debug("castable:stub");
 
+function isInCastFramework() {
+    const script = document.currentScript;
+    if (!(script instanceof HTMLScriptElement)) {
+        // definitely not
+        return false;
+    }
+
+    return script.src.endsWith("/cast_framework.js");
+}
+
 /**
  * Initializes chromecast stubbing
  */
@@ -32,6 +42,8 @@ export function init() {
     const chromeProxy = proxy(controller.chrome, "chrome");
     const castProxy = proxy(cast, "cast");
 
+    let providedCast: any | undefined;
+
     Object.defineProperties(window, {
         chrome: {
             get() {
@@ -39,25 +51,50 @@ export function init() {
                     return chromeProxy;
                 }
             },
+
+            set(value) {
+                debug("SET window.chrome <-", value);
+            },
         },
 
         cast: {
             get() {
+                if (providedCast) {
+                    return providedCast;
+                }
+
+                if (isInCastFramework()) {
+                    // when accessed from cast_framework.js, we should
+                    // ONLY reflect whatever value they're providing
+                    // (via providedCast)
+                    return;
+                }
+
                 if (controller.receivedApiAvailableHandler) {
                     return castProxy;
                 }
+            },
+
+            set(value) {
+                debug("SET window.cast <-", value);
+                providedCast = proxy(value, "cast");
+                return true;
             },
         },
 
         __onGCastApiAvailable: {
             get() {
-                debug("READ onGCastApiAvailable <- ", typeof controller.onGCastApiAvailable);
-                return controller.onGCastApiAvailable;
+                debug("READ onGCastApiAvailable <- ", typeof controller.receivedApiAvailableHandler);
+                return controller.receivedApiAvailableHandler;
             },
 
             set(value) {
-                debug("set onGCastApiAvailable <- ", value);
-                controller.setGCastApiAvailableHandler(value);
+                debug("SET onGCastApiAvailable <- ", value);
+                // NOTE: for now, at least, we don't use this method
+                // to allow applications to propagate API availability
+                // as normal
+                // controller.setGCastApiAvailableHandler(value);
+                controller.receivedApiAvailableHandler = value;
             },
         },
     });

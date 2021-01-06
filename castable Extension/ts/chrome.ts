@@ -52,6 +52,7 @@ class ChromeCastStub {
     public readonly timeout = proxy(new TimeoutStub(), "chrome.cast.timeout");
 
     public readonly isAvailable = true;
+    public readonly usingPresentationApi = false;
 
     private config: ApiConfig | undefined;
 
@@ -67,7 +68,11 @@ class ChromeCastStub {
             this.config = apiConfig;
 
             // FIXME: get this state from the extension
-            apiConfig.receiverListener(ReceiverAvailability.AVAILABLE);
+            // NOTE: for best compat, we wait until after this function
+            // returns to notify the receiver
+            setTimeout(() => {
+                apiConfig.receiverListener(ReceiverAvailability.AVAILABLE);
+            });
         },
     );
 
